@@ -7,6 +7,12 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		7E2CB6851665AE6200A5B40D /* EditableTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 7E2CB6841665AE6200A5B40D /* EditableTableViewCell.m */; };
+		7E2CB68A1665AEA700A5B40D /* DogEarObject.m in Sources */ = {isa = PBXBuildFile; fileRef = 7E2CB6891665AEA700A5B40D /* DogEarObject.m */; };
+		7E2CB68D1665B48100A5B40D /* de_PhotoViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 7E2CB68C1665B48000A5B40D /* de_PhotoViewController.m */; };
+		7E2CB6921665B71A00A5B40D /* de_DetailViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 7E2CB6911665B71A00A5B40D /* de_DetailViewController.m */; };
+		7E2CB6951665D2FB00A5B40D /* de_DetailHeaderView.m in Sources */ = {isa = PBXBuildFile; fileRef = 7E2CB6941665D2FB00A5B40D /* de_DetailHeaderView.m */; };
+		7E2CB69A1665D67F00A5B40D /* de_CategoryListViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 7E2CB6991665D67E00A5B40D /* de_CategoryListViewController.m */; };
 		7E42529A16645DF400741A41 /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 7E42529916645DF400741A41 /* UIKit.framework */; };
 		7E42529C16645DF400741A41 /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 7E42529B16645DF400741A41 /* Foundation.framework */; };
 		7E42529E16645DF400741A41 /* CoreGraphics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 7E42529D16645DF400741A41 /* CoreGraphics.framework */; };
@@ -16,9 +22,45 @@
 		7E4252AC16645DF400741A41 /* Default.png in Resources */ = {isa = PBXBuildFile; fileRef = 7E4252AB16645DF400741A41 /* Default.png */; };
 		7E4252AE16645DF400741A41 /* Default@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 7E4252AD16645DF400741A41 /* Default@2x.png */; };
 		7E4252B016645DF500741A41 /* Default-568h@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 7E4252AF16645DF400741A41 /* Default-568h@2x.png */; };
+		7E4252CD16645F5800741A41 /* dogear-bg-instructions-568h@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 7E4252B916645F5800741A41 /* dogear-bg-instructions-568h@2x.png */; };
+		7E4252CE16645F5800741A41 /* dogear-bg-instructions.png in Resources */ = {isa = PBXBuildFile; fileRef = 7E4252BA16645F5800741A41 /* dogear-bg-instructions.png */; };
+		7E4252CF16645F5800741A41 /* dogear-bg-instructions@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 7E4252BB16645F5800741A41 /* dogear-bg-instructions@2x.png */; };
+		7E4252D016645F5800741A41 /* dogear-bg-master-568h@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 7E4252BC16645F5800741A41 /* dogear-bg-master-568h@2x.png */; };
+		7E4252D116645F5800741A41 /* dogear-bg-master.png in Resources */ = {isa = PBXBuildFile; fileRef = 7E4252BD16645F5800741A41 /* dogear-bg-master.png */; };
+		7E4252D216645F5800741A41 /* dogear-bg-master@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 7E4252BE16645F5800741A41 /* dogear-bg-master@2x.png */; };
+		7E4252D316645F5800741A41 /* dogear-bg-splash-568h@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 7E4252BF16645F5800741A41 /* dogear-bg-splash-568h@2x.png */; };
+		7E4252D416645F5800741A41 /* dogear-bg-splash.png in Resources */ = {isa = PBXBuildFile; fileRef = 7E4252C016645F5800741A41 /* dogear-bg-splash.png */; };
+		7E4252D516645F5800741A41 /* dogear-bg-splash@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 7E4252C116645F5800741A41 /* dogear-bg-splash@2x.png */; };
+		7E4252D616645F5800741A41 /* dogear-icon-browse.png in Resources */ = {isa = PBXBuildFile; fileRef = 7E4252C316645F5800741A41 /* dogear-icon-browse.png */; };
+		7E4252D716645F5800741A41 /* dogear-icon-browse@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 7E4252C416645F5800741A41 /* dogear-icon-browse@2x.png */; };
+		7E4252D816645F5800741A41 /* dogear-icon-camera.png in Resources */ = {isa = PBXBuildFile; fileRef = 7E4252C516645F5800741A41 /* dogear-icon-camera.png */; };
+		7E4252D916645F5800741A41 /* dogear-icon-camera@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 7E4252C616645F5800741A41 /* dogear-icon-camera@2x.png */; };
+		7E4252DA16645F5800741A41 /* dogear-icon-settings.png in Resources */ = {isa = PBXBuildFile; fileRef = 7E4252C716645F5800741A41 /* dogear-icon-settings.png */; };
+		7E4252DB16645F5800741A41 /* dogear-icon-settings@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 7E4252C816645F5800741A41 /* dogear-icon-settings@2x.png */; };
+		7E4252DC16645F5800741A41 /* dogear-icon-share.png in Resources */ = {isa = PBXBuildFile; fileRef = 7E4252C916645F5800741A41 /* dogear-icon-share.png */; };
+		7E4252DD16645F5800741A41 /* dogear-icon-share@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 7E4252CA16645F5800741A41 /* dogear-icon-share@2x.png */; };
+		7E4252DE16645F5800741A41 /* dogear-icon-trashcan.png in Resources */ = {isa = PBXBuildFile; fileRef = 7E4252CB16645F5800741A41 /* dogear-icon-trashcan.png */; };
+		7E4252DF16645F5800741A41 /* dogear-icon-trashcan@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 7E4252CC16645F5800741A41 /* dogear-icon-trashcan@2x.png */; };
+		7E4252E616645FCA00741A41 /* de_DefaultViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 7E4252E516645FCA00741A41 /* de_DefaultViewController.m */; };
+		7E4252E9166461C600741A41 /* de_MainTabBarController.m in Sources */ = {isa = PBXBuildFile; fileRef = 7E4252E8166461C600741A41 /* de_MainTabBarController.m */; };
+		7E4252EC16646AA100741A41 /* de_BrowseTableViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 7E4252EB16646AA100741A41 /* de_BrowseTableViewController.m */; };
+		7E4252EF16646C9500741A41 /* de_SettingViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 7E4252EE16646C5600741A41 /* de_SettingViewController.m */; };
+		7E4252F316646D7E00741A41 /* de_ListTableViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 7E4252F216646D7E00741A41 /* de_ListTableViewController.m */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		7E2CB6831665AE6200A5B40D /* EditableTableViewCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = EditableTableViewCell.h; path = Classes/Cells/EditableTableViewCell.h; sourceTree = "<group>"; };
+		7E2CB6841665AE6200A5B40D /* EditableTableViewCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = EditableTableViewCell.m; path = Classes/Cells/EditableTableViewCell.m; sourceTree = "<group>"; };
+		7E2CB6881665AEA700A5B40D /* DogEarObject.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = DogEarObject.h; path = Classes/Objects/DogEarObject.h; sourceTree = "<group>"; };
+		7E2CB6891665AEA700A5B40D /* DogEarObject.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = DogEarObject.m; path = Classes/Objects/DogEarObject.m; sourceTree = "<group>"; };
+		7E2CB68B1665B48000A5B40D /* de_PhotoViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = de_PhotoViewController.h; path = Classes/ViewControllers/de_PhotoViewController.h; sourceTree = "<group>"; };
+		7E2CB68C1665B48000A5B40D /* de_PhotoViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = de_PhotoViewController.m; path = Classes/ViewControllers/de_PhotoViewController.m; sourceTree = "<group>"; };
+		7E2CB6901665B71900A5B40D /* de_DetailViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = de_DetailViewController.h; path = Classes/ViewControllers/de_DetailViewController.h; sourceTree = "<group>"; };
+		7E2CB6911665B71A00A5B40D /* de_DetailViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = de_DetailViewController.m; path = Classes/ViewControllers/de_DetailViewController.m; sourceTree = "<group>"; };
+		7E2CB6931665D2FB00A5B40D /* de_DetailHeaderView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = de_DetailHeaderView.h; path = Classes/Views/de_DetailHeaderView.h; sourceTree = "<group>"; };
+		7E2CB6941665D2FB00A5B40D /* de_DetailHeaderView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = de_DetailHeaderView.m; path = Classes/Views/de_DetailHeaderView.m; sourceTree = "<group>"; };
+		7E2CB6961665D62C00A5B40D /* de_CategoryListViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = de_CategoryListViewController.h; path = Classes/ViewControllers/de_CategoryListViewController.h; sourceTree = "<group>"; };
+		7E2CB6991665D67E00A5B40D /* de_CategoryListViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = de_CategoryListViewController.m; path = Classes/ViewControllers/de_CategoryListViewController.m; sourceTree = "<group>"; };
 		7E42529516645DF400741A41 /* DogEar.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = DogEar.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		7E42529916645DF400741A41 /* UIKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = UIKit.framework; path = System/Library/Frameworks/UIKit.framework; sourceTree = SDKROOT; };
 		7E42529B16645DF400741A41 /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = System/Library/Frameworks/Foundation.framework; sourceTree = SDKROOT; };
@@ -32,6 +74,35 @@
 		7E4252AB16645DF400741A41 /* Default.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = Default.png; sourceTree = "<group>"; };
 		7E4252AD16645DF400741A41 /* Default@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Default@2x.png"; sourceTree = "<group>"; };
 		7E4252AF16645DF400741A41 /* Default-568h@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Default-568h@2x.png"; sourceTree = "<group>"; };
+		7E4252B916645F5800741A41 /* dogear-bg-instructions-568h@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "dogear-bg-instructions-568h@2x.png"; sourceTree = "<group>"; };
+		7E4252BA16645F5800741A41 /* dogear-bg-instructions.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "dogear-bg-instructions.png"; sourceTree = "<group>"; };
+		7E4252BB16645F5800741A41 /* dogear-bg-instructions@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "dogear-bg-instructions@2x.png"; sourceTree = "<group>"; };
+		7E4252BC16645F5800741A41 /* dogear-bg-master-568h@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "dogear-bg-master-568h@2x.png"; sourceTree = "<group>"; };
+		7E4252BD16645F5800741A41 /* dogear-bg-master.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "dogear-bg-master.png"; sourceTree = "<group>"; };
+		7E4252BE16645F5800741A41 /* dogear-bg-master@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "dogear-bg-master@2x.png"; sourceTree = "<group>"; };
+		7E4252BF16645F5800741A41 /* dogear-bg-splash-568h@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "dogear-bg-splash-568h@2x.png"; sourceTree = "<group>"; };
+		7E4252C016645F5800741A41 /* dogear-bg-splash.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "dogear-bg-splash.png"; sourceTree = "<group>"; };
+		7E4252C116645F5800741A41 /* dogear-bg-splash@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "dogear-bg-splash@2x.png"; sourceTree = "<group>"; };
+		7E4252C316645F5800741A41 /* dogear-icon-browse.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "dogear-icon-browse.png"; sourceTree = "<group>"; };
+		7E4252C416645F5800741A41 /* dogear-icon-browse@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "dogear-icon-browse@2x.png"; sourceTree = "<group>"; };
+		7E4252C516645F5800741A41 /* dogear-icon-camera.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "dogear-icon-camera.png"; sourceTree = "<group>"; };
+		7E4252C616645F5800741A41 /* dogear-icon-camera@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "dogear-icon-camera@2x.png"; sourceTree = "<group>"; };
+		7E4252C716645F5800741A41 /* dogear-icon-settings.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "dogear-icon-settings.png"; sourceTree = "<group>"; };
+		7E4252C816645F5800741A41 /* dogear-icon-settings@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "dogear-icon-settings@2x.png"; sourceTree = "<group>"; };
+		7E4252C916645F5800741A41 /* dogear-icon-share.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "dogear-icon-share.png"; sourceTree = "<group>"; };
+		7E4252CA16645F5800741A41 /* dogear-icon-share@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "dogear-icon-share@2x.png"; sourceTree = "<group>"; };
+		7E4252CB16645F5800741A41 /* dogear-icon-trashcan.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "dogear-icon-trashcan.png"; sourceTree = "<group>"; };
+		7E4252CC16645F5800741A41 /* dogear-icon-trashcan@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "dogear-icon-trashcan@2x.png"; sourceTree = "<group>"; };
+		7E4252E416645FCA00741A41 /* de_DefaultViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = de_DefaultViewController.h; path = Classes/ViewControllers/de_DefaultViewController.h; sourceTree = "<group>"; };
+		7E4252E516645FCA00741A41 /* de_DefaultViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = de_DefaultViewController.m; path = Classes/ViewControllers/de_DefaultViewController.m; sourceTree = "<group>"; };
+		7E4252E7166461C600741A41 /* de_MainTabBarController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = de_MainTabBarController.h; path = Classes/ViewControllers/de_MainTabBarController.h; sourceTree = "<group>"; };
+		7E4252E8166461C600741A41 /* de_MainTabBarController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = de_MainTabBarController.m; path = Classes/ViewControllers/de_MainTabBarController.m; sourceTree = "<group>"; };
+		7E4252EA16646AA100741A41 /* de_BrowseTableViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = de_BrowseTableViewController.h; path = Classes/ViewControllers/de_BrowseTableViewController.h; sourceTree = "<group>"; };
+		7E4252EB16646AA100741A41 /* de_BrowseTableViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = de_BrowseTableViewController.m; path = Classes/ViewControllers/de_BrowseTableViewController.m; sourceTree = "<group>"; };
+		7E4252ED16646C5600741A41 /* de_SettingViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = de_SettingViewController.h; path = Classes/ViewControllers/de_SettingViewController.h; sourceTree = "<group>"; };
+		7E4252EE16646C5600741A41 /* de_SettingViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; name = de_SettingViewController.m; path = Classes/ViewControllers/de_SettingViewController.m; sourceTree = "<group>"; };
+		7E4252F116646D7E00741A41 /* de_ListTableViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = de_ListTableViewController.h; path = Classes/ViewControllers/de_ListTableViewController.h; sourceTree = "<group>"; };
+		7E4252F216646D7E00741A41 /* de_ListTableViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = de_ListTableViewController.m; path = Classes/ViewControllers/de_ListTableViewController.m; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -48,6 +119,35 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		7E2CB6871665AE7200A5B40D /* Objects */ = {
+			isa = PBXGroup;
+			children = (
+				7E2CB6881665AEA700A5B40D /* DogEarObject.h */,
+				7E2CB6891665AEA700A5B40D /* DogEarObject.m */,
+			);
+			name = Objects;
+			sourceTree = "<group>";
+		};
+		7E2CB68E1665B49100A5B40D /* ViewControllers */ = {
+			isa = PBXGroup;
+			children = (
+				7E4252E416645FCA00741A41 /* de_DefaultViewController.h */,
+				7E4252E516645FCA00741A41 /* de_DefaultViewController.m */,
+				7E2CB68B1665B48000A5B40D /* de_PhotoViewController.h */,
+				7E2CB68C1665B48000A5B40D /* de_PhotoViewController.m */,
+			);
+			name = ViewControllers;
+			sourceTree = "<group>";
+		};
+		7E2CB68F1665B4B600A5B40D /* TabBarControllers */ = {
+			isa = PBXGroup;
+			children = (
+				7E4252E7166461C600741A41 /* de_MainTabBarController.h */,
+				7E4252E8166461C600741A41 /* de_MainTabBarController.m */,
+			);
+			name = TabBarControllers;
+			sourceTree = "<group>";
+		};
 		7E42528A16645DF400741A41 = {
 			isa = PBXGroup;
 			children = (
@@ -78,6 +178,9 @@
 		7E42529F16645DF400741A41 /* DogEar */ = {
 			isa = PBXGroup;
 			children = (
+				7E4252E016645F6A00741A41 /* Categories */,
+				7E4252B716645F4400741A41 /* Assets */,
+				7E4252B616645F3600741A41 /* Classes */,
 				7E4252A816645DF400741A41 /* AppDelegate.h */,
 				7E4252A916645DF400741A41 /* AppDelegate.m */,
 				7E4252A016645DF400741A41 /* Supporting Files */,
@@ -97,6 +200,113 @@
 				7E4252AF16645DF400741A41 /* Default-568h@2x.png */,
 			);
 			name = "Supporting Files";
+			sourceTree = "<group>";
+		};
+		7E4252B616645F3600741A41 /* Classes */ = {
+			isa = PBXGroup;
+			children = (
+				7E2CB6871665AE7200A5B40D /* Objects */,
+				7E4252E316645F8900741A41 /* Cells */,
+				7E4252E216645F7E00741A41 /* Views */,
+				7E4252E116645F7300741A41 /* Controllers */,
+			);
+			name = Classes;
+			sourceTree = "<group>";
+		};
+		7E4252B716645F4400741A41 /* Assets */ = {
+			isa = PBXGroup;
+			children = (
+				7E4252B816645F5800741A41 /* Backgrounds */,
+				7E4252C216645F5800741A41 /* Icons */,
+			);
+			name = Assets;
+			sourceTree = "<group>";
+		};
+		7E4252B816645F5800741A41 /* Backgrounds */ = {
+			isa = PBXGroup;
+			children = (
+				7E4252B916645F5800741A41 /* dogear-bg-instructions-568h@2x.png */,
+				7E4252BA16645F5800741A41 /* dogear-bg-instructions.png */,
+				7E4252BB16645F5800741A41 /* dogear-bg-instructions@2x.png */,
+				7E4252BC16645F5800741A41 /* dogear-bg-master-568h@2x.png */,
+				7E4252BD16645F5800741A41 /* dogear-bg-master.png */,
+				7E4252BE16645F5800741A41 /* dogear-bg-master@2x.png */,
+				7E4252BF16645F5800741A41 /* dogear-bg-splash-568h@2x.png */,
+				7E4252C016645F5800741A41 /* dogear-bg-splash.png */,
+				7E4252C116645F5800741A41 /* dogear-bg-splash@2x.png */,
+			);
+			name = Backgrounds;
+			path = Assets/Backgrounds;
+			sourceTree = "<group>";
+		};
+		7E4252C216645F5800741A41 /* Icons */ = {
+			isa = PBXGroup;
+			children = (
+				7E4252C316645F5800741A41 /* dogear-icon-browse.png */,
+				7E4252C416645F5800741A41 /* dogear-icon-browse@2x.png */,
+				7E4252C516645F5800741A41 /* dogear-icon-camera.png */,
+				7E4252C616645F5800741A41 /* dogear-icon-camera@2x.png */,
+				7E4252C716645F5800741A41 /* dogear-icon-settings.png */,
+				7E4252C816645F5800741A41 /* dogear-icon-settings@2x.png */,
+				7E4252C916645F5800741A41 /* dogear-icon-share.png */,
+				7E4252CA16645F5800741A41 /* dogear-icon-share@2x.png */,
+				7E4252CB16645F5800741A41 /* dogear-icon-trashcan.png */,
+				7E4252CC16645F5800741A41 /* dogear-icon-trashcan@2x.png */,
+			);
+			name = Icons;
+			path = Assets/Icons;
+			sourceTree = "<group>";
+		};
+		7E4252E016645F6A00741A41 /* Categories */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			name = Categories;
+			sourceTree = "<group>";
+		};
+		7E4252E116645F7300741A41 /* Controllers */ = {
+			isa = PBXGroup;
+			children = (
+				7E2CB68F1665B4B600A5B40D /* TabBarControllers */,
+				7E2CB68E1665B49100A5B40D /* ViewControllers */,
+				7E4252F016646CBE00741A41 /* TableViewControllers */,
+			);
+			name = Controllers;
+			sourceTree = "<group>";
+		};
+		7E4252E216645F7E00741A41 /* Views */ = {
+			isa = PBXGroup;
+			children = (
+				7E2CB6931665D2FB00A5B40D /* de_DetailHeaderView.h */,
+				7E2CB6941665D2FB00A5B40D /* de_DetailHeaderView.m */,
+			);
+			name = Views;
+			sourceTree = "<group>";
+		};
+		7E4252E316645F8900741A41 /* Cells */ = {
+			isa = PBXGroup;
+			children = (
+				7E2CB6831665AE6200A5B40D /* EditableTableViewCell.h */,
+				7E2CB6841665AE6200A5B40D /* EditableTableViewCell.m */,
+			);
+			name = Cells;
+			sourceTree = "<group>";
+		};
+		7E4252F016646CBE00741A41 /* TableViewControllers */ = {
+			isa = PBXGroup;
+			children = (
+				7E2CB6991665D67E00A5B40D /* de_CategoryListViewController.m */,
+				7E2CB6961665D62C00A5B40D /* de_CategoryListViewController.h */,
+				7E4252F116646D7E00741A41 /* de_ListTableViewController.h */,
+				7E4252F216646D7E00741A41 /* de_ListTableViewController.m */,
+				7E4252EA16646AA100741A41 /* de_BrowseTableViewController.h */,
+				7E4252EB16646AA100741A41 /* de_BrowseTableViewController.m */,
+				7E4252ED16646C5600741A41 /* de_SettingViewController.h */,
+				7E4252EE16646C5600741A41 /* de_SettingViewController.m */,
+				7E2CB6901665B71900A5B40D /* de_DetailViewController.h */,
+				7E2CB6911665B71A00A5B40D /* de_DetailViewController.m */,
+			);
+			name = TableViewControllers;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -154,6 +364,25 @@
 				7E4252AC16645DF400741A41 /* Default.png in Resources */,
 				7E4252AE16645DF400741A41 /* Default@2x.png in Resources */,
 				7E4252B016645DF500741A41 /* Default-568h@2x.png in Resources */,
+				7E4252CD16645F5800741A41 /* dogear-bg-instructions-568h@2x.png in Resources */,
+				7E4252CE16645F5800741A41 /* dogear-bg-instructions.png in Resources */,
+				7E4252CF16645F5800741A41 /* dogear-bg-instructions@2x.png in Resources */,
+				7E4252D016645F5800741A41 /* dogear-bg-master-568h@2x.png in Resources */,
+				7E4252D116645F5800741A41 /* dogear-bg-master.png in Resources */,
+				7E4252D216645F5800741A41 /* dogear-bg-master@2x.png in Resources */,
+				7E4252D316645F5800741A41 /* dogear-bg-splash-568h@2x.png in Resources */,
+				7E4252D416645F5800741A41 /* dogear-bg-splash.png in Resources */,
+				7E4252D516645F5800741A41 /* dogear-bg-splash@2x.png in Resources */,
+				7E4252D616645F5800741A41 /* dogear-icon-browse.png in Resources */,
+				7E4252D716645F5800741A41 /* dogear-icon-browse@2x.png in Resources */,
+				7E4252D816645F5800741A41 /* dogear-icon-camera.png in Resources */,
+				7E4252D916645F5800741A41 /* dogear-icon-camera@2x.png in Resources */,
+				7E4252DA16645F5800741A41 /* dogear-icon-settings.png in Resources */,
+				7E4252DB16645F5800741A41 /* dogear-icon-settings@2x.png in Resources */,
+				7E4252DC16645F5800741A41 /* dogear-icon-share.png in Resources */,
+				7E4252DD16645F5800741A41 /* dogear-icon-share@2x.png in Resources */,
+				7E4252DE16645F5800741A41 /* dogear-icon-trashcan.png in Resources */,
+				7E4252DF16645F5800741A41 /* dogear-icon-trashcan@2x.png in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -164,8 +393,19 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				7E4252EF16646C9500741A41 /* de_SettingViewController.m in Sources */,
 				7E4252A616645DF400741A41 /* main.m in Sources */,
 				7E4252AA16645DF400741A41 /* AppDelegate.m in Sources */,
+				7E4252E616645FCA00741A41 /* de_DefaultViewController.m in Sources */,
+				7E4252E9166461C600741A41 /* de_MainTabBarController.m in Sources */,
+				7E4252EC16646AA100741A41 /* de_BrowseTableViewController.m in Sources */,
+				7E4252F316646D7E00741A41 /* de_ListTableViewController.m in Sources */,
+				7E2CB6851665AE6200A5B40D /* EditableTableViewCell.m in Sources */,
+				7E2CB68A1665AEA700A5B40D /* DogEarObject.m in Sources */,
+				7E2CB68D1665B48100A5B40D /* de_PhotoViewController.m in Sources */,
+				7E2CB6921665B71A00A5B40D /* de_DetailViewController.m in Sources */,
+				7E2CB6951665D2FB00A5B40D /* de_DetailHeaderView.m in Sources */,
+				7E2CB69A1665D67F00A5B40D /* de_CategoryListViewController.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -235,10 +475,13 @@
 		7E4252B416645DF500741A41 /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				ARCHS = armv7;
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "DogEar/DogEar-Prefix.pch";
 				INFOPLIST_FILE = "DogEar/DogEar-Info.plist";
+				IPHONEOS_DEPLOYMENT_TARGET = 6.0;
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				VALID_ARCHS = armv7;
 				WRAPPER_EXTENSION = app;
 			};
 			name = Debug;
@@ -246,10 +489,13 @@
 		7E4252B516645DF500741A41 /* Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				ARCHS = armv7;
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "DogEar/DogEar-Prefix.pch";
 				INFOPLIST_FILE = "DogEar/DogEar-Info.plist";
+				IPHONEOS_DEPLOYMENT_TARGET = 6.0;
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				VALID_ARCHS = armv7;
 				WRAPPER_EXTENSION = app;
 			};
 			name = Release;
@@ -273,6 +519,7 @@
 				7E4252B516645DF500741A41 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
 	};
