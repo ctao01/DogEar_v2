@@ -209,7 +209,7 @@
     {
         UITableViewCell* uncheckCell =[tableView  cellForRowAtIndexPath:self.checkedIndexPath];
         uncheckCell.accessoryType =UITableViewCellAccessoryNone;
-        [vc.dogear setCategory:nil];
+        [vc.dogEar setCategory:nil];
     }
     if([self.checkedIndexPath isEqual:indexPath])
         self.checkedIndexPath = nil;
@@ -218,7 +218,7 @@
         UITableViewCell* cell =[tableView cellForRowAtIndexPath:indexPath];
         cell.accessoryType =UITableViewCellAccessoryCheckmark;
         self.checkedIndexPath = indexPath;
-        [vc.dogear setCategory:cell.textLabel.text];
+        [vc.dogEar setCategory:cell.textLabel.text];
     }
 
 }

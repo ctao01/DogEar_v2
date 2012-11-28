@@ -147,10 +147,9 @@
     UIImage * originImage = [info objectForKey:@"UIImagePickerControllerOriginalImage"];
     [self dismissViewControllerAnimated:YES completion:^{
         
-        NSLog(@"class:%@",self.navigationController.topViewController);
         UINavigationController * nc = [self.viewControllers objectAtIndex:1];
         de_PhotoViewController * vc = [[de_PhotoViewController alloc]initWithImage:originImage toolBarType:BKToolBarTypeEditing];
-        [nc pushViewController:vc animated:NO];
+        [nc pushViewController:vc animated:YES];
         
     }];
     

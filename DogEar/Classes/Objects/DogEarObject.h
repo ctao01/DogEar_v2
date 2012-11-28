@@ -12,8 +12,9 @@
 
 @property (nonatomic , strong) NSString * title;
 @property (nonatomic , strong) NSString * note;
-
 @property (nonatomic , strong) NSString * category;
+@property (nonatomic , strong) NSString * imagePath;
+
 @property (nonatomic , strong) NSDate * reminderDate;
 @property (nonatomic , strong) NSDate * insertedDate;
 

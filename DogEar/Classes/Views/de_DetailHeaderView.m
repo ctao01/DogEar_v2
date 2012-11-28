@@ -10,7 +10,9 @@
 #import "de_DetailViewController.h"
 
 @interface de_DetailHeaderView ()
-
+{
+    UIImageView * imageView;
+}
 @property (nonatomic , retain) UITableView * table;
 
 -(UITextField*) makeTextField: (NSString*)text placeholder: (NSString*)placeholder tag:(NSInteger)tag;
@@ -18,8 +20,11 @@
 @end
 
 @implementation de_DetailHeaderView
+
 @synthesize vcParent = _vcParent;
-@synthesize allowEditing = _allowEditing;
+//@synthesize allowEditing = _allowEditing;
+@synthesize thumbImage = _thumbImage;
+@synthesize dogEar = _dogEar;
 
 @synthesize table = _table;
 
@@ -28,7 +33,7 @@
 {
     self = [super initWithFrame:frame];
     if (self) {
-        UIImageView * imageView = [[UIImageView alloc]initWithFrame:CGRectMake(0.0f, 0.0f, 100.0f, 100.0f)];
+        imageView = [[UIImageView alloc]initWithFrame:CGRectMake(0.0f, 0.0f, 100.0f, 100.0f)];
         imageView.backgroundColor = [UIColor blackColor];
         imageView.frame = CGRectOffset(imageView.frame, 10.0f, 5.0f);
         [self addSubview:imageView];
@@ -49,7 +54,13 @@
 - (void) layoutSubviews
 {
     [super layoutSubviews];
-    
+//    if (self.dogEar == nil)[imageView setImage:self.thumbImage];
+//    else
+//    {
+//        NSData *pngData = [NSData dataWithContentsOfFile:self.dogEar.imagePath];
+//        [imageView setImage:[UIImage imageWithData:pngData]];
+//    }
+    imageView.image = self.thumbImage;
 }
 
 #pragma mark - 
@@ -64,7 +75,7 @@
 	tf.autocapitalizationType = UITextAutocapitalizationTypeNone;
 	tf.adjustsFontSizeToFitWidth = YES;
 	tf.textColor = [UIColor colorWithRed:56.0f/255.0f green:84.0f/255.0f blue:135.0f/255.0f alpha:1.0f];
-    if (!self.allowEditing)
+    if (self.dogEar == nil)
     {
         [tf setEnabled:NO];
         tf.userInteractionEnabled = NO;
@@ -103,7 +114,9 @@
     {
         cell.textLabel.text = @"Title";
         cell.tag = 1111;
-        textField = [self makeTextField:@"" placeholder:@"Title" tag:1001];
+        textField = [self makeTextField:self.dogEar?self.dogEar.title:@""
+                            placeholder:self.dogEar?@"":@"Title"
+                                    tag:1001];
         textField.returnKeyType = UIReturnKeyNext;
         [cell addSubview:textField];
     }
@@ -111,7 +124,9 @@
     {
         cell.textLabel.text = @"Notes";
         cell.tag = 2222;
-        textField = [self makeTextField:@"" placeholder:@"Notes" tag:1002];
+        textField = [self makeTextField:self.dogEar?self.dogEar.note:@""
+                            placeholder:self.dogEar?@"":@"Notes"
+                                    tag:1002];
         textField.returnKeyType = UIReturnKeyDone;
         [cell addSubview:textField];
     }
@@ -147,10 +162,10 @@
     de_DetailViewController * vc = (de_DetailViewController*)self.vcParent;
     
     if ([textField.placeholder isEqualToString:@"Title"])
-        [vc.dogear setTitle:textField.text];
+        [vc.dogEar setTitle:textField.text];
     
     else if ([textField.placeholder isEqualToString:@"Notes"])
-        [vc.dogear setNote:textField.text];
+        [vc.dogEar setNote:textField.text];
 }
 
 - (BOOL)textFieldShouldReturn:(UITextField *)textField{

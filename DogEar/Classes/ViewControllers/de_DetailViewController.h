@@ -16,5 +16,10 @@ typedef enum {
 
 @interface de_DetailViewController : UITableViewController
 @property (nonatomic) DogEarAction action;
-@property (nonatomic , strong ) DogEarObject * dogear;
+
+@property (nonatomic , strong ) DogEarObject * dogEar; // JT-Note: new dog ear
+@property (nonatomic , strong ) DogEarObject * existingDogEar;
+
+- (id) initWithStyle:(UITableViewStyle)style andImage:(UIImage*)image;
+
 @end

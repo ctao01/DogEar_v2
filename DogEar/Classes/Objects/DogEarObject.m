@@ -24,6 +24,7 @@
             @"title",
             @"note",
             @"category",
+            @"imagePath",
             @"reminderDate",
             @"insertedDate",
             @"flagged",
@@ -37,6 +38,7 @@
     [encoder encodeObject:self.title forKey:@"title"];
     [encoder encodeObject:self.note forKey:@"note"];
     [encoder encodeObject:self.category forKey:@"category"];
+    [encoder encodeObject:self.imagePath forKey:@"imagePath"];
     [encoder encodeObject:self.reminderDate forKey:@"reminder"];
     [encoder encodeObject:self.insertedDate forKey:@"insertedDate"];
     [encoder encodeObject:self.flagged forKey:@"flagged"];
@@ -51,6 +53,7 @@
         self.title = [decoder decodeObjectForKey:@"title"];
         self.note = [decoder decodeObjectForKey:@"note"];
         self.category = [decoder decodeObjectForKey:@"category"];
+        self.imagePath = [decoder decodeObjectForKey:@"imagePath"];
         self.reminderDate = [decoder decodeObjectForKey:@"reminder"];
         self.insertedDate = [decoder decodeObjectForKey:@"insertedDate"];
         self.flagged = [decoder decodeObjectForKey:@"flagged"];

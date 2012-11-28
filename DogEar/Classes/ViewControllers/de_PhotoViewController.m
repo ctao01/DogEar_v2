@@ -11,13 +11,13 @@
 #import "de_DetailViewController.h"
 
 #define IPHONE_NAVIGATION_BAR_HEIGHT 44
-#define IPHONE_TOOL_BAR_HEIGHT 44
+#define IPHONE_TOOL_BAR_HEIGHT 45
 #define IPHONE_STATUS_BAR_HEIGHT 20
 
 @interface de_PhotoViewController ()
 
 @property (nonatomic) BKToolBarType bkToolBarType;
-
+@property (nonatomic , retain) UIImage * photo;
 @end
 
 @implementation de_PhotoViewController
@@ -37,51 +37,8 @@
     if (self)
     {
         self.bkToolBarType = toolBarType;
-        
+        self.photo = image;
         self.view.backgroundColor = [UIColor blackColor];
-        
-        CGRect bounds = [[UIScreen mainScreen]bounds];
-        
-        UIImageView * imageView = [[UIImageView alloc]initWithImage:image];
-        imageView.tag = 222;
-        imageView.contentMode = UIViewContentModeScaleAspectFit;
-        imageView.frame = self.view.frame;
-        [self.view addSubview:imageView];
-        
-        NSInteger cameraActiveBarHeight;
-        cameraActiveBarHeight = 68.0f;
-        //        if (bounds.size.height == 568.0f) cameraActiveBarHeight = 68.0f;
-        //        else cameraActiveBarHeight = 50.0f;
-        
-        imageView.frame = CGRectOffset(imageView.frame, 0.0f, - cameraActiveBarHeight);
-        
-        UIToolbar * toolBar = [[UIToolbar alloc]initWithFrame:CGRectMake(0.0f, bounds.size.height - cameraActiveBarHeight - IPHONE_TOOL_BAR_HEIGHT, bounds.size.width, IPHONE_TOOL_BAR_HEIGHT)];
-        toolBar.tag = 333;
-        toolBar.barStyle = UIBarStyleBlackOpaque;
-        UIBarButtonItem * spaceItme = [[UIBarButtonItem alloc]initWithBarButtonSystemItem:UIBarButtonSystemItemFlexibleSpace target:nil action:nil];
-        
-        if (toolBarType == BKToolBarTypeEditing)
-        {
-            UIBarButtonItem * rotateItem = [[UIBarButtonItem alloc]initWithTitle:@"Rotate" style:UIBarButtonItemStylePlain target:self action:@selector(rotatePhoto)];
-            UIBarButtonItem * enhanceItem = [[UIBarButtonItem alloc]initWithTitle:@"Enhance" style:UIBarButtonItemStylePlain target:self action:@selector(enhancePhoto)];
-            UIBarButtonItem * cropItem = [[UIBarButtonItem alloc]initWithTitle:@"Crop" style:UIBarButtonItemStylePlain target:self action:@selector(cropPhoto)];
-            
-            [toolBar setItems:[NSArray arrayWithObjects:rotateItem, spaceItme, enhanceItem, spaceItme, cropItem, nil]];
-        }
-        
-        else if (toolBarType == BKToolBarTypeViewing)
-        {
-            UIBarButtonItem * shareItem = [[UIBarButtonItem alloc]initWithImage:[UIImage imageNamed:@"dogear-icon-share"] style:UIBarButtonItemStylePlain target:self action:@selector(shareThePhoto)];
-            de_MainTabBarController * tbc = (de_MainTabBarController*)self.tabBarController;
-            
-            UIBarButtonItem * cameraItem = [[UIBarButtonItem alloc]initWithImage:[UIImage imageNamed:@"dogear-icon-camera"] style:UIBarButtonItemStyleDone target:tbc action:@selector(activateCamera)];
-            
-            UIBarButtonItem * trashItem = [[UIBarButtonItem alloc]initWithImage:[UIImage imageNamed:@"dogear-icon-trashcan"] style:UIBarButtonItemStylePlain target:self action:@selector(deleteThePhoto)];
-            
-            [toolBar setItems:[NSArray arrayWithObjects:shareItem, spaceItme, cameraItem, spaceItme, trashItem, nil]];
-        }
-        
-        [self.view addSubview:toolBar];
     }
     return self;
 }
@@ -89,8 +46,32 @@
 - (void)viewDidLoad
 {
     [super viewDidLoad];
+    
+    CGRect bounds = [[UIScreen mainScreen]bounds];
+    
+    UIImageView * imageView = [[UIImageView alloc]initWithFrame:self.view.frame];
+    imageView.tag = 222;
+    imageView.contentMode = UIViewContentModeScaleAspectFit;
+    [self.view addSubview:imageView];
+    
+    NSInteger cameraActiveBarHeight;
+    cameraActiveBarHeight = 68.0f;
+    
+    imageView.frame = CGRectOffset(imageView.frame, 0.0f, - cameraActiveBarHeight);
+    
+    UIToolbar * toolBar = [[UIToolbar alloc]initWithFrame:CGRectMake(0.0f, bounds.size.height - cameraActiveBarHeight - IPHONE_TOOL_BAR_HEIGHT, bounds.size.width, IPHONE_TOOL_BAR_HEIGHT)];
+    toolBar.tag = 333;
+    toolBar.barStyle = UIBarStyleBlackOpaque;
+    UIBarButtonItem * spaceItme = [[UIBarButtonItem alloc]initWithBarButtonSystemItem:UIBarButtonSystemItemFlexibleSpace target:nil action:nil];
+    
 	if (self.bkToolBarType == BKToolBarTypeEditing)
     {
+        UIBarButtonItem * rotateItem = [[UIBarButtonItem alloc]initWithTitle:@"Rotate" style:UIBarButtonItemStylePlain target:self action:@selector(rotatePhoto)];
+        UIBarButtonItem * enhanceItem = [[UIBarButtonItem alloc]initWithTitle:@"Enhance" style:UIBarButtonItemStylePlain target:self action:@selector(enhancePhoto)];
+        UIBarButtonItem * cropItem = [[UIBarButtonItem alloc]initWithTitle:@"Crop" style:UIBarButtonItemStylePlain target:self action:@selector(cropPhoto)];
+        
+        [toolBar setItems:[NSArray arrayWithObjects:rotateItem, spaceItme, enhanceItem, spaceItme, cropItem, nil]];
+        
         UIBarButtonItem * cancelItem = [[UIBarButtonItem alloc]initWithTitle:@"Cancel" style:UIBarButtonItemStyleBordered target:self action:@selector(retakePhoto)];
         self.navigationItem.leftBarButtonItem = cancelItem;
         
@@ -99,12 +80,23 @@
     }
     else if (self.bkToolBarType == BKToolBarTypeViewing)
     {
+        UIBarButtonItem * shareItem = [[UIBarButtonItem alloc]initWithImage:[UIImage imageNamed:@"dogear-icon-share"] style:UIBarButtonItemStylePlain target:self action:@selector(shareThePhoto)];
+        de_MainTabBarController * tbc = (de_MainTabBarController*)self.tabBarController;
+        
+        UIBarButtonItem * cameraItem = [[UIBarButtonItem alloc]initWithImage:[UIImage imageNamed:@"dogear-icon-camera"] style:UIBarButtonItemStyleDone target:tbc action:@selector(activateCamera)];
+        
+        UIBarButtonItem * trashItem = [[UIBarButtonItem alloc]initWithImage:[UIImage imageNamed:@"dogear-icon-trashcan"] style:UIBarButtonItemStylePlain target:self action:@selector(deleteThePhoto)];
+        
+        [toolBar setItems:[NSArray arrayWithObjects:shareItem, spaceItme, cameraItem, spaceItme, trashItem, nil]];
+        
         UIBarButtonItem * cancelItem = [[UIBarButtonItem alloc]initWithTitle:@"Cancel" style:UIBarButtonItemStyleBordered target:self action:@selector(cancel)];
         self.navigationItem.leftBarButtonItem = cancelItem;
         
         UIBarButtonItem * detailItem = [[UIBarButtonItem alloc]initWithTitle:@"Detail" style:UIBarButtonItemStyleBordered target:self action:@selector(moreDetail)];
         self.navigationItem.rightBarButtonItem = detailItem;
     }
+    [self.view addSubview:toolBar];
+
 }
 
 - (void)didReceiveMemoryWarning
@@ -127,6 +119,15 @@
     [tbc makeTabBarHidden:NO];
 }
 
+- (void) viewWillLayoutSubviews
+{
+    [super viewWillLayoutSubviews];
+    UIImageView * imageView = (UIImageView*)[self.view viewWithTag:222];
+    imageView.image = self.photo;
+    imageView.frame = CGRectMake(imageView.frame.origin.x, imageView.frame.origin.y, self.view.frame.size.width, self.view.frame.size.height);
+    
+}
+
 #pragma mark - UIBarButtonItem (UINavigationBar)
 
 - (void) retakePhoto
@@ -137,7 +138,7 @@
 
 - (void) storeTheImage
 {
-    de_DetailViewController * vc = [[de_DetailViewController alloc]initWithStyle:UITableViewStyleGrouped];
+    de_DetailViewController * vc = [[de_DetailViewController alloc]initWithStyle:UITableViewStyleGrouped andImage:self.photo];
     [vc setAction:DogEarActionEditing];
     [self.navigationController pushViewController:vc animated:YES];
     

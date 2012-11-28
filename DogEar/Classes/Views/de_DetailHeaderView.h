@@ -7,10 +7,15 @@
 //
 
 #import <UIKit/UIKit.h>
+#import "DogEarObject.h"
 
 @interface de_DetailHeaderView : UIView <UITableViewDataSource, UITableViewDelegate , UITextFieldDelegate >
 
-@property (nonatomic , retain) UIViewController * vcParent;
-@property ( nonatomic ) BOOL allowEditing;
+@property (nonatomic , strong) UIViewController * vcParent;
+//@property (nonatomic ) BOOL allowEditing;
+
+@property (nonatomic , assign) UIImage * thumbImage;
+@property (nonatomic , strong) DogEarObject * dogEar;
+
 
 @end

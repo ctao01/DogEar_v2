@@ -40,9 +40,15 @@
     
     self.tableView.tableHeaderView = view;
     
-    //JT- TODO: Array Sort By Date
     NSSortDescriptor *sortDescriptor = [[NSSortDescriptor alloc] initWithKey:@"insertedDate" ascending:FALSE];
     [self.collections sortUsingDescriptors:[NSArray arrayWithObject:sortDescriptor]];
+    
+}
+
+- (void) viewDidAppear:(BOOL)animated
+{
+    [super viewDidAppear:animated];
+    [self.tableView reloadData];
 }
 
 - (void)didReceiveMemoryWarning
@@ -57,7 +63,11 @@
 {
     switch (control.selectedSegmentIndex) {
         case 0:
-            NSLog(@"sort by time");
+        {
+            //JT- TODO: Array Sort By Date
+            NSSortDescriptor *sortDescriptor = [[NSSortDescriptor alloc] initWithKey:@"insertedDate" ascending:FALSE];
+            [self.collections sortUsingDescriptors:[NSArray arrayWithObject:sortDescriptor]];
+        }
             break;
         case 1:
             NSLog(@"sort by important");
@@ -66,6 +76,7 @@
         default:
             break;
     }
+    [self.tableView reloadData];
 }
 
 #pragma mark - Table View Data Source
@@ -90,7 +101,7 @@
         if (cell == nil) cell = [[UITableViewCell alloc]initWithStyle:UITableViewCellStyleSubtitle reuseIdentifier:CellIdentifier];
     NSDictionary * dogEar = (NSDictionary*)[self.collections objectAtIndex:indexPath.row];
     cell.textLabel.text = [dogEar objectForKey:@"title"];
-    
+    cell.detailTextLabel.text = [NSString mediumStyleDateAndShortStyleTimeWithDate:[dogEar objectForKey:@"insertedDate"]];
     // Configure the cell...
     
     return cell;

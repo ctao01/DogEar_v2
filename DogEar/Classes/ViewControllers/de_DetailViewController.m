@@ -11,37 +11,55 @@
 #import "de_CategoryListViewController.h"
 
 @interface de_DetailViewController ()
-@property (nonatomic) BOOL isEditing;
+@property (nonatomic) BOOL isEditing; 
+@property (nonatomic ,retain) UIImage * image;
+
 @end
 
 @implementation de_DetailViewController
 @synthesize action = _action;
 @synthesize isEditing = _isEditing;
-@synthesize dogear = _dogear;
+@synthesize image = _image;
+
+@synthesize dogEar = _dogEar;
+@synthesize existingDogEar = _existingDogEar;
 
 - (id)initWithStyle:(UITableViewStyle)style
 {
-    self = [super initWithStyle:style];
-    if (self) {
-        // Custom initialization
-    }
+    self = [super initWithStyle:UITableViewStyleGrouped];
+    return self;
+}
+- (id) initWithStyle:(UITableViewStyle)style andImage:(UIImage*)image
+{
+    self = [self initWithStyle:style];
+    if (self)
+        self.image = image;
+    
     return self;
 }
 
 - (void)viewDidLoad
 {
     [super viewDidLoad];
-    
-    self.dogear = [DogEarObject new];
-
+        
     CGRect bounds = [[UIScreen mainScreen]bounds];
     de_DetailHeaderView * headerView = [[de_DetailHeaderView alloc]initWithFrame:CGRectMake(0.0f, 0.0f, bounds.size.width, 110.0f)];
     headerView.center = CGPointMake(self.view.center.x, headerView.center.y);
     headerView.vcParent = self;
-    if (self.action == DogEarActionEditing) headerView.allowEditing = YES;
-    else if (self.action == DogEarActionViewing) headerView.allowEditing = NO;
+    if (!self.existingDogEar)
+    {
+        headerView.dogEar = nil;
+        headerView.thumbImage = self.image;
+    }
+    else headerView.dogEar = self.existingDogEar;
+    
+//    if (self.action == DogEarActionEditing) headerView.allowEditing = YES;
+//    else if (self.action == DogEarActionViewing) headerView.allowEditing = NO;
     
     self.tableView.tableHeaderView = headerView;
+    
+    if(!self.existingDogEar) self.dogEar = [DogEarObject new];
+    else self.dogEar = self.existingDogEar;
 }
 
 - (void) viewWillAppear:(BOOL)animated
@@ -87,11 +105,16 @@
 
 - (void) edit:(id)sender
 {
+    NSString * keyString = self.dogEar.category;
+    NSData * data = [[[NSUserDefaults standardUserDefaults]objectForKey:@"BKDataCollections"] objectForKey:keyString];
+    NSMutableArray * decodedCollections = [NSMutableArray arrayWithArray:[NSKeyedUnarchiver unarchiveObjectWithData: data]];
+    
     if (self.isEditing)
     {
         self.tableView.userInteractionEnabled = NO;
-
         //JT-TODO: Done Feature
+        [decodedCollections addObject:self.dogEar];
+
         
         [self.navigationItem.rightBarButtonItem setTitle:@"Edit"];
         [self.navigationItem.rightBarButtonItem setStyle:UIBarButtonItemStylePlain];
@@ -102,23 +125,53 @@
     }
     else
     {
+        //JT:TODO - remove dogEar from Array
+        [decodedCollections removeObject:self.existingDogEar];
+        
         self.tableView.userInteractionEnabled = YES;
-
         
         [self.navigationItem.rightBarButtonItem setTitle:@"Done"];
         [self.navigationItem.rightBarButtonItem setStyle:UIBarButtonItemStyleDone];
         
         UIBarButtonItem * cancelItem = [[UIBarButtonItem alloc]initWithBarButtonSystemItem:UIBarButtonSystemItemCancel target:self action:@selector(cancelEditing)];
         self.navigationItem.leftBarButtonItem = cancelItem;
-        
-        self.isEditing = YES;
+        self.isEditing = YES; 
     }
+    NSData * encodedObjects = [NSKeyedArchiver archivedDataWithRootObject:decodedCollections];
+    NSMutableDictionary * dict = [[[NSUserDefaults standardUserDefaults]objectForKey:@"BKDataCollections"] mutableCopy];
+    [dict setObject:encodedObjects forKey:keyString];
+    [[NSUserDefaults standardUserDefaults] synchronize];
+
 }
 
-#pragma mark - 
+#pragma mark -
 
 - (void) addDogEar
 {
+    NSData *pngData = UIImagePNGRepresentation(self.image);
+    [pngData writeToFile:[NSString imagePathWithFileName:self.dogEar.title] atomically:YES];
+    [self.dogEar setImagePath:[NSString imagePathWithFileName:self.dogEar.title]];
+    
+    [self.dogEar setInsertedDate:[NSDate date]];
+    
+    NSIndexPath * indexPath = [NSIndexPath indexPathForRow:0 inSection:0];
+    UITableViewCell * cell = [self.tableView cellForRowAtIndexPath:indexPath];
+    NSArray * categories = [[NSUserDefaults standardUserDefaults]objectForKey:@"BKCategory"];
+    
+    NSDictionary * dict = [[[NSUserDefaults standardUserDefaults]objectForKey:@"BKDataCollections"] mutableCopy];
+    
+    NSString * key = [categories objectAtIndex:[categories indexOfObject:cell.detailTextLabel.text]];
+    NSMutableArray * selectedObjects = [NSMutableArray arrayWithArray:[NSKeyedUnarchiver unarchiveObjectWithData:[dict objectForKey:key]]];
+    NSLog(@"%@:%@",key,selectedObjects);
+    [selectedObjects addObject:self.dogEar];
+    
+    NSData * encodedObjects = [NSKeyedArchiver archivedDataWithRootObject:selectedObjects];
+    [dict setValue:encodedObjects forKey:key];
+    
+    [[NSUserDefaults standardUserDefaults]setObject:dict forKey:@"BKDataCollections"];
+    [[NSUserDefaults standardUserDefaults] synchronize];
+    
+
     if (self.tabBarController.selectedIndex == 0)[self.navigationController popToRootViewControllerAnimated:YES];
     else [self.tabBarController setSelectedIndex:0];
 }
