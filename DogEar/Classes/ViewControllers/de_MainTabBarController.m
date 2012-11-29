@@ -41,6 +41,7 @@
     
     UINavigationController * ncDECamera = [[UINavigationController alloc]init];
     UITabBarItem * DECameraBtn = [[UITabBarItem alloc]initWithTitle:@"Camera" image:[UIImage imageNamed:@"dogear-icon-camera"] tag:1];
+    ncDECamera.view.backgroundColor = [UIColor blackColor];
     [ncDECamera setTabBarItem:DECameraBtn];
     
     

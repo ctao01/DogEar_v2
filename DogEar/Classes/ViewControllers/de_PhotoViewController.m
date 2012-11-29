@@ -21,7 +21,8 @@
 @end
 
 @implementation de_PhotoViewController
-
+@synthesize photo = _photo;
+@synthesize existingDogEar = _existingDogEar;
 - (id)init
 {
     self = [super init];
@@ -140,6 +141,7 @@
 {
     de_DetailViewController * vc = [[de_DetailViewController alloc]initWithStyle:UITableViewStyleGrouped andImage:self.photo];
     [vc setAction:DogEarActionEditing];
+    vc.existingDogEar = nil;
     [self.navigationController pushViewController:vc animated:YES];
     
 }
@@ -153,6 +155,7 @@
 {
     de_DetailViewController * vc = [[de_DetailViewController alloc]initWithStyle:UITableViewStyleGrouped];
     [vc setAction:DogEarActionViewing];
+    vc.existingDogEar = self.existingDogEar;
     [self.navigationController pushViewController:vc animated:YES];
 
 }

@@ -8,7 +8,10 @@
 
 #import "de_DetailViewController.h"
 #import "de_DetailHeaderView.h"
+
 #import "de_CategoryListViewController.h"
+#import "de_ReminderViewController.h"
+#import "de_FlagViewController.h"
 
 @interface de_DetailViewController ()
 @property (nonatomic) BOOL isEditing; 
@@ -41,12 +44,15 @@
 - (void)viewDidLoad
 {
     [super viewDidLoad];
+    
+    UIImageView * bgImage = [[UIImageView alloc]initWithImage:[UIImage imageNamed:@"dogear-bg-master"]];
+    self.tableView.backgroundView = bgImage;
         
     CGRect bounds = [[UIScreen mainScreen]bounds];
     de_DetailHeaderView * headerView = [[de_DetailHeaderView alloc]initWithFrame:CGRectMake(0.0f, 0.0f, bounds.size.width, 110.0f)];
     headerView.center = CGPointMake(self.view.center.x, headerView.center.y);
     headerView.vcParent = self;
-    if (!self.existingDogEar)
+    if (self.existingDogEar == nil)
     {
         headerView.dogEar = nil;
         headerView.thumbImage = self.image;
@@ -57,6 +63,7 @@
 //    else if (self.action == DogEarActionViewing) headerView.allowEditing = NO;
     
     self.tableView.tableHeaderView = headerView;
+    self.dogEar = nil;
     
     if(!self.existingDogEar) self.dogEar = [DogEarObject new];
     else self.dogEar = self.existingDogEar;
@@ -147,15 +154,42 @@
 
 #pragma mark -
 
-- (void) addDogEar
+- (void) saveDogEar
 {
     [self.dogEar setInsertedDate:[NSDate date]];
 
-    NSData *pngData = UIImagePNGRepresentation(self.image);
+    
     [self.dogEar setImagePath:[NSString imagePathWithFileName:[self.dogEar.title stringByAppendingFormat:@"%@",[NSString generateRandomString]]]];
     [self.dogEar setImageOrientation: [NSNumber numberWithInteger:[self.image imageOrientation]]];
-    [pngData writeToFile:self.dogEar.imagePath atomically:YES];
+
     
+    // setNotification
+    if (self.dogEar.reminderDate)
+    {
+        UILocalNotification * reminder = [[UILocalNotification alloc]init];
+        if (reminder == nil) return;
+        reminder.fireDate = self.dogEar.reminderDate;
+        reminder.timeZone = [NSTimeZone defaultTimeZone];
+        
+        reminder.alertBody = [NSString stringWithFormat:@"%@",self.dogEar.title? self.dogEar.title: @"DogEar"];//JT-TODO: alertBody
+        reminder.alertLaunchImage = self.dogEar.imagePath;    
+        reminder.alertAction = @"View";
+        reminder.soundName = UILocalNotificationDefaultSoundName;
+        reminder.applicationIconBadgeNumber = 1;
+        
+        NSDictionary * userDict = [NSDictionary dictionaryWithObject:
+                                  [NSString reminderStyleWithDate:self.dogEar.reminderDate] forKey:@"DogEarReminderNotificationDataKey"];
+        reminder.userInfo = userDict;
+        
+        [[UIApplication sharedApplication] scheduleLocalNotification:reminder];
+    }
+}
+
+- (void) addDogEar
+{
+    [self saveDogEar];
+    NSData *pngData = UIImagePNGRepresentation(self.image);
+    [pngData writeToFile:self.dogEar.imagePath atomically:YES];
     
     NSIndexPath * indexPath = [NSIndexPath indexPathForRow:0 inSection:0];
     UITableViewCell * cell = [self.tableView cellForRowAtIndexPath:indexPath];
@@ -175,6 +209,7 @@
 
     if (self.tabBarController.selectedIndex == 0)[self.navigationController popToRootViewControllerAnimated:YES];
     else {
+        [self.navigationController popToRootViewControllerAnimated:YES];
         [self.tabBarController setSelectedIndex:0];
         UINavigationController * nc = [self.tabBarController.viewControllers objectAtIndex:0];
         [nc popToRootViewControllerAnimated:YES];
@@ -245,12 +280,19 @@
         [self.navigationController pushViewController:tv animated:YES];
         
     }
-    /*else if (indexPath.row == 1)
+    else if (indexPath.row == 1)
     {
-        BKReminderViewController * vc = [[BKReminderViewController alloc]initWithStyle:UITableViewStyleGrouped];
-        UINavigationController * nc = [[UINavigationController alloc]initWithRootViewController:vc];
-        [self.navigationController presentModalViewController:nc animated:YES];
-    }*/
+        de_ReminderViewController * vc = [[de_ReminderViewController alloc]initWithStyle:UITableViewStyleGrouped];
+        vc.selectedDate = self.dogEar && self.dogEar.reminderDate ? self.dogEar.reminderDate:nil;
+        vc.repeatedTimes = self.dogEar && self.dogEar.repeatingReminder ? [self.dogEar.repeatingReminder integerValue]:0;
+        [self.navigationController pushViewController:vc animated:YES];
+    }
+    else if (indexPath.row == 2)
+    {
+        de_FlagViewController * vc = [[de_FlagViewController alloc]initWithStyle:UITableViewStyleGrouped];
+        vc.selectedRow = self.dogEar && self.dogEar.flagged ? self.dogEar.flagged : nil;
+        [self.navigationController pushViewController:vc animated:YES];
+    }
 }
 
 @end

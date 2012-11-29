@@ -30,6 +30,18 @@
     return dateString;
 }
 
++ (NSString*) reminderStyleWithDate:(NSDate*)date
+{
+    NSDateFormatter * formatter = [[NSDateFormatter alloc] init];
+    [formatter setDateFormat:@"EEEE, MMM d, yyyy, hh:mm a"];
+
+    
+    NSString * dateString = [formatter stringFromDate:date];
+    
+    return dateString;
+}
+
+
 + (NSString *)generateRandomStringWithDate:(NSDate*)date
 {
     NSDateFormatter * formatter = [[NSDateFormatter alloc] init];

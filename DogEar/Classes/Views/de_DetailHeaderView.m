@@ -41,7 +41,12 @@
         self.table = [[UITableView alloc]initWithFrame:CGRectMake(110.0f, 5.0f, 209.0f, 100.0f) style:UITableViewStyleGrouped];
         self.table.dataSource = self;
         self.table.delegate = self;
-        self.table.backgroundColor = [UIColor clearColor];
+//        self.table.backgroundColor = [UIColor clearColor];
+        [self.table setBackgroundView:nil];
+        UIView * clearBG = [[UIView alloc]initWithFrame:CGRectZero];
+        clearBG.backgroundColor = [UIColor clearColor];
+        [self.table setBackgroundView:clearBG];
+        
         self.table.scrollEnabled = NO;
         
         [self addSubview:self.table];

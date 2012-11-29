@@ -13,13 +13,15 @@
 @property (nonatomic , strong) NSString * title;
 @property (nonatomic , strong) NSString * note;
 @property (nonatomic , strong) NSString * category;
+@property (nonatomic , strong) NSDate * insertedDate;
+@property (nonatomic , strong) NSNumber * flagged;
+
 @property (nonatomic , strong) NSString * imagePath;
+@property (nonatomic , strong) NSNumber * imageOrientation;
 
 @property (nonatomic , strong) NSDate * reminderDate;
-@property (nonatomic , strong) NSDate * insertedDate;
+@property (nonatomic , strong) NSNumber * repeatingReminder;
 
-@property (nonatomic , strong) NSNumber * flagged;
-@property (nonatomic , strong) NSNumber * imageOrientation;
 
 - (void)encodeWithCoder:(NSCoder *)encoder;
 - (id)initWithCoder:(NSCoder *)decoder;

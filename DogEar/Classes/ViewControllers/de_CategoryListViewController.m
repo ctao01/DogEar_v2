@@ -19,7 +19,6 @@
 
 @implementation de_CategoryListViewController
 //@synthesize collections = _collections;
-@synthesize selectedCategory = _selectedCategory;
 @synthesize categoryString = _categoryString;
 
 - (id)initWithStyle:(UITableViewStyle)style
@@ -41,7 +40,7 @@
     self.editing = NO;
     collections = [[NSMutableArray alloc]initWithArray:[[NSUserDefaults standardUserDefaults]objectForKey:@"BKCategory"]];
 //    self. checkedIndexPath = [NSIndexPath indexPathForRow:self.selectedCategory inSection:0];
-
+    self.navigationItem.title = @"Categoty";
 }
 
 //JT- TODO: Fix up pre-select

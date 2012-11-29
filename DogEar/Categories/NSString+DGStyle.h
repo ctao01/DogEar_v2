@@ -11,7 +11,10 @@
 @interface NSString (DEStyle)
 
 + (NSString*) imagePathWithFileName:(NSString*)filename;
+
 + (NSString*) mediumStyleDateAndShortStyleTimeWithDate:(NSDate*)date;
++ (NSString*) reminderStyleWithDate:(NSDate*)date;
+
 + (NSString *)generateRandomString;
 + (NSString *)generateRandomStringWithDate:(NSDate*)date;
 @end

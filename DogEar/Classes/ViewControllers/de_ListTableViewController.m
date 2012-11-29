@@ -8,6 +8,7 @@
 
 #import "de_ListTableViewController.h"
 #import "de_PhotoViewController.h"
+#import "DogEarObject.h"
 
 @interface de_ListTableViewController ()
 
@@ -39,15 +40,14 @@
     [view addSubview:segmentControl];
     
     self.tableView.tableHeaderView = view;
-    
-    NSSortDescriptor *sortDescriptor = [[NSSortDescriptor alloc] initWithKey:@"insertedDate" ascending:FALSE];
-    [self.collections sortUsingDescriptors:[NSArray arrayWithObject:sortDescriptor]];
-    
+
 }
 
 - (void) viewDidAppear:(BOOL)animated
 {
     [super viewDidAppear:animated];
+    NSSortDescriptor *sortDescriptor = [[NSSortDescriptor alloc] initWithKey:@"insertedDate" ascending:FALSE];
+    [self.collections sortUsingDescriptors:[NSArray arrayWithObject:sortDescriptor]];
     [self.tableView reloadData];
 }
 
@@ -99,12 +99,23 @@
     UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:CellIdentifier];
     if (cell == nil)
         if (cell == nil) cell = [[UITableViewCell alloc]initWithStyle:UITableViewCellStyleSubtitle reuseIdentifier:CellIdentifier];
-    NSDictionary * dogEar = (NSDictionary*)[self.collections objectAtIndex:indexPath.row];
+    /*NSDictionary * dogEar = (NSDictionary*)[self.collections objectAtIndex:indexPath.row];
     cell.textLabel.text = [dogEar objectForKey:@"title"];
     cell.detailTextLabel.text = [NSString mediumStyleDateAndShortStyleTimeWithDate:[dogEar objectForKey:@"insertedDate"]];
     
-    UIImage * image = [UIImage imageWithData:[NSData dataWithContentsOfFile:[dogEar objectForKey:@"imagePath"]]];    
-    cell.imageView.image = [[UIImage alloc] initWithCGImage:image.CGImage scale:1.0 orientation:[[dogEar objectForKey:@"imageOrientation"] integerValue]];    
+    UIImage * image = [UIImage imageWithData:[NSData dataWithContentsOfFile:[dogEar objectForKey:@"imagePath"]]];
+    cell.imageView.image = [[UIImage alloc] initWithCGImage:image.CGImage scale:1.0 orientation:[[dogEar objectForKey:@"imageOrientation"] integerValue]];*/
+    NSDictionary * dogEarDict = (NSDictionary*)[self.collections objectAtIndex:indexPath.row];
+    DogEarObject * selectedDogEar = [DogEarObject new];
+    [dogEarDict enumerateKeysAndObjectsUsingBlock:^(id key, id obj, BOOL *stop){
+        [selectedDogEar setValue:obj forKey:(NSString *)key];
+    }];
+    cell.textLabel.text = selectedDogEar.title;
+    cell.detailTextLabel.text = [NSString mediumStyleDateAndShortStyleTimeWithDate:selectedDogEar.insertedDate];
+    UIImage * image = [UIImage imageWithData:[NSData dataWithContentsOfFile: selectedDogEar.imagePath]];
+    UIImage * thumbImage = [[UIImage alloc]initWithCGImage:image.CGImage scale:1.0f orientation:[selectedDogEar.imageOrientation integerValue]];
+    cell.imageView.image = thumbImage;
+    
     // Configure the cell...
     
     return cell;
@@ -119,8 +130,17 @@
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    de_PhotoViewController * vc = [[de_PhotoViewController alloc]initWithImage:nil toolBarType:BKToolBarTypeViewing];
+    NSDictionary * dogEarDict = (NSDictionary*)[self.collections objectAtIndex:indexPath.row];
+    DogEarObject * selectedDogEar = [DogEarObject new];
+    [dogEarDict enumerateKeysAndObjectsUsingBlock:^(id key, id obj, BOOL *stop){
+        [selectedDogEar setValue:obj forKey:(NSString *)key];
+    }];
+    
+    UIImage * image = [UIImage imageWithData:[NSData dataWithContentsOfFile:selectedDogEar.imagePath]];
+    de_PhotoViewController * vc = [[de_PhotoViewController alloc]initWithImage:[[UIImage alloc] initWithCGImage:image.CGImage scale:1.0 orientation:[selectedDogEar.imageOrientation integerValue] ] toolBarType:BKToolBarTypeViewing];
     [self.navigationController pushViewController:vc animated:YES];
+    [vc setExistingDogEar:selectedDogEar];
+   
 }
 
 @end

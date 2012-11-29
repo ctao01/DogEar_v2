@@ -17,18 +17,19 @@
 @synthesize flagged;
 @synthesize insertedDate;
 @synthesize imageOrientation;
-
+@synthesize repeatingReminder;
 + (NSArray *)keys
 {
     return [NSArray arrayWithObjects:
             @"title",
             @"note",
             @"category",
-            @"imagePath",
-            @"reminderDate",
             @"insertedDate",
             @"flagged",
+            @"imagePath",
             @"imageOrientation",
+            @"reminderDate",
+            @"repeatingReminder",
             nil];
 }
 
@@ -44,6 +45,7 @@
     [encoder encodeObject:self.insertedDate forKey:@"insertedDate"];
     [encoder encodeObject:self.flagged forKey:@"flagged"];
     [encoder encodeObject:self.imageOrientation forKey:@"imageOrientation"];
+    [encoder encodeObject:self.repeatingReminder forKey:@"repeatingReminder"];
 
     
     
@@ -61,6 +63,7 @@
         self.insertedDate = [decoder decodeObjectForKey:@"insertedDate"];
         self.flagged = [decoder decodeObjectForKey:@"flagged"];
         self.imageOrientation = [decoder decodeObjectForKey:@"imageOrientation"];
+        self.repeatingReminder = [decoder decodeObjectForKey:@"repeatingReminder"];
 
     }
     return self;

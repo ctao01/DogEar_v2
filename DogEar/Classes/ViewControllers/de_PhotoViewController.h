@@ -21,5 +21,6 @@ typedef enum {
 @interface de_PhotoViewController : UIViewController <UIActionSheetDelegate>
 
 - (id) initWithImage:(UIImage*)image toolBarType:(BKToolBarType)toolBarType;
+@property (nonatomic , retain) DogEarObject * existingDogEar;
 
 @end

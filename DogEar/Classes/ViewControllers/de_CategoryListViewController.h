@@ -9,7 +9,5 @@
 #import <UIKit/UIKit.h>
 
 @interface de_CategoryListViewController : UITableViewController <UIAlertViewDelegate>
-
-@property (nonatomic ) NSInteger selectedCategory;;
 @property (nonatomic , assign) NSString * categoryString;
 @end
