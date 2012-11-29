@@ -54,13 +54,13 @@
 - (void) layoutSubviews
 {
     [super layoutSubviews];
-//    if (self.dogEar == nil)[imageView setImage:self.thumbImage];
-//    else
-//    {
-//        NSData *pngData = [NSData dataWithContentsOfFile:self.dogEar.imagePath];
-//        [imageView setImage:[UIImage imageWithData:pngData]];
-//    }
-    imageView.image = self.thumbImage;
+    if (self.dogEar == nil)[imageView setImage:self.thumbImage];
+    else
+    {
+        NSData *pngData = [NSData dataWithContentsOfFile:self.dogEar.imagePath];
+        [imageView setImage:[UIImage imageWithData:pngData]];
+    }
+//    imageView.image = self.thumbImage;
 }
 
 #pragma mark - 
@@ -75,7 +75,7 @@
 	tf.autocapitalizationType = UITextAutocapitalizationTypeNone;
 	tf.adjustsFontSizeToFitWidth = YES;
 	tf.textColor = [UIColor colorWithRed:56.0f/255.0f green:84.0f/255.0f blue:135.0f/255.0f alpha:1.0f];
-    if (self.dogEar == nil)
+    if (self.dogEar != nil)
     {
         [tf setEnabled:NO];
         tf.userInteractionEnabled = NO;
@@ -134,6 +134,7 @@
     textField.frame = CGRectMake(80.0f, 0.0f, 120.0f, 30);
     textField.center = CGPointMake(textField.center.x, 25.0f);
     textField.delegate = self;
+    cell.selectionStyle = UITableViewCellSelectionStyleNone;
     
     return cell;
 }

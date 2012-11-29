@@ -65,6 +65,7 @@
 - (void) viewWillAppear:(BOOL)animated
 {
     [super viewWillAppear:animated];
+    [self.tableView reloadData];
 }
 
 - (void) viewDidAppear:(BOOL)animated
@@ -148,21 +149,21 @@
 
 - (void) addDogEar
 {
-    NSData *pngData = UIImagePNGRepresentation(self.image);
-    [pngData writeToFile:[NSString imagePathWithFileName:self.dogEar.title] atomically:YES];
-    [self.dogEar setImagePath:[NSString imagePathWithFileName:self.dogEar.title]];
-    
     [self.dogEar setInsertedDate:[NSDate date]];
+
+    NSData *pngData = UIImagePNGRepresentation(self.image);
+    [self.dogEar setImagePath:[NSString imagePathWithFileName:[self.dogEar.title stringByAppendingFormat:@"%@",[NSString generateRandomString]]]];
+    [self.dogEar setImageOrientation: [NSNumber numberWithInteger:[self.image imageOrientation]]];
+    [pngData writeToFile:self.dogEar.imagePath atomically:YES];
+    
     
     NSIndexPath * indexPath = [NSIndexPath indexPathForRow:0 inSection:0];
     UITableViewCell * cell = [self.tableView cellForRowAtIndexPath:indexPath];
-    NSArray * categories = [[NSUserDefaults standardUserDefaults]objectForKey:@"BKCategory"];
+    NSString * key = cell.detailTextLabel.text;
     
     NSDictionary * dict = [[[NSUserDefaults standardUserDefaults]objectForKey:@"BKDataCollections"] mutableCopy];
     
-    NSString * key = [categories objectAtIndex:[categories indexOfObject:cell.detailTextLabel.text]];
     NSMutableArray * selectedObjects = [NSMutableArray arrayWithArray:[NSKeyedUnarchiver unarchiveObjectWithData:[dict objectForKey:key]]];
-    NSLog(@"%@:%@",key,selectedObjects);
     [selectedObjects addObject:self.dogEar];
     
     NSData * encodedObjects = [NSKeyedArchiver archivedDataWithRootObject:selectedObjects];
@@ -173,7 +174,11 @@
     
 
     if (self.tabBarController.selectedIndex == 0)[self.navigationController popToRootViewControllerAnimated:YES];
-    else [self.tabBarController setSelectedIndex:0];
+    else {
+        [self.tabBarController setSelectedIndex:0];
+        UINavigationController * nc = [self.tabBarController.viewControllers objectAtIndex:0];
+        [nc popToRootViewControllerAnimated:YES];
+    }
 }
 
 #pragma mark - Table view data source
@@ -204,7 +209,7 @@
     switch (indexPath.row) {
         case 0:
             cell.textLabel.text = @"Category";
-//            cell.detailTextLabel.text = self.dogEar.category ? self.dogEar.category : @"";
+            cell.detailTextLabel.text = self.dogEar.category ? self.dogEar.category : @"";
             cell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
             break;
         case 1:

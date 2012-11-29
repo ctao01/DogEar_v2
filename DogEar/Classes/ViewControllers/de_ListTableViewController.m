@@ -102,12 +102,20 @@
     NSDictionary * dogEar = (NSDictionary*)[self.collections objectAtIndex:indexPath.row];
     cell.textLabel.text = [dogEar objectForKey:@"title"];
     cell.detailTextLabel.text = [NSString mediumStyleDateAndShortStyleTimeWithDate:[dogEar objectForKey:@"insertedDate"]];
+    
+    UIImage * image = [UIImage imageWithData:[NSData dataWithContentsOfFile:[dogEar objectForKey:@"imagePath"]]];    
+    cell.imageView.image = [[UIImage alloc] initWithCGImage:image.CGImage scale:1.0 orientation:[[dogEar objectForKey:@"imageOrientation"] integerValue]];    
     // Configure the cell...
     
     return cell;
 }
 
 #pragma mark - Table View Delegate Method
+
+- (float) tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath
+{
+    return 55.0f;
+}
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
 {

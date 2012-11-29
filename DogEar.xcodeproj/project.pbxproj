@@ -300,8 +300,6 @@
 		7E4252F016646CBE00741A41 /* TableViewControllers */ = {
 			isa = PBXGroup;
 			children = (
-				7E2CB6991665D67E00A5B40D /* de_CategoryListViewController.m */,
-				7E2CB6961665D62C00A5B40D /* de_CategoryListViewController.h */,
 				7E4252F116646D7E00741A41 /* de_ListTableViewController.h */,
 				7E4252F216646D7E00741A41 /* de_ListTableViewController.m */,
 				7E4252EA16646AA100741A41 /* de_BrowseTableViewController.h */,
@@ -310,6 +308,8 @@
 				7E4252EE16646C5600741A41 /* de_SettingViewController.m */,
 				7E2CB6901665B71900A5B40D /* de_DetailViewController.h */,
 				7E2CB6911665B71A00A5B40D /* de_DetailViewController.m */,
+				7E2CB6991665D67E00A5B40D /* de_CategoryListViewController.m */,
+				7E2CB6961665D62C00A5B40D /* de_CategoryListViewController.h */,
 			);
 			name = TableViewControllers;
 			sourceTree = "<group>";

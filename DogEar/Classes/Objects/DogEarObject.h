@@ -19,7 +19,7 @@
 @property (nonatomic , strong) NSDate * insertedDate;
 
 @property (nonatomic , strong) NSNumber * flagged;
-
+@property (nonatomic , strong) NSNumber * imageOrientation;
 
 - (void)encodeWithCoder:(NSCoder *)encoder;
 - (id)initWithCoder:(NSCoder *)decoder;

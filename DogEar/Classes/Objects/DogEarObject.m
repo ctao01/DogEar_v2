@@ -16,7 +16,7 @@
 @synthesize reminderDate;
 @synthesize flagged;
 @synthesize insertedDate;
-
+@synthesize imageOrientation;
 
 + (NSArray *)keys
 {
@@ -28,6 +28,7 @@
             @"reminderDate",
             @"insertedDate",
             @"flagged",
+            @"imageOrientation",
             nil];
 }
 
@@ -42,6 +43,8 @@
     [encoder encodeObject:self.reminderDate forKey:@"reminder"];
     [encoder encodeObject:self.insertedDate forKey:@"insertedDate"];
     [encoder encodeObject:self.flagged forKey:@"flagged"];
+    [encoder encodeObject:self.imageOrientation forKey:@"imageOrientation"];
+
     
     
 }
@@ -57,6 +60,7 @@
         self.reminderDate = [decoder decodeObjectForKey:@"reminder"];
         self.insertedDate = [decoder decodeObjectForKey:@"insertedDate"];
         self.flagged = [decoder decodeObjectForKey:@"flagged"];
+        self.imageOrientation = [decoder decodeObjectForKey:@"imageOrientation"];
 
     }
     return self;
