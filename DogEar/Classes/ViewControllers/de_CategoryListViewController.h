@@ -9,5 +9,5 @@
 #import <UIKit/UIKit.h>
 
 @interface de_CategoryListViewController : UITableViewController <UIAlertViewDelegate>
-@property (nonatomic , assign) NSString * categoryString;
+@property (nonatomic , retain) NSIndexPath * selectedIndexPath;
 @end

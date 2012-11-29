@@ -40,6 +40,9 @@
 {
     [super viewDidLoad];
 
+    UIImageView * bgImage = [[UIImageView alloc]initWithImage:[UIImage imageNamed:@"dogear-bg-master"]];
+    self.tableView.backgroundView = bgImage;
+    
     CGRect bounds = [[UIScreen mainScreen]bounds];
     picker = [[UIDatePicker alloc]initWithFrame:CGRectMake(0.0f, 250.0f, bounds.size.width, bounds.size.height - 250.0f + 44.0f)];
     picker.datePickerMode = UIDatePickerModeDateAndTime;
@@ -48,6 +51,7 @@
     [picker addTarget:self
                action:@selector(changeDateReminder:)
      forControlEvents:UIControlEventValueChanged];
+    [picker setBackgroundColor:[UIColor clearColor]];
     [self.view addSubview:picker];
     
     self.notifArray = [[NSArray alloc]initWithObjects:@"Never", @"Every Hour",@"Every Day",@"Every Week",@"Every Month",@"Every Year", nil];

@@ -139,6 +139,11 @@
     if ([viewController isKindOfClass:[UINavigationController class]]) {
         [(UINavigationController*) viewController popToRootViewControllerAnimated:NO];
     }
+    if (self.selectedIndex != 1)
+    {
+        NSMutableArray * array = [NSMutableArray arrayWithArray:[(UINavigationController*)viewController viewControllers]];
+        [array removeAllObjects];
+    }
 }
 
 #pragma mark - UIImagePickerControllerDelegate
@@ -149,7 +154,9 @@
     [self dismissViewControllerAnimated:YES completion:^{
         
         UINavigationController * nc = [self.viewControllers objectAtIndex:1];
-        de_PhotoViewController * vc = [[de_PhotoViewController alloc]initWithImage:originImage toolBarType:BKToolBarTypeEditing];
+//        de_PhotoViewController * vc = [[de_PhotoViewController alloc]initWithImage:originImage toolBarType:BKToolBarTypeEditing];
+        de_PhotoViewController * vc = [[de_PhotoViewController alloc]initWithImage:originImage andExistingDogEar:nil];
+
         [nc pushViewController:vc animated:YES];
         
     }];

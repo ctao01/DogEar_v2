@@ -50,6 +50,7 @@
 		7ECEB4C21667148500FC007D /* de_ReminderViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 7ECEB4C11667148400FC007D /* de_ReminderViewController.m */; };
 		7ECEB4C91667AC2400FC007D /* de_RepeatingLNViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 7ECEB4C81667AC2300FC007D /* de_RepeatingLNViewController.m */; };
 		7ECEB4CD1667B7D300FC007D /* de_FlagViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 7ECEB4CC1667B7D100FC007D /* de_FlagViewController.m */; };
+		7ECEB4F51668105100FC007D /* QuartzCore.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 7ECEB4F41668104F00FC007D /* QuartzCore.framework */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -115,6 +116,7 @@
 		7ECEB4C81667AC2300FC007D /* de_RepeatingLNViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = de_RepeatingLNViewController.m; path = Classes/ViewControllers/de_RepeatingLNViewController.m; sourceTree = "<group>"; };
 		7ECEB4CB1667B7D000FC007D /* de_FlagViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = de_FlagViewController.h; path = Classes/ViewControllers/de_FlagViewController.h; sourceTree = "<group>"; };
 		7ECEB4CC1667B7D100FC007D /* de_FlagViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = de_FlagViewController.m; path = Classes/ViewControllers/de_FlagViewController.m; sourceTree = "<group>"; };
+		7ECEB4F41668104F00FC007D /* QuartzCore.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = QuartzCore.framework; path = System/Library/Frameworks/QuartzCore.framework; sourceTree = SDKROOT; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -122,6 +124,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				7ECEB4F51668105100FC007D /* QuartzCore.framework in Frameworks */,
 				7E42529A16645DF400741A41 /* UIKit.framework in Frameworks */,
 				7E42529C16645DF400741A41 /* Foundation.framework in Frameworks */,
 				7E42529E16645DF400741A41 /* CoreGraphics.framework in Frameworks */,
@@ -180,6 +183,7 @@
 		7E42529816645DF400741A41 /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				7ECEB4F41668104F00FC007D /* QuartzCore.framework */,
 				7E42529916645DF400741A41 /* UIKit.framework */,
 				7E42529B16645DF400741A41 /* Foundation.framework */,
 				7E42529D16645DF400741A41 /* CoreGraphics.framework */,

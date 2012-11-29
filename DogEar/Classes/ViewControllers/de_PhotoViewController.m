@@ -18,6 +18,8 @@
 
 @property (nonatomic) BKToolBarType bkToolBarType;
 @property (nonatomic , retain) UIImage * photo;
+@property (nonatomic , retain) DogEarObject * existingDogEar;
+
 @end
 
 @implementation de_PhotoViewController
@@ -32,6 +34,8 @@
     return self;
 }
 
+// JT-TODO: get rid of toolBarType - using "initWithImage: andDogEar:(DogEar*)dogEar"
+
 - (id) initWithImage:(UIImage*)image toolBarType:(BKToolBarType)toolBarType
 {
     self = [self init];
@@ -43,6 +47,19 @@
     }
     return self;
 }
+
+- (id) initWithImage:(UIImage*)image andExistingDogEar:(DogEarObject*)object
+{
+    self = [self init];
+    if (self)
+    {
+        self.existingDogEar = object;
+        self.photo = image;
+        self.view.backgroundColor = [UIColor blackColor];
+    }
+    return self;
+}
+
 
 - (void)viewDidLoad
 {
@@ -65,7 +82,7 @@
     toolBar.barStyle = UIBarStyleBlackOpaque;
     UIBarButtonItem * spaceItme = [[UIBarButtonItem alloc]initWithBarButtonSystemItem:UIBarButtonSystemItemFlexibleSpace target:nil action:nil];
     
-	if (self.bkToolBarType == BKToolBarTypeEditing)
+	if (self.existingDogEar == nil)
     {
         UIBarButtonItem * rotateItem = [[UIBarButtonItem alloc]initWithTitle:@"Rotate" style:UIBarButtonItemStylePlain target:self action:@selector(rotatePhoto)];
         UIBarButtonItem * enhanceItem = [[UIBarButtonItem alloc]initWithTitle:@"Enhance" style:UIBarButtonItemStylePlain target:self action:@selector(enhancePhoto)];
@@ -79,7 +96,7 @@
         UIBarButtonItem * saveItem = [[UIBarButtonItem alloc]initWithTitle:@"Save" style:UIBarButtonItemStyleBordered target:self action:@selector(storeTheImage)];
         self.navigationItem.rightBarButtonItem = saveItem;
     }
-    else if (self.bkToolBarType == BKToolBarTypeViewing)
+    else 
     {
         UIBarButtonItem * shareItem = [[UIBarButtonItem alloc]initWithImage:[UIImage imageNamed:@"dogear-icon-share"] style:UIBarButtonItemStylePlain target:self action:@selector(shareThePhoto)];
         de_MainTabBarController * tbc = (de_MainTabBarController*)self.tabBarController;
@@ -90,8 +107,8 @@
         
         [toolBar setItems:[NSArray arrayWithObjects:shareItem, spaceItme, cameraItem, spaceItme, trashItem, nil]];
         
-        UIBarButtonItem * cancelItem = [[UIBarButtonItem alloc]initWithTitle:@"Cancel" style:UIBarButtonItemStyleBordered target:self action:@selector(cancel)];
-        self.navigationItem.leftBarButtonItem = cancelItem;
+//        UIBarButtonItem * cancelItem = [[UIBarButtonItem alloc]initWithTitle:@"Cancel" style:UIBarButtonItemStyleBordered target:self action:@selector(cancel)];
+//        self.navigationItem.leftBarButtonItem = cancelItem;
         
         UIBarButtonItem * detailItem = [[UIBarButtonItem alloc]initWithTitle:@"Detail" style:UIBarButtonItemStyleBordered target:self action:@selector(moreDetail)];
         self.navigationItem.rightBarButtonItem = detailItem;
@@ -118,6 +135,8 @@
     [super viewWillDisappear:YES];
     de_MainTabBarController * tbc = (de_MainTabBarController*)self.tabBarController;
     [tbc makeTabBarHidden:NO];
+    
+//    self.existingDogEar = nil;
 }
 
 - (void) viewWillLayoutSubviews
@@ -140,21 +159,21 @@
 - (void) storeTheImage
 {
     de_DetailViewController * vc = [[de_DetailViewController alloc]initWithStyle:UITableViewStyleGrouped andImage:self.photo];
-    [vc setAction:DogEarActionEditing];
+//    [vc setAction:DogEarActionEditing];
     vc.existingDogEar = nil;
     [self.navigationController pushViewController:vc animated:YES];
     
 }
 
-- (void) cancel
-{
-    [self.navigationController popViewControllerAnimated:YES];
-}
+//- (void) cancel
+//{
+//    [self.navigationController popViewControllerAnimated:YES];
+//}
 
 - (void) moreDetail
 {
     de_DetailViewController * vc = [[de_DetailViewController alloc]initWithStyle:UITableViewStyleGrouped];
-    [vc setAction:DogEarActionViewing];
+//    [vc setAction:DogEarActionViewing];
     vc.existingDogEar = self.existingDogEar;
     [self.navigationController pushViewController:vc animated:YES];
 
@@ -167,5 +186,8 @@
     actionSheet.delegate = self;
     [actionSheet showInView:self.view];
 }
+
+#pragma mark - UIActionSheet Delegate Method
+
 
 @end

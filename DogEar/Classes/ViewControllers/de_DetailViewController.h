@@ -7,7 +7,10 @@
 //
 
 #import <UIKit/UIKit.h>
+#import <QuartzCore/QuartzCore.h>
 #import "DogEarObject.h"
+
+@class UIPrintInteractionController;
 
 typedef enum {
     DogEarActionViewing,
@@ -15,6 +18,7 @@ typedef enum {
 } DogEarAction;
 
 @interface de_DetailViewController : UITableViewController
+
 @property (nonatomic) DogEarAction action;
 
 @property (nonatomic , strong ) DogEarObject * dogEar; // JT-Note: new dog ear
