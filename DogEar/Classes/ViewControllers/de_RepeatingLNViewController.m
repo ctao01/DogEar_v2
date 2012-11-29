@@ -29,6 +29,8 @@
 - (void)viewDidLoad
 {
     [super viewDidLoad];
+    UIImageView * bgImage = [[UIImageView alloc]initWithImage:[UIImage imageNamed:@"dogear-bg-master"]];
+    self.tableView.backgroundView = bgImage;
 }
 
 - (void) viewWillAppear:(BOOL)animated

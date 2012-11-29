@@ -14,12 +14,12 @@
     NSMutableArray * collections;
 }
 
-@property (nonatomic , retain) NSIndexPath * checkedIndexPath;;
+//@property (nonatomic , retain) NSIndexPath * checkedIndexPath;;
 @end
 
 @implementation de_CategoryListViewController
 //@synthesize collections = _collections;
-@synthesize categoryString = _categoryString;
+@synthesize selectedIndexPath = _selectedIndexPath;
 
 - (id)initWithStyle:(UITableViewStyle)style
 {
@@ -33,13 +33,15 @@
 - (void)viewDidLoad
 {
     [super viewDidLoad];
+//    UIImageView * bgImage = [[UIImageView alloc]initWithImage:[UIImage imageNamed:@"dogear-bg-master"]];
+//    self.tableView.backgroundView = bgImage;
     
     UIBarButtonItem * editButton = [[UIBarButtonItem alloc]initWithTitle:@"Edit" style:UIBarButtonItemStylePlain target:self action:@selector(editTable:)];
     self.navigationItem.rightBarButtonItem = editButton;
     
     self.editing = NO;
     collections = [[NSMutableArray alloc]initWithArray:[[NSUserDefaults standardUserDefaults]objectForKey:@"BKCategory"]];
-//    self. checkedIndexPath = [NSIndexPath indexPathForRow:self.selectedCategory inSection:0];
+
     self.navigationItem.title = @"Categoty";
 }
 
@@ -48,11 +50,11 @@
 - (void) viewDidAppear:(BOOL)animated
 {
     [super viewDidAppear:animated];
-    if (self.categoryString != NULL)
-    {
-        NSArray * array = [[NSUserDefaults standardUserDefaults]objectForKey:@"BKCategory"];
-        self. checkedIndexPath = [NSIndexPath indexPathForRow:[array indexOfObject:self.categoryString] inSection:0];
-    }
+//    if (self.categoryString != NULL)
+//    {
+//        NSArray * array = [[NSUserDefaults standardUserDefaults]objectForKey:@"BKCategory"];
+//        self. checkedIndexPath = [NSIndexPath indexPathForRow:[array indexOfObject:self.categoryString] inSection:0];
+//    }
 }
 
 - (void) viewWillDisappear:(BOOL)animated
@@ -111,7 +113,7 @@
     if (cell == nil)
         if (cell == nil) cell = [[UITableViewCell alloc]initWithStyle:UITableViewCellStyleSubtitle reuseIdentifier:CellIdentifier];
     
-    if(!self.editing && [self.checkedIndexPath isEqual:indexPath])
+    if(!self.editing && [self.selectedIndexPath isEqual:indexPath])
         cell.accessoryType = UITableViewCellAccessoryCheckmark;
     else
         cell.accessoryType = UITableViewCellAccessoryNone;
@@ -204,19 +206,19 @@
 {
     de_DetailViewController * vc = (de_DetailViewController*)[self.navigationController.viewControllers objectAtIndex:[self.navigationController.viewControllers count]-2];
     
-    if(self.checkedIndexPath)
+    if(self.selectedIndexPath)
     {
-        UITableViewCell* uncheckCell =[tableView  cellForRowAtIndexPath:self.checkedIndexPath];
+        UITableViewCell* uncheckCell =[tableView  cellForRowAtIndexPath:self.selectedIndexPath];
         uncheckCell.accessoryType =UITableViewCellAccessoryNone;
         [vc.dogEar setCategory:nil];
     }
-    if([self.checkedIndexPath isEqual:indexPath])
-        self.checkedIndexPath = nil;
+    if([self.selectedIndexPath isEqual:indexPath])
+        self.selectedIndexPath = nil;
     else
     {
         UITableViewCell* cell =[tableView cellForRowAtIndexPath:indexPath];
         cell.accessoryType =UITableViewCellAccessoryCheckmark;
-        self.checkedIndexPath = indexPath;
+        self.selectedIndexPath = indexPath;
         [vc.dogEar setCategory:cell.textLabel.text];
     }
 

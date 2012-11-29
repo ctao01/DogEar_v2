@@ -15,6 +15,7 @@
 @end
 
 @implementation de_ListTableViewController
+@synthesize collections;
 
 - (id)initWithStyle:(UITableViewStyle)style
 {
@@ -28,6 +29,8 @@
 - (void)viewDidLoad
 {
     [super viewDidLoad];
+    UIImageView * bgImage = [[UIImageView alloc]initWithImage:[UIImage imageNamed:@"dogear-bg-master"]];
+    self.tableView.backgroundView = bgImage;
     
     UISegmentedControl * segmentControl = [[UISegmentedControl alloc]initWithItems:[NSArray arrayWithObjects:@"Most Recent", @"Most Important", nil]];
     segmentControl.frame = CGRectMake(0.0f, 5.0f, 200.0f, 30.0f);
@@ -70,7 +73,10 @@
         }
             break;
         case 1:
-            NSLog(@"sort by important");
+        {
+            NSSortDescriptor *sortDescriptor = [[NSSortDescriptor alloc] initWithKey:@"flagged" ascending:FALSE];
+            [self.collections sortUsingDescriptors:[NSArray arrayWithObject:sortDescriptor]];
+        }
             break;
             
         default:
@@ -112,9 +118,9 @@
     }];
     cell.textLabel.text = selectedDogEar.title;
     cell.detailTextLabel.text = [NSString mediumStyleDateAndShortStyleTimeWithDate:selectedDogEar.insertedDate];
-    UIImage * image = [UIImage imageWithData:[NSData dataWithContentsOfFile: selectedDogEar.imagePath]];
-    UIImage * thumbImage = [[UIImage alloc]initWithCGImage:image.CGImage scale:1.0f orientation:[selectedDogEar.imageOrientation integerValue]];
-    cell.imageView.image = thumbImage;
+//    UIImage * image = [UIImage imageWithData:[NSData dataWithContentsOfFile: selectedDogEar.imagePath]];
+//    UIImage * thumbImage = [[UIImage alloc]initWithCGImage:image.CGImage scale:1.0f orientation:[selectedDogEar.imageOrientation integerValue]];
+//    cell.imageView.image = thumbImage;
     
     // Configure the cell...
     
@@ -137,9 +143,11 @@
     }];
     
     UIImage * image = [UIImage imageWithData:[NSData dataWithContentsOfFile:selectedDogEar.imagePath]];
-    de_PhotoViewController * vc = [[de_PhotoViewController alloc]initWithImage:[[UIImage alloc] initWithCGImage:image.CGImage scale:1.0 orientation:[selectedDogEar.imageOrientation integerValue] ] toolBarType:BKToolBarTypeViewing];
+//    de_PhotoViewController * vc = [[de_PhotoViewController alloc]initWithImage:[[UIImage alloc] initWithCGImage:image.CGImage scale:1.0 orientation:[selectedDogEar.imageOrientation integerValue] ] toolBarType:BKToolBarTypeViewing];
+    de_PhotoViewController * vc = [[de_PhotoViewController alloc]initWithImage:[[UIImage alloc] initWithCGImage:image.CGImage scale:1.0 orientation:[selectedDogEar.imageOrientation integerValue] ] andExistingDogEar:selectedDogEar];
+
     [self.navigationController pushViewController:vc animated:YES];
-    [vc setExistingDogEar:selectedDogEar];
+//    [vc setExistingDogEar:selectedDogEar];
    
 }
 

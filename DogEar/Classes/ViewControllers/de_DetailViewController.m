@@ -13,9 +13,18 @@
 #import "de_ReminderViewController.h"
 #import "de_FlagViewController.h"
 
+#define kPDFPageBounds CGRectMake(0, 0, 8.5 * 72, 11 * 72)
+
+
 @interface de_DetailViewController ()
-@property (nonatomic) BOOL isEditing; 
+{
+    UIPrintInteractionController *printController;
+}
+
+@property (nonatomic) BOOL isEditing;
 @property (nonatomic ,retain) UIImage * image;
+
+- (NSData *)generatePDFDataForPrinting;
 
 @end
 
@@ -65,8 +74,28 @@
     self.tableView.tableHeaderView = headerView;
     self.dogEar = nil;
     
+    //JT-Note:
+    Class printControllerClass = NSClassFromString(@"UIPrintInteractionController");
+    if (printControllerClass) {
+        printController = [printControllerClass sharedPrintController];
+    }
+    
+    if (self.existingDogEar != nil)
+    {
+        UIBarButtonItem * editItem = [[UIBarButtonItem alloc]initWithTitle:@"Edit" style:UIBarButtonItemStyleBordered target:self action:@selector(edit:)];
+        self.navigationItem.rightBarButtonItem = editItem;
+        
+        //        self.tableView.userInteractionEnabled = NO;
+        for (int c = 0; c < [self.tableView numberOfRowsInSection:0] - 1; c++) {
+            NSIndexPath * disabledIndexPath = [NSIndexPath indexPathForRow:c inSection:0];
+            UITableViewCell * disabledCell = [self.tableView cellForRowAtIndexPath:disabledIndexPath];
+            [disabledCell setUserInteractionEnabled:NO];
+        }
+    }
+    
     if(!self.existingDogEar) self.dogEar = [DogEarObject new];
     else self.dogEar = self.existingDogEar;
+    
 }
 
 - (void) viewWillAppear:(BOOL)animated
@@ -75,32 +104,23 @@
     [self.tableView reloadData];
 }
 
+// JT-TODO: get rid of action eumn, using self.existing == nil or exisit
+
 - (void) viewDidAppear:(BOOL)animated
 {
     [super viewDidAppear:animated];
     
-    if (self.action == DogEarActionEditing)
+    NSIndexPath * path = [NSIndexPath indexPathForRow:0 inSection:0];
+    UITableViewCell * cell = [self.tableView cellForRowAtIndexPath:path];
+    
+    if (![cell.detailTextLabel.text isEqualToString:@""])
     {
-        NSIndexPath * path = [NSIndexPath indexPathForRow:0 inSection:0];
-        UITableViewCell * cell = [self.tableView cellForRowAtIndexPath:path];
-        
-        if (![cell.detailTextLabel.text isEqualToString:@""])
-        {
-            UIBarButtonItem * saveItem = [[UIBarButtonItem alloc]initWithTitle:@"Add" style:UIBarButtonItemStyleBordered target:self action:@selector(addDogEar)];
-            self.navigationItem.rightBarButtonItem = saveItem;
-        }
-        else
-            self.navigationItem.rightBarButtonItem = nil;
+        UIBarButtonItem * saveItem = [[UIBarButtonItem alloc]initWithTitle:@"Add" style:UIBarButtonItemStyleBordered target:self action:@selector(addDogEar)];
+        self.navigationItem.rightBarButtonItem = saveItem;
     }
     else
-    {
-        self.isEditing = NO;
-        
-        UIBarButtonItem * editItem = [[UIBarButtonItem alloc]initWithTitle:@"Edit" style:UIBarButtonItemStyleBordered target:self action:@selector(edit:)];
-        self.navigationItem.rightBarButtonItem = editItem;
-        
-        self.tableView.userInteractionEnabled = NO;
-    }
+        self.navigationItem.rightBarButtonItem = nil;
+
 }
 
 - (void)didReceiveMemoryWarning
@@ -119,8 +139,14 @@
     
     if (self.isEditing)
     {
-        self.tableView.userInteractionEnabled = NO;
-        //JT-TODO: Done Feature
+//        self.tableView.userInteractionEnabled = NO;
+        // JT-TODO: print function should be enabled
+        for (int c = 0; c < [self.tableView numberOfRowsInSection:0] - 1; c++) {
+            NSIndexPath * disabledIndexPath = [NSIndexPath indexPathForRow:c inSection:0];
+            UITableViewCell * disabledCell = [self.tableView cellForRowAtIndexPath:disabledIndexPath];
+            [disabledCell setUserInteractionEnabled:NO];
+        }
+        
         [decodedCollections addObject:self.dogEar];
 
         
@@ -136,7 +162,12 @@
         //JT:TODO - remove dogEar from Array
         [decodedCollections removeObject:self.existingDogEar];
         
-        self.tableView.userInteractionEnabled = YES;
+//        self.tableView.userInteractionEnabled = YES;
+        for (int c = 0; c < [self.tableView numberOfRowsInSection:0] - 1; c++) {
+            NSIndexPath * disabledIndexPath = [NSIndexPath indexPathForRow:c inSection:0];
+            UITableViewCell * disabledCell = [self.tableView cellForRowAtIndexPath:disabledIndexPath];
+            [disabledCell setUserInteractionEnabled:YES];
+        }
         
         [self.navigationItem.rightBarButtonItem setTitle:@"Done"];
         [self.navigationItem.rightBarButtonItem setStyle:UIBarButtonItemStyleDone];
@@ -152,7 +183,7 @@
 
 }
 
-#pragma mark -
+#pragma mark - DogEar Method
 
 - (void) saveDogEar
 {
@@ -209,11 +240,26 @@
 
     if (self.tabBarController.selectedIndex == 0)[self.navigationController popToRootViewControllerAnimated:YES];
     else {
-        [self.navigationController popToRootViewControllerAnimated:YES];
         [self.tabBarController setSelectedIndex:0];
         UINavigationController * nc = [self.tabBarController.viewControllers objectAtIndex:0];
         [nc popToRootViewControllerAnimated:YES];
     }
+}
+
+#pragma mark - Print Feature
+
+- (NSData *) generatePDFDataForPrinting
+{
+    NSMutableData *pdfData = [NSMutableData data];
+    UIGraphicsBeginPDFContextToData(pdfData, kPDFPageBounds, nil);
+    UIGraphicsBeginPDFPage();
+    CGContextRef ctx = UIGraphicsGetCurrentContext();
+//    [self drawStuffInContext:ctx];  // Method also usable from drawRect:.
+    UIImageView * imageView = [[UIImageView alloc]initWithImage:self.image];
+    [imageView.layer renderInContext:ctx];
+    
+    UIGraphicsEndPDFContext();
+    return pdfData;
 }
 
 #pragma mark - Table view data source
@@ -237,9 +283,6 @@
     // TODO: NSDictionary
     
     if (cell == nil) cell = [[UITableViewCell alloc]initWithStyle:UITableViewCellStyleValue1 reuseIdentifier:CellIdentifier];
-    cell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
-    
-    
     // Configure the cell...
     switch (indexPath.row) {
         case 0:
@@ -272,11 +315,15 @@
 #pragma mark - UITableView Delegate Method
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
 {
+    NSArray * array = [[NSUserDefaults standardUserDefaults]objectForKey:@"BKCategory"];
     UITableViewCell * cell = [self.tableView cellForRowAtIndexPath:indexPath];
     if (indexPath.row == 0)
     {
         de_CategoryListViewController * tv = [[de_CategoryListViewController alloc]initWithStyle:UITableViewStylePlain];
-        tv.categoryString = cell.detailTextLabel.text;
+        if (cell.detailTextLabel.text) tv.selectedIndexPath = [NSIndexPath indexPathForRow:[array indexOfObject:cell.detailTextLabel.text] inSection:0];
+        else tv.selectedIndexPath = nil;    // JT-TODO: default choose the first category ?
+        
+//        tv.categoryString = cell.detailTextLabel.text;
         [self.navigationController pushViewController:tv animated:YES];
         
     }
@@ -290,8 +337,21 @@
     else if (indexPath.row == 2)
     {
         de_FlagViewController * vc = [[de_FlagViewController alloc]initWithStyle:UITableViewStyleGrouped];
-        vc.selectedRow = self.dogEar && self.dogEar.flagged ? self.dogEar.flagged : nil;
+        if (self.dogEar.flagged) vc.selectedIndexPath = [NSIndexPath indexPathForRow:[self.dogEar.flagged integerValue] inSection:0];
+        else vc.selectedIndexPath = nil;
+//        vc.selectedRow = self.dogEar && self.dogEar.flagged ? self.dogEar.flagged : nil;
         [self.navigationController pushViewController:vc animated:YES];
+    }
+    else if (indexPath.row == 3)
+    {
+        void (^completionHandler)(UIPrintInteractionController *, BOOL, NSError *) =
+        ^(UIPrintInteractionController *pic, BOOL completed, NSError *error) {
+            if (!completed && error) NSLog(@"Print error: %@", error);
+        };
+        
+        NSData *pdfData = [self generatePDFDataForPrinting];
+        printController.printingItem = pdfData;
+        [printController presentAnimated:YES completionHandler:completionHandler];
     }
 }
 

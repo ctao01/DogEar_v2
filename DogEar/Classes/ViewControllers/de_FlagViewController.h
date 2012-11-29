@@ -10,6 +10,6 @@
 
 @interface de_FlagViewController : UITableViewController
 
-@property (nonatomic , weak) NSNumber * selectedRow;
-
+//@property (nonatomic , strong) NSNumber * selectedRow;
+@property (nonatomic , strong) NSIndexPath * selectedIndexPath;
 @end

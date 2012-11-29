@@ -12,14 +12,12 @@
 @interface de_FlagViewController ()
 
 @property (nonatomic ,retain) NSArray * flaggedArray;
-@property (nonatomic , retain) NSIndexPath * selectedIndexPath;
 @end
 
 @implementation de_FlagViewController
-@synthesize selectedRow = _selectedRow;
+@synthesize selectedIndexPath = _selectedIndexPath;
 
 @synthesize flaggedArray = _flaggedArray;
-@synthesize selectedIndexPath = _selectedIndexPath;
 
 - (id)initWithStyle:(UITableViewStyle)style
 {
@@ -34,13 +32,17 @@
 {
     [super viewDidLoad];
     self.flaggedArray = [[NSArray alloc]initWithObjects:@"Casual",@"Somewhat Important",@"Important",@"Very Important",@"Crucial", nil];
+    UIImageView * bgImage = [[UIImageView alloc]initWithImage:[UIImage imageNamed:@"dogear-bg-master"]];
+    self.tableView.backgroundView = bgImage;
 }
 
 - (void) viewWillAppear:(BOOL)animated
 {
-    [super viewWillAppear:animated];
-    if (self.selectedRow != nil)
-        self.selectedIndexPath = [NSIndexPath indexPathForRow:[self.selectedRow integerValue] inSection:0];
+//    [super viewWillAppear:animated];
+//    if (self.selectedRow != nil)
+//        self.selectedIndexPath = [NSIndexPath indexPathForRow:[self.selectedRow integerValue] inSection:0];
+//    NSLog(@"%@",self.selectedIndexPath);
+    [self.tableView reloadData];
 }
 
 - (void)didReceiveMemoryWarning
@@ -98,7 +100,7 @@
         UITableViewCell* cell =[tableView cellForRowAtIndexPath:indexPath];
         cell.accessoryType =UITableViewCellAccessoryCheckmark;
         self.selectedIndexPath = indexPath;
-        [vc.dogEar setFlagged:[NSNumber numberWithInteger:self.selectedIndexPath.row]];
+        [vc.dogEar setFlagged:[NSNumber numberWithInteger:indexPath.row]];
     }
 }
 
