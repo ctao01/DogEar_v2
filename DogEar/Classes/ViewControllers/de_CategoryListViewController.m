@@ -60,8 +60,12 @@
 - (void) viewWillDisappear:(BOOL)animated
 {
     [super viewWillDisappear:animated];
+    
+    
+    
     [[NSUserDefaults standardUserDefaults]setObject:collections forKey:@"BKCategory"];
     [[NSUserDefaults standardUserDefaults] synchronize];
+
 }
 
 - (void)didReceiveMemoryWarning
@@ -221,7 +225,6 @@
         self.selectedIndexPath = indexPath;
         [vc.dogEar setCategory:cell.textLabel.text];
     }
-
 }
 
 
