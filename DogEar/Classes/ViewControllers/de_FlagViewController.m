@@ -94,7 +94,10 @@
         [vc.dogEar setFlagged:nil];
     }
     if([self.selectedIndexPath isEqual:indexPath])
+    {
         self.selectedIndexPath = nil;
+        [vc.dogEar setFlagged:nil];
+    }
     else
     {
         UITableViewCell* cell =[tableView cellForRowAtIndexPath:indexPath];
