@@ -95,6 +95,7 @@
         cell.accessoryType =UITableViewCellAccessoryCheckmark;
         self.checkedIndexPath = indexPath;
         [vc setRepeatedTimes:self.checkedIndexPath.row];
+
     }
 }
 
