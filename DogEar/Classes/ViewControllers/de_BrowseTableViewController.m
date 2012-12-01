@@ -12,6 +12,7 @@
 
 #import "de_BrowseTableViewController.h"
 #import "de_ListTableViewController.h"
+#import "de_FlaggedListViewController.h"
 #import "DogEarObject.h"
 
 @interface de_BrowseTableViewController ()
@@ -146,7 +147,11 @@
                 if (object.flagged != nil)  [collections addObject:object];
             }
         }
+        NSLog(@"%i",[collections count]);
         
+        de_FlaggedListViewController * vc = [[de_FlaggedListViewController alloc]initWithStyle:UITableViewStyleGrouped];
+        vc.flaggedCollections = collections;
+        [self.navigationController pushViewController:vc animated:YES];
     }
     else if (indexPath.section == 1)
     {

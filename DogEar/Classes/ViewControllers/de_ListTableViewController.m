@@ -8,7 +8,9 @@
 
 #import "de_ListTableViewController.h"
 #import "de_PhotoViewController.h"
-#import "DogEarObject.h"
+
+#import "de_BrowseTableViewController.h"
+#import "de_FlaggedListViewController.h"
 
 @interface de_ListTableViewController ()
 
@@ -42,7 +44,10 @@
     UIView * view = [[UIView alloc]initWithFrame:CGRectMake(0.0f, 0.0f, 320.0f, 44.0f)];
     [view addSubview:segmentControl];
     
-    self.tableView.tableHeaderView = view;
+    UIViewController * vc = [self.navigationController.viewControllers objectAtIndex:[self.navigationController.viewControllers count]-2];
+    
+    if ([vc isMemberOfClass:[de_BrowseTableViewController class]])self.tableView.tableHeaderView = view;
+    else self.tableView.tableHeaderView = nil;
 
 }
 

@@ -46,6 +46,7 @@
 		7E4252EC16646AA100741A41 /* de_BrowseTableViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 7E4252EB16646AA100741A41 /* de_BrowseTableViewController.m */; };
 		7E4252EF16646C9500741A41 /* de_SettingViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 7E4252EE16646C5600741A41 /* de_SettingViewController.m */; };
 		7E4252F316646D7E00741A41 /* de_ListTableViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 7E4252F216646D7E00741A41 /* de_ListTableViewController.m */; };
+		7E4D27CF1669A64000FDC78D /* de_FlaggedListViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 7E4D27CE1669A64000FDC78D /* de_FlaggedListViewController.m */; };
 		7ECEB4BE1666CA2100FC007D /* NSString+DGStyle.m in Sources */ = {isa = PBXBuildFile; fileRef = 7ECEB4BD1666CA2100FC007D /* NSString+DGStyle.m */; };
 		7ECEB4C21667148500FC007D /* de_ReminderViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 7ECEB4C11667148400FC007D /* de_ReminderViewController.m */; };
 		7ECEB4C91667AC2400FC007D /* de_RepeatingLNViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 7ECEB4C81667AC2300FC007D /* de_RepeatingLNViewController.m */; };
@@ -108,6 +109,8 @@
 		7E4252EE16646C5600741A41 /* de_SettingViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; name = de_SettingViewController.m; path = Classes/ViewControllers/de_SettingViewController.m; sourceTree = "<group>"; };
 		7E4252F116646D7E00741A41 /* de_ListTableViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = de_ListTableViewController.h; path = Classes/ViewControllers/de_ListTableViewController.h; sourceTree = "<group>"; };
 		7E4252F216646D7E00741A41 /* de_ListTableViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = de_ListTableViewController.m; path = Classes/ViewControllers/de_ListTableViewController.m; sourceTree = "<group>"; };
+		7E4D27CD1669A63F00FDC78D /* de_FlaggedListViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = de_FlaggedListViewController.h; path = Classes/ViewControllers/de_FlaggedListViewController.h; sourceTree = "<group>"; };
+		7E4D27CE1669A64000FDC78D /* de_FlaggedListViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = de_FlaggedListViewController.m; path = Classes/ViewControllers/de_FlaggedListViewController.m; sourceTree = "<group>"; };
 		7ECEB4BC1666CA2100FC007D /* NSString+DGStyle.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = "NSString+DGStyle.h"; path = "Categories/NSString+DGStyle.h"; sourceTree = "<group>"; };
 		7ECEB4BD1666CA2100FC007D /* NSString+DGStyle.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = "NSString+DGStyle.m"; path = "Categories/NSString+DGStyle.m"; sourceTree = "<group>"; };
 		7ECEB4C01667148400FC007D /* de_ReminderViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = de_ReminderViewController.h; path = Classes/ViewControllers/de_ReminderViewController.h; sourceTree = "<group>"; };
@@ -317,6 +320,8 @@
 				7E4252EB16646AA100741A41 /* de_BrowseTableViewController.m */,
 				7E4252F116646D7E00741A41 /* de_ListTableViewController.h */,
 				7E4252F216646D7E00741A41 /* de_ListTableViewController.m */,
+				7E4D27CD1669A63F00FDC78D /* de_FlaggedListViewController.h */,
+				7E4D27CE1669A64000FDC78D /* de_FlaggedListViewController.m */,
 				7E4252ED16646C5600741A41 /* de_SettingViewController.h */,
 				7E4252EE16646C5600741A41 /* de_SettingViewController.m */,
 				7E2CB6901665B71900A5B40D /* de_DetailViewController.h */,
@@ -434,6 +439,7 @@
 				7ECEB4C21667148500FC007D /* de_ReminderViewController.m in Sources */,
 				7ECEB4C91667AC2400FC007D /* de_RepeatingLNViewController.m in Sources */,
 				7ECEB4CD1667B7D300FC007D /* de_FlagViewController.m in Sources */,
+				7E4D27CF1669A64000FDC78D /* de_FlaggedListViewController.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
