@@ -8,7 +8,6 @@
 
 #import "de_ListTableViewController.h"
 #import "de_PhotoViewController.h"
-#import "DogEarObject.h"
 
 @interface de_ListTableViewController ()
 
@@ -29,8 +28,8 @@
 - (void)viewDidLoad
 {
     [super viewDidLoad];
-    UIImageView * bgImage = [[UIImageView alloc]initWithImage:[UIImage imageNamed:@"dogear-bg-master"]];
-    self.tableView.backgroundView = bgImage;
+//    UIImageView * bgImage = [[UIImageView alloc]initWithImage:[UIImage imageNamed:@"dogear-bg-master"]];
+//    self.tableView.backgroundView = bgImage;
     
     UISegmentedControl * segmentControl = [[UISegmentedControl alloc]initWithItems:[NSArray arrayWithObjects:@"Most Recent", @"Most Important", nil]];
     segmentControl.frame = CGRectMake(0.0f, 5.0f, 200.0f, 30.0f);
@@ -43,6 +42,8 @@
     [view addSubview:segmentControl];
     
     self.tableView.tableHeaderView = view;
+    self.tableView.showsHorizontalScrollIndicator = YES;
+    self.tableView.contentInset = UIEdgeInsetsMake(0.0f, 0.0f, 44.0f, 0.0f);
 
 }
 
