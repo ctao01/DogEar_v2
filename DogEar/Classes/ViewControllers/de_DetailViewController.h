@@ -17,7 +17,7 @@ typedef enum {
     DogEarActionEditing
 } DogEarAction;
 
-@interface de_DetailViewController : UITableViewController
+@interface de_DetailViewController : UITableViewController < UIAlertViewDelegate >
 
 @property (nonatomic) DogEarAction action;
 

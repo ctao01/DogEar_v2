@@ -217,7 +217,10 @@
         [vc.dogEar setCategory:nil];
     }
     if([self.selectedIndexPath isEqual:indexPath])
+    {
         self.selectedIndexPath = nil;
+        [vc.dogEar setCategory:nil];
+    }
     else
     {
         UITableViewCell* cell =[tableView cellForRowAtIndexPath:indexPath];

@@ -21,6 +21,10 @@
     self.bkMainNav = [[UINavigationController alloc]initWithRootViewController:self.bkSplashScreenVC];
     self.window.rootViewController = self.bkMainNav;
     
+    //JT-Note: Handle Local Notification
+
+    [application setApplicationIconBadgeNumber:0];
+    
     return YES;
 }
 
@@ -51,6 +55,11 @@
     // Called when the application is about to terminate. Save data if appropriate. See also applicationDidEnterBackground:.
 }
 
+#pragma mark - NSLocalNotification
 
+- (void) application:(UIApplication *)application didReceiveLocalNotification:(UILocalNotification *)notification
+{
+    [application setApplicationIconBadgeNumber:0];
+}
 
 @end

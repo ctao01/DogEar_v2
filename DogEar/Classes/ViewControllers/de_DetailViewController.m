@@ -137,39 +137,37 @@
 
 - (void) edit:(id)sender
 {
-//    UITableViewCell * cell = [self.tableView cellForRowAtIndexPath:[NSIndexPath indexPathForRow:0 inSection:0]];
-//    NSString * keyString = cell.detailTextLabel.text;
-//    
-//    NSData * data = [[[NSUserDefaults standardUserDefaults]objectForKey:@"BKDataCollections"] objectForKey:keyString];
-//    NSMutableArray * decodedCollections = [NSMutableArray arrayWithArray:[NSKeyedUnarchiver unarchiveObjectWithData: data]];
-    
     
     if (self.isEditing)
     {
-        [self setTableViewUserInteractionEnable:NO];
+        if (self.dogEar.category == nil)    //JT - Comment: Necessary to select Category
+        {
+            UIAlertView * alertView = [[UIAlertView alloc]initWithTitle:@"Notice" message:@"Please select a category" delegate:self cancelButtonTitle:@"OK" otherButtonTitles: nil];
+            [alertView show];
+            return;
+        }
+        
+        else
+        {
+            [self setTableViewUserInteractionEnable:NO];
+            
+            [self saveDogEar];  // update self.dogear
+            
+    //        [decodedCollections addObject:self.dogEar];
+            [[self decodedCollections] addObject:self.dogEar];
+            [self updateDogEarDataCollectionWithSelectedCollections:[self decodedCollections]];
 
-        /*for (int c = 0; c < [self.tableView numberOfRowsInSection:0] - 1; c++) {
-            NSIndexPath * disabledIndexPath = [NSIndexPath indexPathForRow:c inSection:0];
-            UITableViewCell * disabledCell = [self.tableView cellForRowAtIndexPath:disabledIndexPath];
-            [disabledCell setUserInteractionEnabled:NO];
-        }*/
-        
-        [self saveDogEar];  // update self.dogear
-        
-//        [decodedCollections addObject:self.dogEar];
-        [[self decodedCollections] addObject:self.dogEar];
-        [self updateDogEarDataCollectionWithSelectedCollections:[self decodedCollections]];
+            [self.navigationItem.rightBarButtonItem setTitle:@"Edit"];
+            [self.navigationItem.rightBarButtonItem setStyle:UIBarButtonItemStylePlain];
+            
+            [self.navigationItem.leftBarButtonItem setTitle:@"Back"];
+            [self.navigationItem.leftBarButtonItem setStyle:UIBarButtonItemStylePlain];
+            [self.navigationItem.leftBarButtonItem setAction:@selector(backToHome)];
+            
+    //        self.navigationItem.leftBarButtonItem = nil;
 
-        [self.navigationItem.rightBarButtonItem setTitle:@"Edit"];
-        [self.navigationItem.rightBarButtonItem setStyle:UIBarButtonItemStylePlain];
-        
-        [self.navigationItem.leftBarButtonItem setTitle:@"Back"];
-        [self.navigationItem.leftBarButtonItem setStyle:UIBarButtonItemStylePlain];
-        [self.navigationItem.leftBarButtonItem setAction:@selector(backToHome)];
-        
-//        self.navigationItem.leftBarButtonItem = nil;
-
-        self.isEditing = NO;
+            self.isEditing = NO;
+        }
     }
     else
     {
@@ -196,13 +194,6 @@
         [[self decodedCollections] removeObject:self.existingDogEar];
         [self updateDogEarDataCollectionWithSelectedCollections:[self decodedCollections]];
     }
-    
-//    NSData * encodedObjects = [NSKeyedArchiver archivedDataWithRootObject:[self decodedCollections]];
-//    NSMutableDictionary * dict = [[[NSUserDefaults standardUserDefaults]objectForKey:@"BKDataCollections"] mutableCopy];
-//    
-//    [dict setObject:encodedObjects forKey:[self keyString]];
-//    [[NSUserDefaults standardUserDefaults] synchronize];
-
 }
 
 - (void) backToHome
@@ -267,7 +258,7 @@
     return decodedCollections;
 }
 
-- (NSString *) keyString
+- (NSString *) keyString    //JT- TODO: keyString v.s. self.dog.ear category
 {
     UITableViewCell * cell = [self.tableView cellForRowAtIndexPath:[NSIndexPath indexPathForRow:0 inSection:0]];
     NSString * keyString = cell.detailTextLabel.text;
@@ -288,35 +279,34 @@
     NSData *pngData = UIImagePNGRepresentation(self.image);
     [pngData writeToFile:self.dogEar.imagePath atomically:YES];
     
-    /*
-    //JT-Note: Set Notification
-    if (self.dogEar.reminderDate && self.dogEar.repeatingReminder)
-    {
-        UILocalNotification * reminder = [[UILocalNotification alloc]init];
-        if (reminder == nil) return;
-        reminder.fireDate = self.dogEar.reminderDate;
-        reminder.timeZone = [NSTimeZone defaultTimeZone];
-        
-        reminder.alertBody = [NSString stringWithFormat:@"%@",self.dogEar.title? self.dogEar.title: @"DogEar"];//JT-TODO: alertBody
-        reminder.alertLaunchImage = self.dogEar.imagePath;    
-        reminder.alertAction = @"View";
-        reminder.soundName = UILocalNotificationDefaultSoundName;
-        reminder.applicationIconBadgeNumber = 1;
-        
-        //JT-Note: Repeating Notification
-        NSInteger repeatingType = [self.dogEar.repeatingReminder integerValue];
-        if (repeatingType == 1) reminder.repeatInterval = NSHourCalendarUnit;
-        else if (repeatingType == 2) reminder.repeatInterval = NSDayCalendarUnit;
-        else if (repeatingType == 3) reminder.repeatInterval = NSWeekCalendarUnit;
-        else if (repeatingType == 4) reminder.repeatInterval = NSMonthCalendarUnit;
-        else if (repeatingType == 5) reminder.repeatInterval = NSYearCalendarUnit;
-        
-        NSDictionary * userDict = [NSDictionary dictionaryWithObject:
-                                  [NSString reminderStyleWithDate:self.dogEar.reminderDate] forKey:@"DogEarReminderNotificationDataKey"];
-        reminder.userInfo = userDict;
-        
-        [[UIApplication sharedApplication] scheduleLocalNotification:reminder];
-    }*/
+    
+//    //JT-Note: Set Notification
+//    if ((self.dogEar.reminderDate != nil) && (self.dogEar.repeatingReminder!=nil))
+//    {
+//        UILocalNotification * reminder = [[UILocalNotification alloc]init];
+//        if (reminder == nil) return;
+//        reminder.fireDate = self.dogEar.reminderDate;
+//        reminder.timeZone = [NSTimeZone defaultTimeZone];
+//        
+//        reminder.alertBody = [NSString stringWithFormat:@"%@,%@",[self keyString],self.dogEar.title? self.dogEar.title: @"DogEar"];
+//        reminder.alertAction = @"Check it";
+//        reminder.soundName = UILocalNotificationDefaultSoundName;   //JT-TODO: Select Notification sound
+//        reminder.applicationIconBadgeNumber = 1;
+//        
+//        //JT-Note: Repeating Notification
+//        NSInteger repeatingType = [self.dogEar.repeatingReminder integerValue];
+//        if (repeatingType == 1) reminder.repeatInterval = NSHourCalendarUnit;
+//        else if (repeatingType == 2) reminder.repeatInterval = NSDayCalendarUnit;
+//        else if (repeatingType == 3) reminder.repeatInterval = NSWeekCalendarUnit;
+//        else if (repeatingType == 4) reminder.repeatInterval = NSMonthCalendarUnit;
+//        else if (repeatingType == 5) reminder.repeatInterval = NSYearCalendarUnit;
+//        
+//        NSDictionary * userDict = [NSDictionary dictionaryWithObject:
+//                                  reminder.alertBody forKey:@"DogEarReminderNotificationDataKey"];
+//        reminder.userInfo = userDict;
+//        
+//        [[UIApplication sharedApplication] scheduleLocalNotification:reminder];
+//    }
 }
 
 - (void) addDogEar
@@ -362,6 +352,9 @@
     UIGraphicsEndPDFContext();
     return pdfData;
 }
+
+#pragma mark = UIAlertView Delegate
+
 
 #pragma mark - Table view data source
 
@@ -431,14 +424,14 @@
     else if (indexPath.row == 1)
     {
         de_ReminderViewController * vc = [[de_ReminderViewController alloc]initWithStyle:UITableViewStyleGrouped];
-        vc.selectedDate = self.dogEar && self.dogEar.reminderDate ? self.dogEar.reminderDate:nil;
-        vc.repeatedTimes = self.dogEar && self.dogEar.repeatingReminder ? [self.dogEar.repeatingReminder integerValue]:0;
+        vc.selectedDate = self.dogEar && (self.dogEar.reminderDate != nil) ? self.dogEar.reminderDate:nil;
+        vc.repeatedTimes = self.dogEar && (self.dogEar.repeatingReminder != nil) ? [self.dogEar.repeatingReminder integerValue]:0;
         [self.navigationController pushViewController:vc animated:YES];
     }
     else if (indexPath.row == 2)
     {
         de_FlagViewController * vc = [[de_FlagViewController alloc]initWithStyle:UITableViewStyleGrouped];
-        if (self.dogEar.flagged) vc.selectedIndexPath = [NSIndexPath indexPathForRow:[self.dogEar.flagged integerValue] inSection:0];
+        if (self.dogEar.flagged != nil) vc.selectedIndexPath = [NSIndexPath indexPathForRow:[self.dogEar.flagged integerValue] inSection:0];
         else vc.selectedIndexPath = nil;
 //        vc.selectedRow = self.dogEar && self.dogEar.flagged ? self.dogEar.flagged : nil;
         [self.navigationController pushViewController:vc animated:YES];
