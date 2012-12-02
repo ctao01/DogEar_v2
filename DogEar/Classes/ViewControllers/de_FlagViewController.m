@@ -10,14 +10,14 @@
 #import "de_DetailViewController.h"
 
 @interface de_FlagViewController ()
+{
+    NSArray * flaggedArray;
+}
 
-@property (nonatomic ,retain) NSArray * flaggedArray;
 @end
 
 @implementation de_FlagViewController
 @synthesize selectedIndexPath = _selectedIndexPath;
-
-@synthesize flaggedArray = _flaggedArray;
 
 - (id)initWithStyle:(UITableViewStyle)style
 {
@@ -31,7 +31,9 @@
 - (void)viewDidLoad
 {
     [super viewDidLoad];
-    self.flaggedArray = [[NSArray alloc]initWithObjects:@"Casual",@"Somewhat Important",@"Important",@"Very Important",@"Crucial", nil];
+    if (![[NSUserDefaults standardUserDefaults]objectForKey:@"BKFlaggedItems"])
+        flaggedArray = [[NSArray alloc]initWithObjects:@"Casual",@"Somewhat Important",@"Important",@"Very Important",@"Crucial", nil];
+    else flaggedArray = [[[NSUserDefaults standardUserDefaults]objectForKey:@"BKFlaggedItems"] copy];
     UIImageView * bgImage = [[UIImageView alloc]initWithImage:[UIImage imageNamed:@"dogear-bg-master"]];
     self.tableView.backgroundView = bgImage;
 }
@@ -76,7 +78,7 @@
         cell.accessoryType = UITableViewCellAccessoryCheckmark;
     else
         cell.accessoryType = UITableViewCellAccessoryNone;
-    cell.textLabel.text = [self.flaggedArray objectAtIndex:indexPath.row];
+    cell.textLabel.text = [flaggedArray objectAtIndex:indexPath.row];
     
     return cell;
 }
@@ -94,7 +96,10 @@
         [vc.dogEar setFlagged:nil];
     }
     if([self.selectedIndexPath isEqual:indexPath])
+    {
         self.selectedIndexPath = nil;
+        [vc.dogEar setFlagged:nil];
+    }
     else
     {
         UITableViewCell* cell =[tableView cellForRowAtIndexPath:indexPath];

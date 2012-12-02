@@ -150,21 +150,20 @@
 
 - (BOOL)textFieldShouldBeginEditing:(UITextField *)textField
 {
-    NSLog(@"textFieldShouldBeginEditing");
     return YES;
 }
 
 - (void)textFieldDidBeginEditing:(UITextField *)textField
 {
-    NSLog(@"textFieldDidBeginEditing");
 }
 
-- (BOOL)textFieldShouldEndEditing:(UITextField *)textField{
+- (BOOL)textFieldShouldEndEditing:(UITextField *)textField
+{
     
     return YES;
 }
-- (void)textFieldDidEndEditing:(UITextField *)textField{
-    NSLog(@"textFieldDidEndEditing");
+- (void)textFieldDidEndEditing:(UITextField *)textField
+{
     de_DetailViewController * vc = (de_DetailViewController*)self.vcParent;
     
     if ([textField.placeholder isEqualToString:@"Title"])
@@ -175,7 +174,6 @@
 }
 
 - (BOOL)textFieldShouldReturn:(UITextField *)textField{
-    NSLog(@"textFieldShouldReturn:");
     
     NSInteger nextTag = textField.tag + 1;
     

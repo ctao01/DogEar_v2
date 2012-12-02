@@ -9,6 +9,9 @@
 #import "de_ListTableViewController.h"
 #import "de_PhotoViewController.h"
 
+#import "de_BrowseTableViewController.h"
+#import "de_FlaggedListViewController.h"
+
 @interface de_ListTableViewController ()
 
 @end
@@ -53,6 +56,7 @@
     NSSortDescriptor *sortDescriptor = [[NSSortDescriptor alloc] initWithKey:@"insertedDate" ascending:FALSE];
     [self.collections sortUsingDescriptors:[NSArray arrayWithObject:sortDescriptor]];
     [self.tableView reloadData];
+    
 }
 
 - (void)didReceiveMemoryWarning
@@ -106,25 +110,9 @@
     UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:CellIdentifier];
     if (cell == nil)
         if (cell == nil) cell = [[UITableViewCell alloc]initWithStyle:UITableViewCellStyleSubtitle reuseIdentifier:CellIdentifier];
-    /*NSDictionary * dogEar = (NSDictionary*)[self.collections objectAtIndex:indexPath.row];
-    cell.textLabel.text = [dogEar objectForKey:@"title"];
-    cell.detailTextLabel.text = [NSString mediumStyleDateAndShortStyleTimeWithDate:[dogEar objectForKey:@"insertedDate"]];
-    
-    UIImage * image = [UIImage imageWithData:[NSData dataWithContentsOfFile:[dogEar objectForKey:@"imagePath"]]];
-    cell.imageView.image = [[UIImage alloc] initWithCGImage:image.CGImage scale:1.0 orientation:[[dogEar objectForKey:@"imageOrientation"] integerValue]];*/
-    NSDictionary * dogEarDict = (NSDictionary*)[self.collections objectAtIndex:indexPath.row];
-    DogEarObject * selectedDogEar = [DogEarObject new];
-    [dogEarDict enumerateKeysAndObjectsUsingBlock:^(id key, id obj, BOOL *stop){
-        [selectedDogEar setValue:obj forKey:(NSString *)key];
-    }];
-    cell.textLabel.text = selectedDogEar.title;
-    cell.detailTextLabel.text = [NSString mediumStyleDateAndShortStyleTimeWithDate:selectedDogEar.insertedDate];
-//    UIImage * image = [UIImage imageWithData:[NSData dataWithContentsOfFile: selectedDogEar.imagePath]];
-//    UIImage * thumbImage = [[UIImage alloc]initWithCGImage:image.CGImage scale:1.0f orientation:[selectedDogEar.imageOrientation integerValue]];
-//    cell.imageView.image = thumbImage;
-    
-    // Configure the cell...
-    
+    DogEarObject * dogEar = (DogEarObject*)[self.collections objectAtIndex:indexPath.row];
+    cell.textLabel.text = dogEar.title;
+    cell.detailTextLabel.text = [NSString mediumStyleDateAndShortStyleTimeWithDate:dogEar.insertedDate];
     return cell;
 }
 
@@ -137,18 +125,10 @@
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    NSDictionary * dogEarDict = (NSDictionary*)[self.collections objectAtIndex:indexPath.row];
-    DogEarObject * selectedDogEar = [DogEarObject new];
-    [dogEarDict enumerateKeysAndObjectsUsingBlock:^(id key, id obj, BOOL *stop){
-        [selectedDogEar setValue:obj forKey:(NSString *)key];
-    }];
-    
+    DogEarObject * selectedDogEar = (DogEarObject*)[self.collections objectAtIndex:indexPath.row];
     UIImage * image = [UIImage imageWithData:[NSData dataWithContentsOfFile:selectedDogEar.imagePath]];
-//    de_PhotoViewController * vc = [[de_PhotoViewController alloc]initWithImage:[[UIImage alloc] initWithCGImage:image.CGImage scale:1.0 orientation:[selectedDogEar.imageOrientation integerValue] ] toolBarType:BKToolBarTypeViewing];
     de_PhotoViewController * vc = [[de_PhotoViewController alloc]initWithImage:[[UIImage alloc] initWithCGImage:image.CGImage scale:1.0 orientation:[selectedDogEar.imageOrientation integerValue] ] andExistingDogEar:selectedDogEar];
-
     [self.navigationController pushViewController:vc animated:YES];
-//    [vc setExistingDogEar:selectedDogEar];
    
 }
 
