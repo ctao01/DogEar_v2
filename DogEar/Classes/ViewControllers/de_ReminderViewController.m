@@ -14,6 +14,8 @@
 @interface de_ReminderViewController ()
 {
     UIDatePicker * picker;
+    BOOL isExpandedTable;
+    
 }
 @property (nonatomic , retain) NSArray * notifArray;
 @end
@@ -43,11 +45,12 @@
     UIImageView * bgImage = [[UIImageView alloc]initWithImage:[UIImage imageNamed:@"dogear-bg-master"]];
     self.tableView.backgroundView = bgImage;
     
+
+    
     CGRect bounds = [[UIScreen mainScreen]bounds];
     picker = [[UIDatePicker alloc]initWithFrame:CGRectMake(0.0f, 250.0f, bounds.size.width, bounds.size.height - 250.0f + 44.0f)];
     picker.datePickerMode = UIDatePickerModeDateAndTime;
     picker.date = [NSDate date];
-    picker.hidden = YES;
     [picker addTarget:self
                action:@selector(changeDateReminder:)
      forControlEvents:UIControlEventValueChanged];
@@ -62,21 +65,15 @@
     UIBarButtonItem * cancelItem = [[UIBarButtonItem alloc]initWithBarButtonSystemItem:UIBarButtonSystemItemCancel target:self action:@selector(dismissTheView)];
     self.navigationItem.leftBarButtonItem = cancelItem;
     self.navigationItem.title = @"Reminder";
+    
 }
 
-- (void) viewWillAppear:(BOOL)animated
+- (void) viewWillLayoutSubviews
 {
-    [super viewWillAppear:animated];
-    [self.tableView reloadData];
-    picker.hidden = NO;
-}
-
-
-- (void) viewWillDisappear:(BOOL)animated
-{
-    [super viewWillDisappear:animated];
+    [super viewWillLayoutSubviews];
     picker.hidden = YES;
 }
+
 
 - (void)didReceiveMemoryWarning
 {
@@ -85,6 +82,27 @@
 }
 
 #pragma mark -
+
+- (void) switchTurnOnOff:(id)sender
+{
+    UISwitch * toggle = (UISwitch*)sender;
+    
+    if (toggle.on)
+    {
+        isExpandedTable = YES;
+        [toggle setOn:NO animated:YES];
+    }
+    else
+    {
+        isExpandedTable = NO;
+        [toggle setOn:YES animated:YES];
+        picker.hidden = YES;
+
+    }
+    NSLog(@"%@",toggle.on ? @"YES" : @"NO");
+    
+    [self.tableView reloadData];
+}
 
 - (void)changeDateReminder:(id)sender
 {
@@ -101,8 +119,17 @@
 - (void) addReminder:(id)sender
 {
     de_DetailViewController * vc = (de_DetailViewController*)[self.navigationController.viewControllers objectAtIndex:[self.navigationController.viewControllers count]-2];
-    [vc.dogEar setReminderDate:self.selectedDate];
-    [vc.dogEar setRepeatingReminder:[NSNumber numberWithInteger:self.repeatedTimes]];
+    if (picker.hidden == NO)
+    {
+        [vc.dogEar setReminderDate:self.selectedDate];
+        [vc.dogEar setRepeatingReminder:[NSNumber numberWithInteger:self.repeatedTimes]];
+
+    }
+    else
+    {
+        [vc.dogEar setReminderDate:nil];
+        [vc.dogEar setRepeatingReminder:nil];
+    }
     
     [self.navigationController popViewControllerAnimated:YES];
 }
@@ -117,8 +144,8 @@
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
 {
-    // Return the number of rows in the section.
-    return 2;
+    if (isExpandedTable == NO) return 1;
+    else return 3;
 }
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
@@ -128,21 +155,29 @@
     if (cell == nil) {
         cell = [[UITableViewCell alloc]initWithStyle:UITableViewCellStyleValue1 reuseIdentifier:CellIdentifier];
     }
+    
+    cell.selectionStyle = UITableViewCellSelectionStyleGray;
+//
     if (indexPath.row == 0)
     {
-        cell.textLabel.text = (self.selectedDate != nil)? [NSString reminderStyleWithDate:self.selectedDate]:[NSString reminderStyleWithDate:[NSDate date]] ;
-        cell.accessoryType = UITableViewCellAccessoryNone;
-
-    }
-    else if (indexPath.row == 1)
-    {
-        cell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
-        cell.textLabel.text = @"Repeat";
-        cell.detailTextLabel.text = [self.notifArray objectAtIndex:self.repeatedTimes];
+        cell.selectionStyle = UITableViewCellSelectionStyleNone;
+        cell.textLabel.text = @"Remind Me On A Day";
+    
+        UISwitch * reminderSwitch = [[UISwitch alloc]initWithFrame:CGRectMake(0.0f, 0.0f, 80.0f, 44.0f)];
+        [reminderSwitch addTarget:self action:@selector(switchTurnOnOff:) forControlEvents:UIControlEventValueChanged];
+        reminderSwitch.on = isExpandedTable;
+        cell.accessoryView = reminderSwitch;
     }
     
-    // Configure the cell...
-    cell.selectionStyle = UITableViewCellSelectionStyleGray;
+    else if (indexPath.row == 1)
+            cell.textLabel.text = (self.selectedDate != nil)? [NSString reminderStyleWithDate:self.selectedDate]:[NSString reminderStyleWithDate:[NSDate date]] ;
+    else if (indexPath.row == 2)
+    {
+            cell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
+            cell.textLabel.text = @"Repeat";
+            cell.detailTextLabel.text = [self.notifArray objectAtIndex:self.repeatedTimes];
+    }
+    
     return cell;
 }
 
@@ -151,12 +186,12 @@
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
 {
     switch (indexPath.row) {
-        case 0:
+        case 1:
         {
-            
+            picker.hidden = NO;
         }
             break;
-        case 1:
+        case 2:
         {
             de_RepeatingLNViewController * vc = [[de_RepeatingLNViewController alloc]initWithStyle:UITableViewStyleGrouped];
             vc.checkedIndexPath = [NSIndexPath indexPathForRow:self.repeatedTimes inSection:0];
