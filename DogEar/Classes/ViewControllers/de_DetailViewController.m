@@ -99,7 +99,8 @@
         }
     }
     NSLog(@"existingDogEar:%@",(self.existingDogEar != nil) ? @"YES":@"NO");
-    
+    NSLog(@"existingDogEarTitle:%@",self.existingDogEar.title);
+
     if(self.existingDogEar == nil ) self.dogEar = [DogEarObject new];
     else self.dogEar = self.existingDogEar;
 
@@ -292,33 +293,43 @@
     [pngData writeToFile:self.dogEar.imagePath atomically:YES];*/
     
     
-//    //JT-Note: Set Notification
-//    if ((self.dogEar.reminderDate != nil) && (self.dogEar.repeatingReminder!=nil))
-//    {
-//        UILocalNotification * reminder = [[UILocalNotification alloc]init];
-//        if (reminder == nil) return;
-//        reminder.fireDate = self.dogEar.reminderDate;
-//        reminder.timeZone = [NSTimeZone defaultTimeZone];
-//        
-//        reminder.alertBody = [NSString stringWithFormat:@"%@,%@",[self keyString],self.dogEar.title? self.dogEar.title: @"DogEar"];
-//        reminder.alertAction = @"Check it";
-//        reminder.soundName = UILocalNotificationDefaultSoundName;   //JT-TODO: Select Notification sound
-//        reminder.applicationIconBadgeNumber = 1;
-//        
-//        //JT-Note: Repeating Notification
-//        NSInteger repeatingType = [self.dogEar.repeatingReminder integerValue];
-//        if (repeatingType == 1) reminder.repeatInterval = NSHourCalendarUnit;
-//        else if (repeatingType == 2) reminder.repeatInterval = NSDayCalendarUnit;
-//        else if (repeatingType == 3) reminder.repeatInterval = NSWeekCalendarUnit;
-//        else if (repeatingType == 4) reminder.repeatInterval = NSMonthCalendarUnit;
-//        else if (repeatingType == 5) reminder.repeatInterval = NSYearCalendarUnit;
-//        
-//        NSDictionary * userDict = [NSDictionary dictionaryWithObject:
-//                                  reminder.alertBody forKey:@"DogEarReminderNotificationDataKey"];
-//        reminder.userInfo = userDict;
-//        
-//        [[UIApplication sharedApplication] scheduleLocalNotification:reminder];
-//    }
+    //JT-Note: Set Notification
+    if ((self.dogEar.reminderDate != NULL) && (self.dogEar.repeatingReminder!= NULL))
+    {
+        UILocalNotification * reminder = [[UILocalNotification alloc]init];
+        if (reminder == nil) return;
+        reminder.fireDate = self.dogEar.reminderDate;
+        reminder.timeZone = [NSTimeZone defaultTimeZone];
+        
+        reminder.alertBody = [NSString stringWithFormat:@"%@,%@",[self keyString],self.dogEar.title? self.dogEar.title: @"DogEar"];
+        reminder.alertAction = @"Check it";
+        reminder.soundName = UILocalNotificationDefaultSoundName;   //JT-TODO: Select Notification sound
+        reminder.applicationIconBadgeNumber = 1;
+        
+        //JT-Note: Repeating Notification
+        NSInteger repeatingType = [self.dogEar.repeatingReminder integerValue];
+        if (repeatingType == 1) reminder.repeatInterval = NSHourCalendarUnit;
+        else if (repeatingType == 2) reminder.repeatInterval = NSDayCalendarUnit;
+        else if (repeatingType == 3) reminder.repeatInterval = NSWeekCalendarUnit;
+        else if (repeatingType == 4) reminder.repeatInterval = NSMonthCalendarUnit;
+        else if (repeatingType == 5) reminder.repeatInterval = NSYearCalendarUnit;
+        
+        NSDictionary * userDict = [NSDictionary dictionaryWithObject:
+                                  reminder.alertBody forKey:@"DogEarReminderNotificationDataKey"];
+        reminder.userInfo = userDict;
+        
+        [[UIApplication sharedApplication] scheduleLocalNotification:reminder];
+    }
+    
+    NSLog(@"reminderDate:%@",self.dogEar.reminderDate);
+    NSLog(@"repeatingReminder:%@",self.dogEar.repeatingReminder);
+    NSLog(@"category:%@",self.dogEar.category);
+    NSLog(@"flagged:%@",self.dogEar.flagged);
+    NSLog(@"title:%@",self.dogEar.title);
+    NSLog(@"note:%@",self.dogEar.note);
+
+
+
 }
 
 - (void) addDogEar
@@ -326,26 +337,26 @@
     [self saveDogEar];
     [self.dogEar setInsertedDate:[NSDate date]];    //JT-Note: Add "insertedDate" only when add a new object.
 
-    NSMutableArray * array = [[NSMutableArray alloc]initWithArray:[self decodedCollections]];
+    /*NSMutableArray * array = [[NSMutableArray alloc]initWithArray:[self decodedCollections]];
     [array addObject:self.dogEar];
-    [self updateDogEarDataCollectionWithSelectedCollections:array];
+    [self updateDogEarDataCollectionWithSelectedCollections:array];*/
     
-//    NSIndexPath * indexPath = [NSIndexPath indexPathForRow:0 inSection:0];
-//    UITableViewCell * cell = [self.tableView cellForRowAtIndexPath:indexPath];
-//    NSString * key = cell.detailTextLabel.text;
-//    
-//    NSDictionary * dict = [[[NSUserDefaults standardUserDefaults]objectForKey:@"BKDataCollections"] mutableCopy];
-//    
-//    NSMutableArray * selectedObjects = [NSMutableArray arrayWithArray:[NSKeyedUnarchiver unarchiveObjectWithData:[dict objectForKey:key]]];
-////    [[self decodedCollections] addObject:self.dogEar];
-//    [selectedObjects addObject:self.dogEar];
-//    
-//    NSData * encodedObjects = [NSKeyedArchiver archivedDataWithRootObject:selectedObjects];
-//    [dict setValue:encodedObjects forKey:key];
-//    
-//    [[NSUserDefaults standardUserDefaults]setObject:dict forKey:@"BKDataCollections"];
-//    [[NSUserDefaults standardUserDefaults] synchronize];
-////    [self updateDogEarDataCollectionWithSelectedCollections:[self decodedCollections]];
+    NSIndexPath * indexPath = [NSIndexPath indexPathForRow:0 inSection:0];
+    UITableViewCell * cell = [self.tableView cellForRowAtIndexPath:indexPath];
+    NSString * key = cell.detailTextLabel.text;
+    
+    NSDictionary * dict = [[[NSUserDefaults standardUserDefaults]objectForKey:@"BKDataCollections"] mutableCopy];
+    
+    NSMutableArray * selectedObjects = [NSMutableArray arrayWithArray:[NSKeyedUnarchiver unarchiveObjectWithData:[dict objectForKey:key]]];
+//    [[self decodedCollections] addObject:self.dogEar];
+    [selectedObjects addObject:self.dogEar];
+    
+    NSData * encodedObjects = [NSKeyedArchiver archivedDataWithRootObject:selectedObjects];
+    [dict setValue:encodedObjects forKey:key];
+    
+    [[NSUserDefaults standardUserDefaults]setObject:dict forKey:@"BKDataCollections"];
+    [[NSUserDefaults standardUserDefaults] synchronize];
+//    [self updateDogEarDataCollectionWithSelectedCollections:[self decodedCollections]];
 
     if (self.tabBarController.selectedIndex == 0)[self.navigationController popToRootViewControllerAnimated:YES];
     else {
@@ -403,14 +414,24 @@
             cell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
             break;
         case 1:
+            
             cell.textLabel.text = @"Reminder";
+            cell.detailTextLabel.text = (self.dogEar.reminderDate != NULL)? [NSString reminderSubtitleStyleWithDate:self.dogEar.reminderDate]: @"";
             cell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
             
             break;
         case 2:
+        {
             cell.textLabel.text = @"Flagged";
-            cell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
+            NSArray * flaggedItems = [[NSArray alloc]init];
             
+            if ([[NSUserDefaults standardUserDefaults] objectForKey:@"BKFlaggedItems"])
+                flaggedItems = [[[NSUserDefaults standardUserDefaults] objectForKey:@"BKFlaggedItems"] copy];
+            else
+                flaggedItems = [[NSArray alloc]initWithObjects:@"Casual",@"Somewhat Important",@"Important",@"Very Important",@"Crucial", nil];
+            cell.detailTextLabel.text = (self.dogEar.flagged != NULL)?[flaggedItems objectAtIndex:[self.dogEar.flagged integerValue]]:@"";
+            cell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
+        }
             break;
         case 3:
             cell.textLabel.text = @"Print";

@@ -14,6 +14,7 @@
 
 + (NSString*) mediumStyleDateAndShortStyleTimeWithDate:(NSDate*)date;
 + (NSString*) reminderStyleWithDate:(NSDate*)date;
++ (NSString*) reminderSubtitleStyleWithDate:(NSDate*)date;
 
 + (NSString *)generateRandomString;
 + (NSString *)generateRandomStringWithDate:(NSDate*)date;

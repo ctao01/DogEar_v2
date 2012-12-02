@@ -66,6 +66,10 @@
     self.navigationItem.leftBarButtonItem = cancelItem;
     self.navigationItem.title = @"Reminder";
     
+    de_DetailViewController * vc = (de_DetailViewController*)[self.navigationController.viewControllers objectAtIndex:[self.navigationController.viewControllers count]-2];
+    if (vc.dogEar.reminderDate != NULL)
+        isExpandedTable = YES;
+    else isExpandedTable = NO;
 }
 
 - (void) viewWillLayoutSubviews
@@ -119,7 +123,7 @@
 - (void) addReminder:(id)sender
 {
     de_DetailViewController * vc = (de_DetailViewController*)[self.navigationController.viewControllers objectAtIndex:[self.navigationController.viewControllers count]-2];
-    if (picker.hidden == NO)
+    if (isExpandedTable == YES)
     {
         [vc.dogEar setReminderDate:self.selectedDate];
         [vc.dogEar setRepeatingReminder:[NSNumber numberWithInteger:self.repeatedTimes]];
@@ -127,8 +131,8 @@
     }
     else
     {
-        [vc.dogEar setReminderDate:nil];
-        [vc.dogEar setRepeatingReminder:nil];
+        [vc.dogEar setReminderDate:NULL];
+        [vc.dogEar setRepeatingReminder:NULL];
     }
     
     [self.navigationController popViewControllerAnimated:YES];

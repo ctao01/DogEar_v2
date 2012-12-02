@@ -56,10 +56,10 @@
 }
 
 #pragma mark - NSLocalNotification
-
+/*
 - (void) application:(UIApplication *)application didReceiveLocalNotification:(UILocalNotification *)notification
 {
     [application setApplicationIconBadgeNumber:0];
-}
+}*/
 
 @end

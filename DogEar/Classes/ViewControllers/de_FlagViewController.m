@@ -93,12 +93,12 @@
     {
         UITableViewCell* uncheckCell =[tableView  cellForRowAtIndexPath:self.selectedIndexPath];
         uncheckCell.accessoryType =UITableViewCellAccessoryNone;
-        [vc.dogEar setFlagged:nil];
+        [vc.dogEar setFlagged:NULL];
     }
     if([self.selectedIndexPath isEqual:indexPath])
     {
         self.selectedIndexPath = nil;
-        [vc.dogEar setFlagged:nil];
+        [vc.dogEar setFlagged:NULL];
     }
     else
     {

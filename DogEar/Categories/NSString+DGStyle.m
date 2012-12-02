@@ -41,6 +41,15 @@
     return dateString;
 }
 
++ (NSString*) reminderSubtitleStyleWithDate:(NSDate*)date
+{
+    NSDateFormatter * formatter = [[NSDateFormatter alloc] init];
+    [formatter setDateFormat:@"MM/d/yy,hh:mm a"];
+    
+    NSString * dateString = [formatter stringFromDate:date];
+    
+    return dateString;
+}
 
 + (NSString *)generateRandomStringWithDate:(NSDate*)date
 {

@@ -88,7 +88,11 @@
         [vc setRepeatedTimes:0];
     }
     if([self.checkedIndexPath isEqual:indexPath])
+    {
         self.checkedIndexPath = nil;
+        [vc setRepeatedTimes:0];
+
+    }
     else
     {
         UITableViewCell* cell =[tableView cellForRowAtIndexPath:indexPath];
