@@ -148,10 +148,11 @@
             [self setTableViewUserInteractionEnable:NO];
             
             [self saveDogEar];  // update self.dogear
+
+            NSMutableArray * array = [[NSMutableArray alloc]initWithArray:[self decodedCollections]];
             
-    //        [decodedCollections addObject:self.dogEar];
-            [[self decodedCollections] addObject:self.dogEar];
-            [self updateDogEarDataCollectionWithSelectedCollections:[self decodedCollections]];
+            [array addObject:self.dogEar];
+            [self updateDogEarDataCollectionWithSelectedCollections:array];
 
             [self.navigationItem.rightBarButtonItem setTitle:@"Edit"];
             [self.navigationItem.rightBarButtonItem setStyle:UIBarButtonItemStylePlain];
