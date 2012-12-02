@@ -292,33 +292,33 @@
     [pngData writeToFile:self.dogEar.imagePath atomically:YES];*/
     
     
-//    //JT-Note: Set Notification
-//    if ((self.dogEar.reminderDate != nil) && (self.dogEar.repeatingReminder!=nil))
-//    {
-//        UILocalNotification * reminder = [[UILocalNotification alloc]init];
-//        if (reminder == nil) return;
-//        reminder.fireDate = self.dogEar.reminderDate;
-//        reminder.timeZone = [NSTimeZone defaultTimeZone];
-//        
-//        reminder.alertBody = [NSString stringWithFormat:@"%@,%@",[self keyString],self.dogEar.title? self.dogEar.title: @"DogEar"];
-//        reminder.alertAction = @"Check it";
-//        reminder.soundName = UILocalNotificationDefaultSoundName;   //JT-TODO: Select Notification sound
-//        reminder.applicationIconBadgeNumber = 1;
-//        
-//        //JT-Note: Repeating Notification
-//        NSInteger repeatingType = [self.dogEar.repeatingReminder integerValue];
-//        if (repeatingType == 1) reminder.repeatInterval = NSHourCalendarUnit;
-//        else if (repeatingType == 2) reminder.repeatInterval = NSDayCalendarUnit;
-//        else if (repeatingType == 3) reminder.repeatInterval = NSWeekCalendarUnit;
-//        else if (repeatingType == 4) reminder.repeatInterval = NSMonthCalendarUnit;
-//        else if (repeatingType == 5) reminder.repeatInterval = NSYearCalendarUnit;
-//        
-//        NSDictionary * userDict = [NSDictionary dictionaryWithObject:
-//                                  reminder.alertBody forKey:@"DogEarReminderNotificationDataKey"];
-//        reminder.userInfo = userDict;
-//        
-//        [[UIApplication sharedApplication] scheduleLocalNotification:reminder];
-//    }
+    //JT-Note: Set Notification
+    if ((self.dogEar.reminderDate != NULL) && (self.dogEar.repeatingReminder!=NULL))
+    {
+        UILocalNotification * reminder = [[UILocalNotification alloc]init];
+        if (reminder == nil) return;
+        reminder.fireDate = self.dogEar.reminderDate;
+        reminder.timeZone = [NSTimeZone defaultTimeZone];
+        
+        reminder.alertBody = [NSString stringWithFormat:@"%@,%@",[self keyString],self.dogEar.title? self.dogEar.title: @"DogEar"];
+        reminder.alertAction = @"Check it";
+        reminder.soundName = UILocalNotificationDefaultSoundName;   //JT-TODO: Select Notification sound
+        reminder.applicationIconBadgeNumber = 1;
+        
+        //JT-Note: Repeating Notification
+        NSInteger repeatingType = [self.dogEar.repeatingReminder integerValue];
+        if (repeatingType == 1) reminder.repeatInterval = NSHourCalendarUnit;
+        else if (repeatingType == 2) reminder.repeatInterval = NSDayCalendarUnit;
+        else if (repeatingType == 3) reminder.repeatInterval = NSWeekCalendarUnit;
+        else if (repeatingType == 4) reminder.repeatInterval = NSMonthCalendarUnit;
+        else if (repeatingType == 5) reminder.repeatInterval = NSYearCalendarUnit;
+        
+        NSDictionary * userDict = [NSDictionary dictionaryWithObject:
+                                  reminder.alertBody forKey:@"DogEarReminderNotificationDataKey"];
+        reminder.userInfo = userDict;
+        
+        [[UIApplication sharedApplication] scheduleLocalNotification:reminder];
+    }
 }
 
 - (void) addDogEar
