@@ -26,6 +26,12 @@
 
 - (NSData *)generatePDFDataForPrinting;
 
+- (void) setTableViewUserInteractionEnable:(BOOL)enable;
+- (void) updateDogEarDataCollectionWithSelectedCollections:(NSMutableArray*)collections;
+
+- (NSMutableArray*) decodedCollections;
+- (NSString *) keyString;
+
 @end
 
 @implementation de_DetailViewController
@@ -72,7 +78,6 @@
 //    else if (self.action == DogEarActionViewing) headerView.allowEditing = NO;
     
     self.tableView.tableHeaderView = headerView;
-    self.dogEar = nil;
     
     //JT-Note:
     Class printControllerClass = NSClassFromString(@"UIPrintInteractionController");
@@ -85,6 +90,9 @@
         UIBarButtonItem * editItem = [[UIBarButtonItem alloc]initWithTitle:@"Edit" style:UIBarButtonItemStyleBordered target:self action:@selector(edit:)];
         self.navigationItem.rightBarButtonItem = editItem;
         
+        UIBarButtonItem * backItem = [[UIBarButtonItem alloc]initWithTitle:@"Back" style:UIBarButtonItemStylePlain target:self action:@selector(backToHome)];
+        self.navigationItem.leftBarButtonItem = backItem;
+        
         //        self.tableView.userInteractionEnabled = NO;
         for (int c = 0; c < [self.tableView numberOfRowsInSection:0] - 1; c++) {
             NSIndexPath * disabledIndexPath = [NSIndexPath indexPathForRow:c inSection:0];
@@ -95,32 +103,28 @@
     
     if(!self.existingDogEar) self.dogEar = [DogEarObject new];
     else self.dogEar = self.existingDogEar;
-    
+
 }
+
 
 - (void) viewWillAppear:(BOOL)animated
 {
     [super viewWillAppear:animated];
     [self.tableView reloadData];
-}
 
-// JT-TODO: get rid of action eumn, using self.existing == nil or exisit
-
-- (void) viewDidAppear:(BOOL)animated
-{
-    [super viewDidAppear:animated];
+    NSLog(@"viewWillAppear:%@",[self keyString]);
     
-    NSIndexPath * path = [NSIndexPath indexPathForRow:0 inSection:0];
-    UITableViewCell * cell = [self.tableView cellForRowAtIndexPath:path];
-    
-    if (![cell.detailTextLabel.text isEqualToString:@""])
+    if (self.existingDogEar == nil)
     {
-        UIBarButtonItem * saveItem = [[UIBarButtonItem alloc]initWithTitle:@"Add" style:UIBarButtonItemStyleBordered target:self action:@selector(addDogEar)];
-        self.navigationItem.rightBarButtonItem = saveItem;
+        if (![[self keyString] isEqualToString:@""])
+        {
+            UIBarButtonItem * saveItem = [[UIBarButtonItem alloc]initWithTitle:@"Add" style:UIBarButtonItemStyleBordered target:self action:@selector(addDogEar)];
+            self.navigationItem.rightBarButtonItem = saveItem;
+        }
+        else
+            self.navigationItem.rightBarButtonItem = nil;
     }
-    else
-        self.navigationItem.rightBarButtonItem = nil;
-
+    
 }
 
 - (void)didReceiveMemoryWarning
@@ -133,69 +137,160 @@
 
 - (void) edit:(id)sender
 {
-    NSString * keyString = self.dogEar.category;
-    NSData * data = [[[NSUserDefaults standardUserDefaults]objectForKey:@"BKDataCollections"] objectForKey:keyString];
-    NSMutableArray * decodedCollections = [NSMutableArray arrayWithArray:[NSKeyedUnarchiver unarchiveObjectWithData: data]];
+//    UITableViewCell * cell = [self.tableView cellForRowAtIndexPath:[NSIndexPath indexPathForRow:0 inSection:0]];
+//    NSString * keyString = cell.detailTextLabel.text;
+//    
+//    NSData * data = [[[NSUserDefaults standardUserDefaults]objectForKey:@"BKDataCollections"] objectForKey:keyString];
+//    NSMutableArray * decodedCollections = [NSMutableArray arrayWithArray:[NSKeyedUnarchiver unarchiveObjectWithData: data]];
+    
     
     if (self.isEditing)
     {
-//        self.tableView.userInteractionEnabled = NO;
-        // JT-TODO: print function should be enabled
-        for (int c = 0; c < [self.tableView numberOfRowsInSection:0] - 1; c++) {
+        [self setTableViewUserInteractionEnable:NO];
+
+        /*for (int c = 0; c < [self.tableView numberOfRowsInSection:0] - 1; c++) {
             NSIndexPath * disabledIndexPath = [NSIndexPath indexPathForRow:c inSection:0];
             UITableViewCell * disabledCell = [self.tableView cellForRowAtIndexPath:disabledIndexPath];
             [disabledCell setUserInteractionEnabled:NO];
-        }
+        }*/
         
-        [decodedCollections addObject:self.dogEar];
+        [self saveDogEar];  // update self.dogear
+        
+//        [decodedCollections addObject:self.dogEar];
+        [[self decodedCollections] addObject:self.dogEar];
+        [self updateDogEarDataCollectionWithSelectedCollections:[self decodedCollections]];
 
-        
         [self.navigationItem.rightBarButtonItem setTitle:@"Edit"];
         [self.navigationItem.rightBarButtonItem setStyle:UIBarButtonItemStylePlain];
         
-        self.navigationItem.leftBarButtonItem = nil;
-        self.isEditing = NO;
+        [self.navigationItem.leftBarButtonItem setTitle:@"Back"];
+        [self.navigationItem.leftBarButtonItem setStyle:UIBarButtonItemStylePlain];
+        [self.navigationItem.leftBarButtonItem setAction:@selector(backToHome)];
         
+//        self.navigationItem.leftBarButtonItem = nil;
+
+        self.isEditing = NO;
     }
     else
     {
-        //JT:TODO - remove dogEar from Array
-        [decodedCollections removeObject:self.existingDogEar];
-        
-//        self.tableView.userInteractionEnabled = YES;
+        [self setTableViewUserInteractionEnable:YES];
+        /*
         for (int c = 0; c < [self.tableView numberOfRowsInSection:0] - 1; c++) {
             NSIndexPath * disabledIndexPath = [NSIndexPath indexPathForRow:c inSection:0];
             UITableViewCell * disabledCell = [self.tableView cellForRowAtIndexPath:disabledIndexPath];
             [disabledCell setUserInteractionEnabled:YES];
-        }
+        }*/
         
         [self.navigationItem.rightBarButtonItem setTitle:@"Done"];
         [self.navigationItem.rightBarButtonItem setStyle:UIBarButtonItemStyleDone];
         
-        UIBarButtonItem * cancelItem = [[UIBarButtonItem alloc]initWithBarButtonSystemItem:UIBarButtonSystemItemCancel target:self action:@selector(cancelEditing)];
-        self.navigationItem.leftBarButtonItem = cancelItem;
-        self.isEditing = YES; 
+        [self.navigationItem.leftBarButtonItem setTitle:@"Cancel"];
+        [self.navigationItem.leftBarButtonItem setStyle:UIBarButtonItemStylePlain];
+        [self.navigationItem.leftBarButtonItem setAction:@selector(cancelEditing)];
+        
+        
+        self.isEditing = YES;
+        
+        //JT:TODO - remove dogEar from Array
+//        [decodedCollections removeObject:self.existingDogEar];
+        [[self decodedCollections] removeObject:self.existingDogEar];
+        [self updateDogEarDataCollectionWithSelectedCollections:[self decodedCollections]];
     }
-    NSData * encodedObjects = [NSKeyedArchiver archivedDataWithRootObject:decodedCollections];
-    NSMutableDictionary * dict = [[[NSUserDefaults standardUserDefaults]objectForKey:@"BKDataCollections"] mutableCopy];
-    [dict setObject:encodedObjects forKey:keyString];
-    [[NSUserDefaults standardUserDefaults] synchronize];
+    
+//    NSData * encodedObjects = [NSKeyedArchiver archivedDataWithRootObject:[self decodedCollections]];
+//    NSMutableDictionary * dict = [[[NSUserDefaults standardUserDefaults]objectForKey:@"BKDataCollections"] mutableCopy];
+//    
+//    [dict setObject:encodedObjects forKey:[self keyString]];
+//    [[NSUserDefaults standardUserDefaults] synchronize];
 
 }
+
+- (void) backToHome
+{
+    if (self.tabBarController.selectedIndex == 0)[self.navigationController popToRootViewControllerAnimated:YES];
+    else {
+        [self.tabBarController setSelectedIndex:0];
+        UINavigationController * nc = [self.tabBarController.viewControllers objectAtIndex:0];
+        [nc popToRootViewControllerAnimated:YES];
+    }
+}
+
+- (void) cancelEditing
+{
+    [self.navigationItem.rightBarButtonItem setTitle:@"Edit"];
+    [self.navigationItem.rightBarButtonItem setStyle:UIBarButtonItemStylePlain];
+    
+    [self.navigationItem.leftBarButtonItem setTitle:@"Back"];
+    [self.navigationItem.leftBarButtonItem setStyle:UIBarButtonItemStylePlain];
+    [self.navigationItem.leftBarButtonItem setAction:@selector(backToHome)];
+    
+    [self setTableViewUserInteractionEnable:NO];
+    self.isEditing = NO;
+    
+    [self saveDogEar];
+    [[self decodedCollections] addObject:self.dogEar];
+    [self updateDogEarDataCollectionWithSelectedCollections:[self decodedCollections]];
+
+}
+
+#pragma mark - Private Method
+
+- (void) setTableViewUserInteractionEnable:(BOOL)enable
+{
+    for (int c = 0; c < [self.tableView numberOfRowsInSection:0] - 1; c++) {
+        NSIndexPath * disabledIndexPath = [NSIndexPath indexPathForRow:c inSection:0];
+        UITableViewCell * disabledCell = [self.tableView cellForRowAtIndexPath:disabledIndexPath];
+        [disabledCell setUserInteractionEnabled:enable];
+    }
+}
+
+- (void) updateDogEarDataCollectionWithSelectedCollections:(NSMutableArray*)collections
+{
+    NSData * encodedObjects = [NSKeyedArchiver archivedDataWithRootObject:collections];
+    NSMutableDictionary * dict = [[[NSUserDefaults standardUserDefaults]objectForKey:@"BKDataCollections"] mutableCopy];
+    
+    [dict setObject:encodedObjects forKey:[self keyString]];
+    [[NSUserDefaults standardUserDefaults] setObject:dict forKey:@"BKDataCollections"];
+    [[NSUserDefaults standardUserDefaults] synchronize];
+}
+
+#pragma mark - Private Getter / Setter
+
+- (NSMutableArray*) decodedCollections 
+{
+    UITableViewCell * cell = [self.tableView cellForRowAtIndexPath:[NSIndexPath indexPathForRow:0 inSection:0]];
+    NSString * keyString = cell.detailTextLabel.text;
+    
+    NSData * data = [[[NSUserDefaults standardUserDefaults]objectForKey:@"BKDataCollections"] objectForKey:keyString];
+    NSMutableArray * decodedCollections = [NSMutableArray arrayWithArray:[NSKeyedUnarchiver unarchiveObjectWithData: data]];
+    
+    return decodedCollections;
+}
+
+- (NSString *) keyString
+{
+    UITableViewCell * cell = [self.tableView cellForRowAtIndexPath:[NSIndexPath indexPathForRow:0 inSection:0]];
+    NSString * keyString = cell.detailTextLabel.text;
+    return keyString;
+}
+
+
 
 #pragma mark - DogEar Method
 
 - (void) saveDogEar
 {
     [self.dogEar setInsertedDate:[NSDate date]];
-
-    
     [self.dogEar setImagePath:[NSString imagePathWithFileName:[self.dogEar.title stringByAppendingFormat:@"%@",[NSString generateRandomString]]]];
     [self.dogEar setImageOrientation: [NSNumber numberWithInteger:[self.image imageOrientation]]];
 
+    //JT-Note: Save Image to Device
+    NSData *pngData = UIImagePNGRepresentation(self.image);
+    [pngData writeToFile:self.dogEar.imagePath atomically:YES];
     
-    // setNotification
-    if (self.dogEar.reminderDate)
+    /*
+    //JT-Note: Set Notification
+    if (self.dogEar.reminderDate && self.dogEar.repeatingReminder)
     {
         UILocalNotification * reminder = [[UILocalNotification alloc]init];
         if (reminder == nil) return;
@@ -208,19 +303,25 @@
         reminder.soundName = UILocalNotificationDefaultSoundName;
         reminder.applicationIconBadgeNumber = 1;
         
+        //JT-Note: Repeating Notification
+        NSInteger repeatingType = [self.dogEar.repeatingReminder integerValue];
+        if (repeatingType == 1) reminder.repeatInterval = NSHourCalendarUnit;
+        else if (repeatingType == 2) reminder.repeatInterval = NSDayCalendarUnit;
+        else if (repeatingType == 3) reminder.repeatInterval = NSWeekCalendarUnit;
+        else if (repeatingType == 4) reminder.repeatInterval = NSMonthCalendarUnit;
+        else if (repeatingType == 5) reminder.repeatInterval = NSYearCalendarUnit;
+        
         NSDictionary * userDict = [NSDictionary dictionaryWithObject:
                                   [NSString reminderStyleWithDate:self.dogEar.reminderDate] forKey:@"DogEarReminderNotificationDataKey"];
         reminder.userInfo = userDict;
         
         [[UIApplication sharedApplication] scheduleLocalNotification:reminder];
-    }
+    }*/
 }
 
 - (void) addDogEar
 {
     [self saveDogEar];
-    NSData *pngData = UIImagePNGRepresentation(self.image);
-    [pngData writeToFile:self.dogEar.imagePath atomically:YES];
     
     NSIndexPath * indexPath = [NSIndexPath indexPathForRow:0 inSection:0];
     UITableViewCell * cell = [self.tableView cellForRowAtIndexPath:indexPath];
