@@ -8,6 +8,6 @@
 
 #import <UIKit/UIKit.h>
 
-@interface de_BrowseTableViewController : UITableViewController
+@interface de_BrowseTableViewController : UITableViewController <UISearchDisplayDelegate>
 
 @end

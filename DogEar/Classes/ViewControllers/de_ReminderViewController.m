@@ -55,6 +55,7 @@
                action:@selector(changeDateReminder:)
      forControlEvents:UIControlEventValueChanged];
     [picker setBackgroundColor:[UIColor clearColor]];
+    picker.hidden = YES;
     [self.view addSubview:picker];
     
     self.notifArray = [[NSArray alloc]initWithObjects:@"Never", @"Every Hour",@"Every Day",@"Every Week",@"Every Month",@"Every Year", nil];
@@ -75,7 +76,7 @@
 - (void) viewWillLayoutSubviews
 {
     [super viewWillLayoutSubviews];
-    picker.hidden = YES;
+//    picker.hidden = YES;
 }
 
 

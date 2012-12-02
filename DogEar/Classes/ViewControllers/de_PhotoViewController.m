@@ -172,9 +172,9 @@
 
 - (void) moreDetail
 {
-    de_DetailViewController * vc = [[de_DetailViewController alloc]initWithStyle:UITableViewStyleGrouped];
+    de_DetailViewController * vc = [[de_DetailViewController alloc]initWithStyle:UITableViewStyleGrouped andImage:self.photo];
 //    [vc setAction:DogEarActionViewing];
-    vc.existingDogEar = self.existingDogEar;
+//    vc.existingDogEar = self.existingDogEar;
     [self.navigationController pushViewController:vc animated:YES];
 
 }
