@@ -11,6 +11,9 @@
 		3DD76487166C609E00C7CA9B /* Accounts.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 3DD76486166C609E00C7CA9B /* Accounts.framework */; };
 		3DD7648C166D032900C7CA9B /* Twitter.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 3DD7648B166D032900C7CA9B /* Twitter.framework */; };
 		3DD7648E166D048D00C7CA9B /* Social.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 3DD7648D166D048D00C7CA9B /* Social.framework */; };
+		3DD764D8166D365E00C7CA9B /* TwitterManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 3DD764D7166D365E00C7CA9B /* TwitterManager.m */; };
+		3DD764DA166D4FE500C7CA9B /* MessageUI.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 3DD764D9166D4FE500C7CA9B /* MessageUI.framework */; };
+		3DD764DD166D50F500C7CA9B /* MessageManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 3DD764DC166D50F500C7CA9B /* MessageManager.m */; };
 		7E2CB6851665AE6200A5B40D /* EditableTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 7E2CB6841665AE6200A5B40D /* EditableTableViewCell.m */; };
 		7E2CB68A1665AEA700A5B40D /* DogEarObject.m in Sources */ = {isa = PBXBuildFile; fileRef = 7E2CB6891665AEA700A5B40D /* DogEarObject.m */; };
 		7E2CB68D1665B48100A5B40D /* de_PhotoViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 7E2CB68C1665B48000A5B40D /* de_PhotoViewController.m */; };
@@ -64,6 +67,11 @@
 		3DD76486166C609E00C7CA9B /* Accounts.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Accounts.framework; path = System/Library/Frameworks/Accounts.framework; sourceTree = SDKROOT; };
 		3DD7648B166D032900C7CA9B /* Twitter.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Twitter.framework; path = System/Library/Frameworks/Twitter.framework; sourceTree = SDKROOT; };
 		3DD7648D166D048D00C7CA9B /* Social.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Social.framework; path = System/Library/Frameworks/Social.framework; sourceTree = SDKROOT; };
+		3DD764D6166D365E00C7CA9B /* TwitterManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = TwitterManager.h; path = Classes/Objects/TwitterManager.h; sourceTree = "<group>"; };
+		3DD764D7166D365E00C7CA9B /* TwitterManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = TwitterManager.m; path = Classes/Objects/TwitterManager.m; sourceTree = "<group>"; };
+		3DD764D9166D4FE500C7CA9B /* MessageUI.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = MessageUI.framework; path = System/Library/Frameworks/MessageUI.framework; sourceTree = SDKROOT; };
+		3DD764DB166D50F500C7CA9B /* MessageManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = MessageManager.h; path = Classes/Objects/MessageManager.h; sourceTree = "<group>"; };
+		3DD764DC166D50F500C7CA9B /* MessageManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = MessageManager.m; path = Classes/Objects/MessageManager.m; sourceTree = "<group>"; };
 		7E2CB6831665AE6200A5B40D /* EditableTableViewCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = EditableTableViewCell.h; path = Classes/Cells/EditableTableViewCell.h; sourceTree = "<group>"; };
 		7E2CB6841665AE6200A5B40D /* EditableTableViewCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = EditableTableViewCell.m; path = Classes/Cells/EditableTableViewCell.m; sourceTree = "<group>"; };
 		7E2CB6881665AEA700A5B40D /* DogEarObject.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = DogEarObject.h; path = Classes/Objects/DogEarObject.h; sourceTree = "<group>"; };
@@ -136,6 +144,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				3DD764DA166D4FE500C7CA9B /* MessageUI.framework in Frameworks */,
 				3DD7648E166D048D00C7CA9B /* Social.framework in Frameworks */,
 				3DD7648C166D032900C7CA9B /* Twitter.framework in Frameworks */,
 				3DD76487166C609E00C7CA9B /* Accounts.framework in Frameworks */,
@@ -154,6 +163,10 @@
 			children = (
 				7E2CB6881665AEA700A5B40D /* DogEarObject.h */,
 				7E2CB6891665AEA700A5B40D /* DogEarObject.m */,
+				3DD764D6166D365E00C7CA9B /* TwitterManager.h */,
+				3DD764D7166D365E00C7CA9B /* TwitterManager.m */,
+				3DD764DB166D50F500C7CA9B /* MessageManager.h */,
+				3DD764DC166D50F500C7CA9B /* MessageManager.m */,
 			);
 			name = Objects;
 			sourceTree = "<group>";
@@ -198,6 +211,7 @@
 		7E42529816645DF400741A41 /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				3DD764D9166D4FE500C7CA9B /* MessageUI.framework */,
 				3DD7648D166D048D00C7CA9B /* Social.framework */,
 				3DD7648B166D032900C7CA9B /* Twitter.framework */,
 				3DD76486166C609E00C7CA9B /* Accounts.framework */,
@@ -458,6 +472,8 @@
 				7ECEB4CD1667B7D300FC007D /* de_FlagViewController.m in Sources */,
 				7E4D27CF1669A64000FDC78D /* de_FlaggedListViewController.m in Sources */,
 				3DD76485166C5E7D00C7CA9B /* de_AccountSettingViewController.m in Sources */,
+				3DD764D8166D365E00C7CA9B /* TwitterManager.m in Sources */,
+				3DD764DD166D50F500C7CA9B /* MessageManager.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

@@ -10,12 +10,21 @@
 #import "de_MainTabBarController.h"
 #import "de_DetailViewController.h"
 
+#import "TwitterManager.h"
+#import "MessageManager.h"
+
 #define IPHONE_NAVIGATION_BAR_HEIGHT 44
 #define IPHONE_TOOL_BAR_HEIGHT 45
 #define IPHONE_STATUS_BAR_HEIGHT 20
 
-@interface de_PhotoViewController ()
+#define DEVICE_OS [[[UIDevice currentDevice] systemVersion] intValue]
+#define kPDFPageBounds CGRectMake(0, 0, 8.5 * 72, 11 * 72)
 
+@interface de_PhotoViewController ()
+{
+    UIPrintInteractionController *printController;
+
+}
 @property (nonatomic) BKToolBarType bkToolBarType;
 @property (nonatomic , retain) UIImage * photo;
 @property (nonatomic , retain) DogEarObject * existingDogEar;
@@ -148,6 +157,23 @@
     
 }
 
+#pragma mark - Print Feature
+
+- (NSData *) generatePDFDataForPrinting
+{
+    NSMutableData *pdfData = [NSMutableData data];
+    UIGraphicsBeginPDFContextToData(pdfData, kPDFPageBounds, nil);
+    UIGraphicsBeginPDFPage();
+    CGContextRef ctx = UIGraphicsGetCurrentContext();
+    //    [self drawStuffInContext:ctx];  // Method also usable from drawRect:.
+    UIImageView * imageView = [[UIImageView alloc]initWithImage:self.photo];
+    [imageView.layer renderInContext:ctx];
+    
+    UIGraphicsEndPDFContext();
+    NSLog(@"generatePDFDataForPrinting");
+    return pdfData;
+}
+
 #pragma mark - UIBarButtonItem (UINavigationBar)
 
 - (void) retakePhoto
@@ -165,16 +191,20 @@
     
 }
 
-//- (void) cancel
-//{
-//    [self.navigationController popViewControllerAnimated:YES];
-//}
+- (void) deleteThePhoto
+{
+    
+    UIAlertView * alertView = [[UIAlertView alloc]initWithTitle:@"Dog Ear" message:@"Are you sure delete this dog ear" delegate:self cancelButtonTitle:@"Cancel" otherButtonTitles:@"Confirm", nil];
+    [alertView show];
+  
+    
+}
 
 - (void) moreDetail
 {
     de_DetailViewController * vc = [[de_DetailViewController alloc]initWithStyle:UITableViewStyleGrouped andImage:self.photo];
 //    [vc setAction:DogEarActionViewing];
-//    vc.existingDogEar = self.existingDogEar;
+    vc.existingDogEar = self.existingDogEar;
     [self.navigationController pushViewController:vc animated:YES];
 
 }
@@ -187,7 +217,119 @@
     [actionSheet showInView:self.view];
 }
 
+#pragma mark - 
+- (NSMutableArray*) decodedCollections
+{
+    NSData * data = [[[NSUserDefaults standardUserDefaults]objectForKey:@"BKDataCollections"] objectForKey:self.existingDogEar.category];
+    NSMutableArray * decodedCollections = [NSMutableArray arrayWithArray:[NSKeyedUnarchiver unarchiveObjectWithData: data]];
+    
+    return decodedCollections;
+}
+
+- (void) updateDogEarDataCollectionWithSelectedCollections:(NSMutableArray*)collections
+{
+    NSData * encodedObjects = [NSKeyedArchiver archivedDataWithRootObject:collections];
+    NSMutableDictionary * dict = [[[NSUserDefaults standardUserDefaults]objectForKey:@"BKDataCollections"] mutableCopy];
+    
+    [dict setObject:encodedObjects forKey:self.existingDogEar.category];
+    [[NSUserDefaults standardUserDefaults] setObject:dict forKey:@"BKDataCollections"];
+    [[NSUserDefaults standardUserDefaults] synchronize];
+    
+    NSLog(@"updateDogEarDataCollectionWithSelectedCollections");
+}
+
+
 #pragma mark - UIActionSheet Delegate Method
 
+- (void) actionSheet:(UIActionSheet *)actionSheet clickedButtonAtIndex:(NSInteger)buttonIndex
+{
+    if (buttonIndex == [actionSheet cancelButtonIndex]) return;
+    switch (buttonIndex) {
+        case 0: //Facebook
+        {
+            
+        }
+            break;
+        case 1: // Twitter
+        {
+            TwitterManager * twitter  = [TwitterManager sharedManager];
+
+            if (DEVICE_OS < 6.0)
+            {
+                [[twitter tweetTWComposerSheet] addImage:self.photo];
+                if ([[NSUserDefaults standardUserDefaults] objectForKey:@"Twitter_Account"])[self presentViewController:[twitter tweetTWComposerSheet] animated:YES completion:nil];
+                
+            }
+            else
+            {
+                [[twitter tweetSLComposerSheet] addImage:self.photo];
+                if ([[NSUserDefaults standardUserDefaults] objectForKey:@"Twitter_Account"]) [self presentViewController:[twitter tweetSLComposerSheet] animated:YES completion:nil];
+                else
+                {
+                    UIAlertView * alertView = [[UIAlertView alloc]initWithTitle:@"Twitter Authorization" message:@"Dog Ear has been disconnected to Twitter account. Turn on connection in Settings" delegate:self cancelButtonTitle:@"OK" otherButtonTitles:@"Setting", nil];
+                    [alertView show];
+                }
+            }
+        }
+            break;
+        case 2: // Email
+        {
+            MessageManager * composer = [MessageManager sharedComposer];
+            [composer presentShareImageFromDogEarObject:self.existingDogEar viaMailComposerFromParent:self];
+        }
+            break;
+        case 3: // Message
+        {
+            MessageManager * composer = [MessageManager sharedComposer];
+            [composer presentShareImageFromDogEar:self.existingDogEar viaMessageComposerFromParentent:self];
+ 
+        }
+            break;
+        case 4:
+        {
+            Class printControllerClass = NSClassFromString(@"UIPrintInteractionController");
+            if (printControllerClass) {
+                printController = [printControllerClass sharedPrintController];
+            }
+            
+            void (^completionHandler)(UIPrintInteractionController *, BOOL, NSError *) =
+            ^(UIPrintInteractionController *pic, BOOL completed, NSError *error) {
+                if (!completed && error) NSLog(@"Print error: %@", error);
+            };
+            
+            NSData *pdfData = [self generatePDFDataForPrinting];
+            printController.printingItem = pdfData;
+            printController.delegate = self;
+            [printController presentAnimated:YES completionHandler:completionHandler];
+        }
+            
+            break;
+        default:
+            break;
+    }
+}
+
+- (void) alertView:(UIAlertView *)alertView clickedButtonAtIndex:(NSInteger)buttonIndex
+{
+    if (buttonIndex != alertView.cancelButtonIndex)
+    {
+        if ([alertView.title isEqualToString:@""])
+            [self.tabBarController setSelectedIndex:2];
+        else if ([alertView.title isEqualToString:@"Dog Ear"])
+        {
+            NSMutableArray * temp = [[NSMutableArray alloc]initWithArray:[self decodedCollections]];
+            
+            for (int d = 0; d < [temp count]; d++)
+            {
+                DogEarObject * object = [temp objectAtIndex:d];
+                if ([object.title isEqualToString:self.existingDogEar.title] && [object.insertedDate isEqualToDate:self.existingDogEar.insertedDate])
+                    [temp removeObject:object];
+            }
+            
+            [self updateDogEarDataCollectionWithSelectedCollections:temp];
+            [self.navigationController popToRootViewControllerAnimated:YES];
+        }
+    }
+}
 
 @end

@@ -13,12 +13,16 @@
 
 #import <UIKit/UIKit.h>
 
+#import <Twitter/Twitter.h>
+#import <Social/Social.h>
+
+
 typedef enum {
     BKToolBarTypeEditing,
     BKToolBarTypeViewing
 }BKToolBarType;
 
-@interface de_PhotoViewController : UIViewController <UIActionSheetDelegate>
+@interface de_PhotoViewController : UIViewController <UIActionSheetDelegate , UIAlertViewDelegate , UIPrintInteractionControllerDelegate>
 
 - (id) initWithImage:(UIImage*)image toolBarType:(BKToolBarType)toolBarType;
 - (id) initWithImage:(UIImage*)image andExistingDogEar:(DogEarObject*)object;
