@@ -7,6 +7,7 @@
 //
 
 #import "de_SettingViewController.h"
+#import "de_AccountSettingViewController.h"
 
 @interface de_SettingViewController ()
 
@@ -84,7 +85,14 @@
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
 {
     UITableViewCell * cell = (UITableViewCell*)[self.tableView cellForRowAtIndexPath:indexPath];
-    if (indexPath.row == 3)
+   
+    if (indexPath.row == 2)
+    {
+        de_AccountSettingViewController * vc = [[de_AccountSettingViewController alloc]initWithStyle:UITableViewStyleGrouped];
+        [self.navigationController pushViewController:vc animated:YES];
+    }
+    
+    else if (indexPath.row == 3)
     {
         UIViewController * vc = [[UIViewController alloc]init];
         UIImageView *backgroundImage = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"dogear-bg-instructions"]];
