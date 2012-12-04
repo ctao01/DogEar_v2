@@ -261,14 +261,14 @@
 
             if (DEVICE_OS < 6.0)
             {
-                [[twitter tweetTWComposerSheet] addImage:self.photo];
-                if ([[NSUserDefaults standardUserDefaults] objectForKey:@"Twitter_Account"])[self presentViewController:[twitter tweetTWComposerSheet] animated:YES completion:nil];
+//                [[twitter tweetTWComposerSheet] addImage:self.photo];
+                if ([[NSUserDefaults standardUserDefaults] objectForKey:@"Twitter_Account"])[self presentViewController:[twitter tweetTWComposerSheetWithSharedImage:self.photo] animated:YES completion:nil];
                 
             }
             else
             {
-                [[twitter tweetSLComposerSheet] addImage:self.photo];
-                if ([[NSUserDefaults standardUserDefaults] objectForKey:@"Twitter_Account"]) [self presentViewController:[twitter tweetSLComposerSheet] animated:YES completion:nil];
+//                [[twitter tweetSLComposerSheet] addImage:self.photo];
+                if ([[NSUserDefaults standardUserDefaults] objectForKey:@"Twitter_Account"]) [self presentViewController:[twitter tweetSLComposerSheetWithSharedImage:self.photo] animated:YES completion:nil];
                 else
                 {
                     UIAlertView * alertView = [[UIAlertView alloc]initWithTitle:@"Twitter Authorization" message:@"Dog Ear has been disconnected to Twitter account. Turn on connection in Settings" delegate:self cancelButtonTitle:@"OK" otherButtonTitles:@"Setting", nil];
