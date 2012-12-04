@@ -53,6 +53,7 @@
 		7E4252EF16646C9500741A41 /* de_SettingViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 7E4252EE16646C5600741A41 /* de_SettingViewController.m */; };
 		7E4252F316646D7E00741A41 /* de_ListTableViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 7E4252F216646D7E00741A41 /* de_ListTableViewController.m */; };
 		7E4D27CF1669A64000FDC78D /* de_FlaggedListViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 7E4D27CE1669A64000FDC78D /* de_FlaggedListViewController.m */; };
+		7E98E222166EA7D900FAFA60 /* UIImage+DGStyle.m in Sources */ = {isa = PBXBuildFile; fileRef = 7E98E221166EA7D900FAFA60 /* UIImage+DGStyle.m */; };
 		7ECD4430166E801800B3A160 /* de_CustomTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 7ECD442F166E801800B3A160 /* de_CustomTableViewCell.m */; };
 		7ECD4449166E87F700B3A160 /* SDImageCache.m in Sources */ = {isa = PBXBuildFile; fileRef = 7ECD4438166E87F700B3A160 /* SDImageCache.m */; settings = {COMPILER_FLAGS = "-fno-objc-arc"; }; };
 		7ECD444A166E87F700B3A160 /* SDWebImageDecoder.m in Sources */ = {isa = PBXBuildFile; fileRef = 7ECD443C166E87F700B3A160 /* SDWebImageDecoder.m */; settings = {COMPILER_FLAGS = "-fno-objc-arc"; }; };
@@ -138,6 +139,8 @@
 		7E4252F216646D7E00741A41 /* de_ListTableViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = de_ListTableViewController.m; path = Classes/ViewControllers/de_ListTableViewController.m; sourceTree = "<group>"; };
 		7E4D27CD1669A63F00FDC78D /* de_FlaggedListViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = de_FlaggedListViewController.h; path = Classes/ViewControllers/de_FlaggedListViewController.h; sourceTree = "<group>"; };
 		7E4D27CE1669A64000FDC78D /* de_FlaggedListViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = de_FlaggedListViewController.m; path = Classes/ViewControllers/de_FlaggedListViewController.m; sourceTree = "<group>"; };
+		7E98E220166EA7D900FAFA60 /* UIImage+DGStyle.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = "UIImage+DGStyle.h"; path = "Categories/UIImage+DGStyle.h"; sourceTree = "<group>"; };
+		7E98E221166EA7D900FAFA60 /* UIImage+DGStyle.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = "UIImage+DGStyle.m"; path = "Categories/UIImage+DGStyle.m"; sourceTree = "<group>"; };
 		7ECD442E166E801800B3A160 /* de_CustomTableViewCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = de_CustomTableViewCell.h; sourceTree = "<group>"; };
 		7ECD442F166E801800B3A160 /* de_CustomTableViewCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = de_CustomTableViewCell.m; sourceTree = "<group>"; };
 		7ECD4437166E87F700B3A160 /* SDImageCache.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SDImageCache.h; sourceTree = "<group>"; };
@@ -345,6 +348,8 @@
 			children = (
 				7ECEB4BC1666CA2100FC007D /* NSString+DGStyle.h */,
 				7ECEB4BD1666CA2100FC007D /* NSString+DGStyle.m */,
+				7E98E220166EA7D900FAFA60 /* UIImage+DGStyle.h */,
+				7E98E221166EA7D900FAFA60 /* UIImage+DGStyle.m */,
 			);
 			name = Categories;
 			sourceTree = "<group>";
@@ -555,6 +560,7 @@
 				7ECD444D166E87F700B3A160 /* SDWebImagePrefetcher.m in Sources */,
 				7ECD444E166E87F700B3A160 /* UIButton+WebCache.m in Sources */,
 				7ECD444F166E87F700B3A160 /* UIImageView+WebCache.m in Sources */,
+				7E98E222166EA7D900FAFA60 /* UIImage+DGStyle.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

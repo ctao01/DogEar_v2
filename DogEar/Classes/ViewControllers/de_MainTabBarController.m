@@ -11,6 +11,7 @@
 #import "de_BrowseTableViewController.h"
 #import "de_SettingViewController.h"
 #import "de_PhotoViewController.h"
+#import "UIImage+DGStyle.h"
 
 @interface de_MainTabBarController ()
 
@@ -155,7 +156,7 @@
         
         UINavigationController * nc = [self.viewControllers objectAtIndex:1];
 //        de_PhotoViewController * vc = [[de_PhotoViewController alloc]initWithImage:originImage toolBarType:BKToolBarTypeEditing];
-        de_PhotoViewController * vc = [[de_PhotoViewController alloc]initWithImage:originImage andExistingDogEar:nil];
+        de_PhotoViewController * vc = [[de_PhotoViewController alloc]initWithImage:[UIImage rotateImage:originImage] andExistingDogEar:nil];
 
         [nc pushViewController:vc animated:YES];
         
