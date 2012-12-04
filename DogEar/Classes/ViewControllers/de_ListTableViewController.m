@@ -53,6 +53,10 @@
     else if ([vc isMemberOfClass:[de_FlaggedListViewController class]]) self.tableView.tableHeaderView = nil;
     self.tableView.showsHorizontalScrollIndicator = YES;
     self.tableView.contentInset = UIEdgeInsetsMake(0.0f, 0.0f, 44.0f, 0.0f);
+    
+    [[SDImageCache sharedImageCache] clearMemory];
+    [[SDImageCache sharedImageCache] clearDisk];
+    [[SDImageCache sharedImageCache] cleanDisk];
 }
 
 
@@ -131,17 +135,20 @@
     DogEarObject * dogEar = (DogEarObject*)[self.collections objectAtIndex:indexPath.row];
     cell.deTitleLabel.text = dogEar.title;
     cell.deSubtitleLabel.text =[ NSString mediumStyleDateAndShortStyleTimeWithDate:dogEar.insertedDate];
-    
+    NSLog(@"%@",dogEar.imagePath);
     if (self.tableView.dragging == NO && self.tableView.decelerating == NO)
     {
-        [cell.dePhotoImageView setImageWithURL:[NSURL URLWithString:dogEar.imagePath]
+        [cell.dePhotoImageView setImageWithURL:[NSURL fileURLWithPath:dogEar.imagePath]
                        placeholderImage:[UIImage imageNamed:@"dogear-default"]];
-    } else {
-        [cell.dePhotoImageView setImageWithURL:[NSURL URLWithString:dogEar.imagePath]
+    }
+    else {
+        [cell.dePhotoImageView setImageWithURL:[NSURL fileURLWithPath:dogEar.imagePath]
                        placeholderImage:[UIImage imageNamed:@"dogear-default"]
                                 options:SDWebImageLazyLoad];
     }
     
+    cell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
+    cell.selectionStyle = UITableViewCellSelectionStyleGray;
     return cell;
 }
 
