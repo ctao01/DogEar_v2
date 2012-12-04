@@ -44,10 +44,11 @@
     UIView * view = [[UIView alloc]initWithFrame:CGRectMake(0.0f, 0.0f, 320.0f, 44.0f)];
     [view addSubview:segmentControl];
     
-    self.tableView.tableHeaderView = view;
+    UIViewController * vc = (UIViewController*)[self.navigationController.viewControllers objectAtIndex:[self.navigationController.viewControllers count]-2];
+    if ([vc isMemberOfClass:[de_BrowseTableViewController class]])self.tableView.tableHeaderView = view;
+    else if ([vc isMemberOfClass:[de_FlaggedListViewController class]]) self.tableView.tableHeaderView = nil;
     self.tableView.showsHorizontalScrollIndicator = YES;
     self.tableView.contentInset = UIEdgeInsetsMake(0.0f, 0.0f, 44.0f, 0.0f);
-
 }
 
 
@@ -131,6 +132,42 @@
     de_PhotoViewController * vc = [[de_PhotoViewController alloc]initWithImage:[[UIImage alloc] initWithCGImage:image.CGImage scale:1.0 orientation:[selectedDogEar.imageOrientation integerValue] ] andExistingDogEar:selectedDogEar];
     [self.navigationController pushViewController:vc animated:YES];
    
+}
+
+ - (BOOL)tableView:(UITableView *)tableView canEditRowAtIndexPath:(NSIndexPath *)indexPath
+{
+    return YES;
+}
+
+- (UITableViewCellEditingStyle)tableView:(UITableView *)tableView editingStyleForRowAtIndexPath:(NSIndexPath *)indexPath {
+    
+    return UITableViewCellEditingStyleDelete;
+}
+
+- (void)tableView:(UITableView *)tableView commitEditingStyle:(UITableViewCellEditingStyle)editingStyle forRowAtIndexPath:(NSIndexPath *)indexPath {
+    
+    NSUInteger row = [indexPath row];
+    NSUInteger count = [self.collections count];
+    
+    if (row < count) {
+        [self.collections removeObjectAtIndex:row];
+        NSArray * array = [NSArray arrayWithObjects:indexPath, nil];
+        [self.tableView deleteRowsAtIndexPaths:array withRowAnimation:UITableViewRowAnimationFade];
+        
+        NSData * encodedObjects = [NSKeyedArchiver archivedDataWithRootObject:collections];
+        NSMutableDictionary * dict = [[[NSUserDefaults standardUserDefaults]objectForKey:@"BKDataCollections"] mutableCopy];
+        
+        [dict setObject:encodedObjects forKey:self.navigationItem.title];
+        [[NSUserDefaults standardUserDefaults] setObject:dict forKey:@"BKDataCollections"];
+        [[NSUserDefaults standardUserDefaults] synchronize];
+    
+    }
+}
+
+- (void)tableView:(UITableView *)tableView didEndEditingRowAtIndexPath:(NSIndexPath *)indexPath
+{
+    
+    [self.tableView reloadData];
 }
 
 @end

@@ -9,6 +9,7 @@
 #import "de_PhotoViewController.h"
 #import "de_MainTabBarController.h"
 #import "de_DetailViewController.h"
+#import "de_ListTableViewController.h"
 
 #import "TwitterManager.h"
 #import "MessageManager.h"
@@ -23,6 +24,7 @@
 @interface de_PhotoViewController ()
 {
     UIPrintInteractionController *printController;
+    NSString * keyString;
 
 }
 @property (nonatomic) BKToolBarType bkToolBarType;
@@ -73,6 +75,8 @@
 - (void)viewDidLoad
 {
     [super viewDidLoad];
+    
+    if (self.existingDogEar) keyString = self.existingDogEar.category;
     
     CGRect bounds = [[UIScreen mainScreen]bounds];
     
@@ -194,7 +198,7 @@
 - (void) deleteThePhoto
 {
     
-    UIAlertView * alertView = [[UIAlertView alloc]initWithTitle:@"Dog Ear" message:@"Are you sure delete this dog ear" delegate:self cancelButtonTitle:@"Cancel" otherButtonTitles:@"Confirm", nil];
+    UIAlertView * alertView = [[UIAlertView alloc]initWithTitle:@"Dog Ear" message:@"Are you sure delete this dog ear" delegate:self cancelButtonTitle:@"Cancel" otherButtonTitles:@"Move To Trash", nil];
     [alertView show];
   
     
@@ -327,7 +331,12 @@
             }
             
             [self updateDogEarDataCollectionWithSelectedCollections:temp];
-            [self.navigationController popToRootViewControllerAnimated:YES];
+            de_ListTableViewController * vc = (de_ListTableViewController*)[self.navigationController.viewControllers objectAtIndex:[self.navigationController.viewControllers count]-2];
+            NSData * data = [[[NSUserDefaults standardUserDefaults]objectForKey:@"BKDataCollections"] objectForKey:keyString];
+            NSMutableArray * decodedCollections = [NSMutableArray arrayWithArray:[NSKeyedUnarchiver unarchiveObjectWithData: data]];
+            vc.collections = decodedCollections;
+            [self.navigationController popViewControllerAnimated:YES];
+
         }
     }
 }

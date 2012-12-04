@@ -12,4 +12,6 @@
 
 @property (nonatomic ,strong) NSMutableArray * collections;
 @property (nonatomic ,strong) NSMutableArray * flaggedCollections;
+
+
 @end

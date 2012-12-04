@@ -33,7 +33,10 @@
 - (void)viewDidLoad
 {
     [super viewDidLoad];
-    self.title = @"Account Setting";
+    UIImageView * bgImage = [[UIImageView alloc]initWithImage:[UIImage imageNamed:@"dogear-bg-master"]];
+    self.tableView.backgroundView = bgImage;
+    
+    self.title = @"Account Connection";
     activityIndicator = [[UIActivityIndicatorView alloc]initWithActivityIndicatorStyle:UIActivityIndicatorViewStyleGray];
     activityIndicator.frame = CGRectMake(0.0f, 0.0f, 60.0f, 60.0f);
     activityIndicator.center = self.view.center;
