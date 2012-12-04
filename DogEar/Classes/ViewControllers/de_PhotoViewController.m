@@ -9,6 +9,7 @@
 #import "de_PhotoViewController.h"
 #import "de_MainTabBarController.h"
 #import "de_DetailViewController.h"
+
 #import "de_ListTableViewController.h"
 
 #import "TwitterManager.h"
@@ -321,7 +322,14 @@
             [self.tabBarController setSelectedIndex:2];
         else if ([alertView.title isEqualToString:@"Dog Ear"])
         {
-            NSMutableArray * temp = [[NSMutableArray alloc]initWithArray:[self decodedCollections]];
+            de_ListTableViewController * vc  = (de_ListTableViewController*)[self.navigationController.viewControllers objectAtIndex:[self.navigationController.viewControllers count]-2];
+            
+            NSLog(@"%@",vc.collections);
+            NSLog(@"%@",self.existingDogEar);
+
+
+            
+            NSMutableArray * temp = [[NSMutableArray alloc]initWithArray:[vc collections]];
             
             for (int d = 0; d < [temp count]; d++)
             {
@@ -331,10 +339,9 @@
             }
             
             [self updateDogEarDataCollectionWithSelectedCollections:temp];
-            de_ListTableViewController * vc = (de_ListTableViewController*)[self.navigationController.viewControllers objectAtIndex:[self.navigationController.viewControllers count]-2];
-            NSData * data = [[[NSUserDefaults standardUserDefaults]objectForKey:@"BKDataCollections"] objectForKey:keyString];
-            NSMutableArray * decodedCollections = [NSMutableArray arrayWithArray:[NSKeyedUnarchiver unarchiveObjectWithData: data]];
-            vc.collections = decodedCollections;
+            
+            [vc.collections removeObject:self.existingDogEar];
+            
             [self.navigationController popViewControllerAnimated:YES];
 
         }

@@ -144,30 +144,23 @@
     return UITableViewCellEditingStyleDelete;
 }
 
-- (void)tableView:(UITableView *)tableView commitEditingStyle:(UITableViewCellEditingStyle)editingStyle forRowAtIndexPath:(NSIndexPath *)indexPath {
-    
-    NSUInteger row = [indexPath row];
-    NSUInteger count = [self.collections count];
-    
-    if (row < count) {
-        [self.collections removeObjectAtIndex:row];
+- (void)tableView:(UITableView *)tableView commitEditingStyle:(UITableViewCellEditingStyle)editingStyle forRowAtIndexPath:(NSIndexPath *)indexPath
+{    
+        [self.collections removeObjectAtIndex:indexPath.row];
         NSArray * array = [NSArray arrayWithObjects:indexPath, nil];
         [self.tableView deleteRowsAtIndexPaths:array withRowAnimation:UITableViewRowAnimationFade];
-        
-        NSData * encodedObjects = [NSKeyedArchiver archivedDataWithRootObject:collections];
-        NSMutableDictionary * dict = [[[NSUserDefaults standardUserDefaults]objectForKey:@"BKDataCollections"] mutableCopy];
-        
-        [dict setObject:encodedObjects forKey:self.navigationItem.title];
-        [[NSUserDefaults standardUserDefaults] setObject:dict forKey:@"BKDataCollections"];
-        [[NSUserDefaults standardUserDefaults] synchronize];
-    
-    }
 }
 
 - (void)tableView:(UITableView *)tableView didEndEditingRowAtIndexPath:(NSIndexPath *)indexPath
 {
     
     [self.tableView reloadData];
+    NSData * encodedObjects = [NSKeyedArchiver archivedDataWithRootObject:self.collections];
+    NSMutableDictionary * dict = [[[NSUserDefaults standardUserDefaults]objectForKey:@"BKDataCollections"] mutableCopy];
+    
+    [dict setObject:encodedObjects forKey:self.navigationItem.title];
+    [[NSUserDefaults standardUserDefaults] setObject:dict forKey:@"BKDataCollections"];
+    [[NSUserDefaults standardUserDefaults] synchronize];
 }
 
 @end

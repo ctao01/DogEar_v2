@@ -230,8 +230,8 @@
 //
             de_ListTableViewController * vc = [[de_ListTableViewController alloc]init];
             [self.navigationController pushViewController:vc animated:YES];
-            vc.navigationItem.title = [NSString stringWithFormat:@"Category:%@",keyString];
-//            vc.navigationItem.title = keyString;
+//            vc.navigationItem.title = [NSString stringWithFormat:@"Category:%@",keyString];
+            vc.navigationItem.title = keyString;
 
             vc.collections = decodedCollections;
         }
