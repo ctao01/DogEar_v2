@@ -12,6 +12,10 @@
 #import "de_BrowseTableViewController.h"
 #import "de_FlaggedListViewController.h"
 
+#import "de_CustomTableViewCell.h"
+#import "UIImageView+WebCache.h"
+#import "SDImageCache.h"
+
 @interface de_ListTableViewController ()
 
 @end
@@ -108,17 +112,35 @@
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    static NSString *CellIdentifier = @"Cell";
+    /*static NSString *CellIdentifier = @"Cell";
     UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:CellIdentifier];
     if (cell == nil)
         if (cell == nil) cell = [[UITableViewCell alloc]initWithStyle:UITableViewCellStyleSubtitle reuseIdentifier:CellIdentifier];
+    
     DogEarObject * dogEar = (DogEarObject*)[self.collections objectAtIndex:indexPath.row];
     cell.textLabel.text = dogEar.title;
     cell.detailTextLabel.text = [NSString mediumStyleDateAndShortStyleTimeWithDate:dogEar.insertedDate];
     
     UIImage * image = [UIImage imageWithData:[NSData dataWithContentsOfFile:dogEar.imagePath]];
     UIImage * orienteImg = [[UIImage alloc] initWithCGImage:image.CGImage scale:1.0 orientation:[dogEar.imageOrientation integerValue]];
-    cell.imageView.image = orienteImg;
+    cell.imageView.image = orienteImg;*/
+    
+    static NSString * CellIdentifier = @"CustomCell";
+    de_CustomTableViewCell * cell = [tableView dequeueReusableCellWithIdentifier:CellIdentifier];
+    if (cell == nil) cell = [[de_CustomTableViewCell alloc]initWithStyle:UITableViewCellStyleSubtitle reuseIdentifier:CellIdentifier];
+    DogEarObject * dogEar = (DogEarObject*)[self.collections objectAtIndex:indexPath.row];
+    cell.deTitleLabel.text = dogEar.title;
+    cell.deSubtitleLabel.text =[ NSString mediumStyleDateAndShortStyleTimeWithDate:dogEar.insertedDate];
+    
+    if (self.tableView.dragging == NO && self.tableView.decelerating == NO)
+    {
+        [cell.dePhotoImageView setImageWithURL:[NSURL URLWithString:dogEar.imagePath]
+                       placeholderImage:[UIImage imageNamed:@"dogear-default"]];
+    } else {
+        [cell.dePhotoImageView setImageWithURL:[NSURL URLWithString:dogEar.imagePath]
+                       placeholderImage:[UIImage imageNamed:@"dogear-default"]
+                                options:SDWebImageLazyLoad];
+    }
     
     return cell;
 }
@@ -166,6 +188,43 @@
     [dict setObject:encodedObjects forKey:self.navigationItem.title];
     [[NSUserDefaults standardUserDefaults] setObject:dict forKey:@"BKDataCollections"];
     [[NSUserDefaults standardUserDefaults] synchronize];
+}
+
+#pragma mark -
+#pragma mark Table cell image support
+
+
+// this method is used in case the user scrolled into a set of cells that don't have their app icons yet
+- (void)loadImagesForOnscreenRows
+{
+    if ([self.collections count] > 0)
+    {
+        NSArray *visiblePaths = [self.tableView indexPathsForVisibleRows];
+        for (NSIndexPath *indexPath in visiblePaths)
+        {
+            de_CustomTableViewCell *cell = (de_CustomTableViewCell*) [[self tableView] cellForRowAtIndexPath:indexPath];
+            [cell.dePhotoImageView startDownloadWithOptions:SDWebImageLazyLoad];
+            
+        }
+    }
+}
+
+
+#pragma mark -
+#pragma mark Deferred image loading (UIScrollViewDelegate)
+
+// Load images for all onscreen rows when scrolling is finished
+- (void)scrollViewDidEndDragging:(UIScrollView *)scrollView willDecelerate:(BOOL)decelerate
+{
+    if (!decelerate)
+	{
+        [self loadImagesForOnscreenRows];
+    }
+}
+
+- (void)scrollViewDidEndDecelerating:(UIScrollView *)scrollView
+{
+    [self loadImagesForOnscreenRows];
 }
 
 @end

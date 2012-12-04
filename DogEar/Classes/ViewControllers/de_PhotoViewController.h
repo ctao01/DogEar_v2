@@ -13,10 +13,6 @@
 
 #import <UIKit/UIKit.h>
 
-#import <Twitter/Twitter.h>
-#import <Social/Social.h>
-
-
 typedef enum {
     BKToolBarTypeEditing,
     BKToolBarTypeViewing
