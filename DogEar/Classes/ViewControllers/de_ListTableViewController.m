@@ -115,6 +115,11 @@
     DogEarObject * dogEar = (DogEarObject*)[self.collections objectAtIndex:indexPath.row];
     cell.textLabel.text = dogEar.title;
     cell.detailTextLabel.text = [NSString mediumStyleDateAndShortStyleTimeWithDate:dogEar.insertedDate];
+    
+    UIImage * image = [UIImage imageWithData:[NSData dataWithContentsOfFile:dogEar.imagePath]];
+    UIImage * orienteImg = [[UIImage alloc] initWithCGImage:image.CGImage scale:1.0 orientation:[dogEar.imageOrientation integerValue]];
+    cell.imageView.image = orienteImg;
+    
     return cell;
 }
 

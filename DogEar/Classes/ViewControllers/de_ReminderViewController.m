@@ -48,7 +48,7 @@
 
     
     CGRect bounds = [[UIScreen mainScreen]bounds];
-    picker = [[UIDatePicker alloc]initWithFrame:CGRectMake(0.0f, 250.0f, bounds.size.width, bounds.size.height - 250.0f + 44.0f)];
+    picker = [[UIDatePicker alloc]initWithFrame:CGRectMake(0.0f, bounds.size.height - 250.0f -44.0f, bounds.size.width, 250.0f +44.0f)];
     picker.datePickerMode = UIDatePickerModeDateAndTime;
     picker.date = [NSDate date];
     [picker addTarget:self
@@ -67,16 +67,17 @@
     self.navigationItem.leftBarButtonItem = cancelItem;
     self.navigationItem.title = @"Reminder";
     
-    de_DetailViewController * vc = (de_DetailViewController*)[self.navigationController.viewControllers objectAtIndex:[self.navigationController.viewControllers count]-2];
-    if (vc.dogEar.reminderDate != NULL)
-        isExpandedTable = YES;
-    else isExpandedTable = NO;
+    
 }
 
-- (void) viewWillLayoutSubviews
+- (void) viewDidAppear:(BOOL)animated
 {
-    [super viewWillLayoutSubviews];
-//    picker.hidden = YES;
+    [super viewDidAppear:YES];
+    de_DetailViewController * vc = (de_DetailViewController*)[self.navigationController.viewControllers objectAtIndex:[self.navigationController.viewControllers count]-2];
+    if (vc.dogEar.reminderDate != NULL) isExpandedTable = YES;
+    else isExpandedTable = NO;
+    NSLog(@"isExpandedTable:%@",isExpandedTable? @"YES":@"NO");
+    [self.tableView reloadData];
 }
 
 
@@ -104,7 +105,7 @@
         picker.hidden = YES;
 
     }
-    NSLog(@"%@",toggle.on ? @"YES" : @"NO");
+    NSLog(@"%@",isExpandedTable ? @"YES" : @"NO");
     
     [self.tableView reloadData];
 }
