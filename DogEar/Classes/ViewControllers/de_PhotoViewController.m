@@ -329,7 +329,7 @@
 
 
             
-            NSMutableArray * temp = [[NSMutableArray alloc]initWithArray:[vc collections]];
+            NSMutableArray * temp = [[NSMutableArray alloc]initWithArray:[self decodedCollections]];
             
             for (int d = 0; d < [temp count]; d++)
             {
