@@ -73,6 +73,7 @@
 -(void) addCenterButtonWithFrame:(CGRect)frame
 {
     UIButton* button = [UIButton buttonWithType:UIButtonTypeCustom];
+    button.tag = 3059;
     button.autoresizingMask = UIViewAutoresizingFlexibleRightMargin | UIViewAutoresizingFlexibleLeftMargin | UIViewAutoresizingFlexibleBottomMargin | UIViewAutoresizingFlexibleTopMargin;
     CGFloat width = self.tabBar.frame.size.width / 3;
     button.frame = CGRectMake(0.0f, 0.0f, width, frame.size.height);
@@ -98,7 +99,7 @@
     self.selectedIndex = 1;
     UIImagePickerController * imagePickerController = [[UIImagePickerController alloc]init];
     imagePickerController.delegate = self;
-    imagePickerController.allowsEditing = YES;
+    imagePickerController.allowsEditing = NO;
     
     imagePickerController.sourceType =  UIImagePickerControllerSourceTypeCamera;
     imagePickerController.modalTransitionStyle = UIModalTransitionStyleCoverVertical;
@@ -118,8 +119,11 @@
     
     if (hide)
         contentView.frame = self.view.bounds;
-    
+
     self.tabBar.hidden = hide;
+    UIButton * button = (UIButton*)[self.view viewWithTag:3059];
+    button.enabled = hide ? NO:YES;
+    
 }
 
 #pragma mark - UITabBarControllerDelegate
@@ -157,7 +161,6 @@
         UINavigationController * nc = [self.viewControllers objectAtIndex:1];
 //        de_PhotoViewController * vc = [[de_PhotoViewController alloc]initWithImage:originImage toolBarType:BKToolBarTypeEditing];
         de_PhotoViewController * vc = [[de_PhotoViewController alloc]initWithImage:[UIImage rotateImage:originImage] andExistingDogEar:nil];
-
         [nc pushViewController:vc animated:YES];
         
     }];

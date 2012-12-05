@@ -7,10 +7,22 @@
 //
 
 #import <UIKit/UIKit.h>
+#import <CoreImage/CoreImage.h>
+
 
 @interface UIImage (DGStyle)
 
 + (UIImage *)rotateImage:(UIImage *)aImage;
-+ (UIImage *) resizedImage:(UIImage*)image inRect:(CGRect)thumbRect;
+
+// Image Enhance
+
+-(UIImage*)autoEnhance;
+-(UIImage*)redEyeCorrection;
+
+// Image Resize
+
+-(UIImage*)cropToSize:(CGSize)newSize;
+-(UIImage*)scaleByFactor:(float)scaleFactor;
+-(UIImage*)scaleToFitSize:(CGSize)newSize;
 
 @end

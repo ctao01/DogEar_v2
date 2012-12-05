@@ -54,6 +54,8 @@
 		7E4252F316646D7E00741A41 /* de_ListTableViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 7E4252F216646D7E00741A41 /* de_ListTableViewController.m */; };
 		7E4D27CF1669A64000FDC78D /* de_FlaggedListViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 7E4D27CE1669A64000FDC78D /* de_FlaggedListViewController.m */; };
 		7E98E222166EA7D900FAFA60 /* UIImage+DGStyle.m in Sources */ = {isa = PBXBuildFile; fileRef = 7E98E221166EA7D900FAFA60 /* UIImage+DGStyle.m */; };
+		7EC5DB59166FF0B7001949AE /* CoreImage.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 7EC5DB58166FF0B7001949AE /* CoreImage.framework */; };
+		7EC5DB63166FFD5F001949AE /* NYXImagesHelper.m in Sources */ = {isa = PBXBuildFile; fileRef = 7EC5DB61166FFD5F001949AE /* NYXImagesHelper.m */; };
 		7ECD4430166E801800B3A160 /* de_CustomTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 7ECD442F166E801800B3A160 /* de_CustomTableViewCell.m */; };
 		7ECD4449166E87F700B3A160 /* SDImageCache.m in Sources */ = {isa = PBXBuildFile; fileRef = 7ECD4438166E87F700B3A160 /* SDImageCache.m */; settings = {COMPILER_FLAGS = "-fno-objc-arc"; }; };
 		7ECD444A166E87F700B3A160 /* SDWebImageDecoder.m in Sources */ = {isa = PBXBuildFile; fileRef = 7ECD443C166E87F700B3A160 /* SDWebImageDecoder.m */; settings = {COMPILER_FLAGS = "-fno-objc-arc"; }; };
@@ -141,6 +143,10 @@
 		7E4D27CE1669A64000FDC78D /* de_FlaggedListViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = de_FlaggedListViewController.m; path = Classes/ViewControllers/de_FlaggedListViewController.m; sourceTree = "<group>"; };
 		7E98E220166EA7D900FAFA60 /* UIImage+DGStyle.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = "UIImage+DGStyle.h"; path = "Categories/UIImage+DGStyle.h"; sourceTree = "<group>"; };
 		7E98E221166EA7D900FAFA60 /* UIImage+DGStyle.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = "UIImage+DGStyle.m"; path = "Categories/UIImage+DGStyle.m"; sourceTree = "<group>"; };
+		7EC5DB58166FF0B7001949AE /* CoreImage.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreImage.framework; path = System/Library/Frameworks/CoreImage.framework; sourceTree = SDKROOT; };
+		7EC5DB60166FFD5F001949AE /* NYXImagesHelper.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NYXImagesHelper.h; sourceTree = "<group>"; };
+		7EC5DB61166FFD5F001949AE /* NYXImagesHelper.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NYXImagesHelper.m; sourceTree = "<group>"; };
+		7EC5DB62166FFD5F001949AE /* NYXImagesKit.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NYXImagesKit.h; sourceTree = "<group>"; };
 		7ECD442E166E801800B3A160 /* de_CustomTableViewCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = de_CustomTableViewCell.h; sourceTree = "<group>"; };
 		7ECD442F166E801800B3A160 /* de_CustomTableViewCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = de_CustomTableViewCell.m; sourceTree = "<group>"; };
 		7ECD4437166E87F700B3A160 /* SDImageCache.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SDImageCache.h; sourceTree = "<group>"; };
@@ -179,6 +185,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				7EC5DB59166FF0B7001949AE /* CoreImage.framework in Frameworks */,
 				7ECD4454166E8D5600B3A160 /* Social.framework in Frameworks */,
 				3DD764DA166D4FE500C7CA9B /* MessageUI.framework in Frameworks */,
 				3DD7648C166D032900C7CA9B /* Twitter.framework in Frameworks */,
@@ -246,6 +253,7 @@
 		7E42529816645DF400741A41 /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				7EC5DB58166FF0B7001949AE /* CoreImage.framework */,
 				3DD764D9166D4FE500C7CA9B /* MessageUI.framework */,
 				3DD7648D166D048D00C7CA9B /* Social.framework */,
 				3DD7648B166D032900C7CA9B /* Twitter.framework */,
@@ -411,9 +419,21 @@
 			name = TableViewControllers;
 			sourceTree = "<group>";
 		};
+		7EC5DB5F166FFD5F001949AE /* ImageHelper */ = {
+			isa = PBXGroup;
+			children = (
+				7EC5DB60166FFD5F001949AE /* NYXImagesHelper.h */,
+				7EC5DB61166FFD5F001949AE /* NYXImagesHelper.m */,
+				7EC5DB62166FFD5F001949AE /* NYXImagesKit.h */,
+			);
+			name = ImageHelper;
+			path = Vendors/ImageHelper;
+			sourceTree = "<group>";
+		};
 		7ECD4435166E87AD00B3A160 /* Vendors */ = {
 			isa = PBXGroup;
 			children = (
+				7EC5DB5F166FFD5F001949AE /* ImageHelper */,
 				7ECD4436166E87F700B3A160 /* SDWebImage */,
 			);
 			name = Vendors;
@@ -561,6 +581,7 @@
 				7ECD444E166E87F700B3A160 /* UIButton+WebCache.m in Sources */,
 				7ECD444F166E87F700B3A160 /* UIImageView+WebCache.m in Sources */,
 				7E98E222166EA7D900FAFA60 /* UIImage+DGStyle.m in Sources */,
+				7EC5DB63166FFD5F001949AE /* NYXImagesHelper.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

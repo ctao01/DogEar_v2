@@ -18,7 +18,7 @@ typedef enum {
     BKToolBarTypeViewing
 }BKToolBarType;
 
-@interface de_PhotoViewController : UIViewController <UIActionSheetDelegate , UIAlertViewDelegate , UIPrintInteractionControllerDelegate>
+@interface de_PhotoViewController : UIViewController <UIActionSheetDelegate , UIAlertViewDelegate , UIPrintInteractionControllerDelegate , UIScrollViewDelegate>
 
 - (id) initWithImage:(UIImage*)image toolBarType:(BKToolBarType)toolBarType;
 - (id) initWithImage:(UIImage*)image andExistingDogEar:(DogEarObject*)object;
