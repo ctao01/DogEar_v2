@@ -19,6 +19,7 @@
 @interface de_DetailViewController ()
 {
     UIPrintInteractionController *printController;
+    UIActivityIndicatorView * activityIndicator;
 }
 
 @property (nonatomic) BOOL isEditing;
@@ -60,6 +61,10 @@
 - (void)viewDidLoad
 {
     [super viewDidLoad];
+    activityIndicator = [[UIActivityIndicatorView alloc]initWithActivityIndicatorStyle:UIActivityIndicatorViewStyleGray];
+    activityIndicator.frame = CGRectMake(0.0f, 0.0f, 60.0f, 60.0f);
+    activityIndicator.center = self.view.center;
+    [self.view addSubview:activityIndicator];
     
     UIImageView * bgImage = [[UIImageView alloc]initWithImage:[UIImage imageNamed:@"dogear-bg-master"]];
     self.tableView.backgroundView = bgImage;
@@ -120,6 +125,12 @@
             self.navigationItem.rightBarButtonItem = nil;
     }
 
+}
+
+- (void) viewDidDisappear:(BOOL)animated
+{
+    [super viewDidDisappear:animated];
+    [activityIndicator stopAnimating];
 }
 
 - (void)didReceiveMemoryWarning
@@ -332,6 +343,8 @@
 
 - (void) addDogEar
 {
+    [activityIndicator startAnimating];
+    
     [self saveDogEar];
     [self.dogEar setInsertedDate:[NSDate date]];    //JT-Note: Add "insertedDate" only when add a new object.
 

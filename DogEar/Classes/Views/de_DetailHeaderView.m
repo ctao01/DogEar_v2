@@ -8,6 +8,7 @@
 
 #import "de_DetailHeaderView.h"
 #import "de_DetailViewController.h"
+#import "UIImage+DGStyle.h"
 
 @interface de_DetailHeaderView ()
 {
@@ -59,11 +60,11 @@
 - (void) layoutSubviews
 {
     [super layoutSubviews];
-    if (self.dogEar == nil)[imageView setImage:self.thumbImage];
+    if (self.dogEar == nil)[imageView setImage:[self.thumbImage scaleToFitSize:imageView.frame.size]];
     else
     {
         NSData *pngData = [NSData dataWithContentsOfFile:self.dogEar.imagePath];
-        [imageView setImage:[UIImage imageWithData:pngData]];
+        [imageView setImage:[[UIImage imageWithData:pngData] scaleToFitSize:imageView.frame.size]];
     }
 //    imageView.image = self.thumbImage;
 }

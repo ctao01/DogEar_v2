@@ -55,7 +55,7 @@ static TwitterManager * sharedManager = nil;
 }
 
 
-- (SLComposeViewController*) tweetSLComposerSheet
+- (SLComposeViewController*) tweetSLComposerSheetWithSharedImage:(UIImage *)image
 {
     SLComposeViewController * tweetSLComposerSheet;
     if ([SLComposeViewController isAvailableForServiceType:SLServiceTypeTwitter])
@@ -77,6 +77,7 @@ static TwitterManager * sharedManager = nil;
             }
         };
         tweetSLComposerSheet.completionHandler = block;
+        [tweetSLComposerSheet addImage:image];
     }
     else{
         NSLog(@"can't send tweet");
@@ -84,11 +85,15 @@ static TwitterManager * sharedManager = nil;
     return tweetSLComposerSheet;
 }
 
-- (TWTweetComposeViewController*) tweetTWComposerSheet
+- (TWTweetComposeViewController*) tweetTWComposerSheetWithSharedImage:(UIImage *)image
 {
     TWTweetComposeViewController * tweetTWComposerSheet;
     if ([TWTweetComposeViewController canSendTweet])
+    {
         tweetTWComposerSheet = [[TWTweetComposeViewController alloc] init];
+        [tweetTWComposerSheet addImage:image];
+        [tweetTWComposerSheet setInitialText:@"Dog Ear"];
+    }
     else
         NSLog(@"can't send tweet");
     return tweetTWComposerSheet;

@@ -15,6 +15,8 @@
 #import "TwitterManager.h"
 #import "MessageManager.h"
 
+#import "UIImage+DGStyle.h"
+
 #define IPHONE_NAVIGATION_BAR_HEIGHT 44
 #define IPHONE_TOOL_BAR_HEIGHT 45
 #define IPHONE_STATUS_BAR_HEIGHT 20
@@ -22,10 +24,19 @@
 #define DEVICE_OS [[[UIDevice currentDevice] systemVersion] intValue]
 #define kPDFPageBounds CGRectMake(0, 0, 8.5 * 72, 11 * 72)
 
+int currentAngle = 0;
+
+
 @interface de_PhotoViewController ()
 {
     UIPrintInteractionController *printController;
     NSString * keyString;
+    
+    // Zoom in/ out
+    UIScrollView * scrollView;
+    UIImageView * imageView;
+    
+    BOOL isAutoEnhance;
 
 }
 @property (nonatomic) BKToolBarType bkToolBarType;
@@ -81,15 +92,31 @@
     
     CGRect bounds = [[UIScreen mainScreen]bounds];
     
-    UIImageView * imageView = [[UIImageView alloc]initWithFrame:self.view.frame];
-    imageView.tag = 222;
-    imageView.contentMode = UIViewContentModeScaleAspectFit;
-    [self.view addSubview:imageView];
+    // JT:ScrollView Setup
+    scrollView = [[UIScrollView alloc] initWithFrame:[[UIScreen mainScreen] applicationFrame]];
+    scrollView.delegate = self;
+	scrollView.backgroundColor = [UIColor blackColor];
+	scrollView.delegate = self;
+	imageView = [[UIImageView alloc] initWithImage:self.photo];
+	scrollView.contentSize = imageView.frame.size;
+	[scrollView addSubview:imageView];
+	scrollView.minimumZoomScale = scrollView.frame.size.width / imageView.frame.size.width;
+	scrollView.maximumZoomScale = 2.0;
+    
+	[scrollView setZoomScale:scrollView.minimumZoomScale];
+	[self.view addSubview:scrollView];
+	[self.view sendSubviewToBack:scrollView];
+    scrollView.frame = CGRectOffset(imageView.frame, 0.0f, - 68.0f);
+    
+//    UIImageView * imageView = [[UIImageView alloc]initWithFrame:self.view.frame];
+//    imageView.tag = 222;
+//    imageView.contentMode = UIViewContentModeScaleAspectFit;
+//    [self.view addSubview:imageView];
     
     NSInteger cameraActiveBarHeight;
     cameraActiveBarHeight = 68.0f;
     
-    imageView.frame = CGRectOffset(imageView.frame, 0.0f, - cameraActiveBarHeight);
+//    imageView.frame = CGRectOffset(imageView.frame, 0.0f, - cameraActiveBarHeight);
     
     UIToolbar * toolBar = [[UIToolbar alloc]initWithFrame:CGRectMake(0.0f, bounds.size.height - cameraActiveBarHeight - IPHONE_TOOL_BAR_HEIGHT, bounds.size.width, IPHONE_TOOL_BAR_HEIGHT)];
     toolBar.tag = 333;
@@ -98,9 +125,11 @@
     
 	if (self.existingDogEar == nil)
     {
-        UIBarButtonItem * rotateItem = [[UIBarButtonItem alloc]initWithTitle:@"Rotate" style:UIBarButtonItemStylePlain target:self action:@selector(rotatePhoto)];
-        UIBarButtonItem * enhanceItem = [[UIBarButtonItem alloc]initWithTitle:@"Enhance" style:UIBarButtonItemStylePlain target:self action:@selector(enhancePhoto)];
-        UIBarButtonItem * cropItem = [[UIBarButtonItem alloc]initWithTitle:@"Crop" style:UIBarButtonItemStylePlain target:self action:@selector(cropPhoto)];
+        isAutoEnhance = NO;
+        
+        UIBarButtonItem * rotateItem = [[UIBarButtonItem alloc]initWithTitle:@"Rotate" style:UIBarButtonItemStyleBordered target:self action:@selector(rotateLeft)];
+        UIBarButtonItem * enhanceItem = [[UIBarButtonItem alloc]initWithTitle:@"Enhance" style:UIBarButtonItemStyleBordered target:self action:@selector(autoEnhance)];
+        UIBarButtonItem * cropItem = [[UIBarButtonItem alloc]initWithTitle:@"Crop" style:UIBarButtonItemStyleBordered target:self action:@selector(cropPhoto)];
         
         [toolBar setItems:[NSArray arrayWithObjects:rotateItem, spaceItme, enhanceItem, spaceItme, cropItem, nil]];
         
@@ -158,9 +187,9 @@
 - (void) viewWillLayoutSubviews
 {
     [super viewWillLayoutSubviews];
-    UIImageView * imageView = (UIImageView*)[self.view viewWithTag:222];
-    imageView.image = self.photo;
-    imageView.frame = CGRectMake(imageView.frame.origin.x, imageView.frame.origin.y, self.view.frame.size.width, self.view.frame.size.height);
+//    UIImageView * imageView = (UIImageView*)[self.view viewWithTag:222];
+//    imageView.image = self.photo;
+//    imageView.frame = CGRectMake(imageView.frame.origin.x, imageView.frame.origin.y, self.view.frame.size.width, self.view.frame.size.height);
     
 }
 
@@ -173,8 +202,8 @@
     UIGraphicsBeginPDFPage();
     CGContextRef ctx = UIGraphicsGetCurrentContext();
     //    [self drawStuffInContext:ctx];  // Method also usable from drawRect:.
-    UIImageView * imageView = [[UIImageView alloc]initWithImage:self.photo];
-    [imageView.layer renderInContext:ctx];
+    UIImageView * printView = [[UIImageView alloc]initWithImage:self.photo];
+    [printView.layer renderInContext:ctx];
     
     UIGraphicsEndPDFContext();
     NSLog(@"generatePDFDataForPrinting");
@@ -183,29 +212,20 @@
 
 #pragma mark - UIBarButtonItem (UINavigationBar)
 
-- (void) retakePhoto
-{
-    de_MainTabBarController * tbc = (de_MainTabBarController*)self.tabBarController;
-    [tbc activateCamera];
-}
 
 - (void) storeTheImage
 {
-    de_DetailViewController * vc = [[de_DetailViewController alloc]initWithStyle:UITableViewStyleGrouped andImage:self.photo];
+    
+    CGSize size = imageView.frame.size;
+    if (isAutoEnhance) self.photo = [self.photo autoEnhance];
+    
+    de_DetailViewController * vc = [[de_DetailViewController alloc]initWithStyle:UITableViewStyleGrouped andImage:[self.photo scaleToFitSize:size]];
 //    [vc setAction:DogEarActionEditing];
     vc.existingDogEar = nil;
     [self.navigationController pushViewController:vc animated:YES];
     
 }
 
-- (void) deleteThePhoto
-{
-    
-    UIAlertView * alertView = [[UIAlertView alloc]initWithTitle:@"Dog Ear" message:@"Are you sure delete this dog ear" delegate:self cancelButtonTitle:@"Cancel" otherButtonTitles:@"Move To Trash", nil];
-    [alertView show];
-  
-    
-}
 
 - (void) moreDetail
 {
@@ -217,6 +237,43 @@
 }
 
 #pragma mark - UIBarButtonItem (UIToolBar)
+
+- (void) rotateLeft
+{
+    currentAngle = currentAngle - 90.0f;
+    if (currentAngle == -360) currentAngle = 0.0;
+    CGAffineTransform rotate = CGAffineTransformMakeRotation( currentAngle / 180.0 * 3.14 );
+	[scrollView setTransform:rotate];
+    NSLog(@"%i",currentAngle);
+
+    UIImage * newImage ;
+    if (currentAngle == -90)
+        newImage = [[UIImage alloc] initWithCGImage:self.photo.CGImage scale:1 orientation:UIImageOrientationLeft];
+    else if (currentAngle == -180)
+        newImage = [[UIImage alloc] initWithCGImage:self.photo.CGImage scale:1 orientation:UIImageOrientationDown];
+    else if (currentAngle == -270)
+        newImage = [[UIImage alloc] initWithCGImage:self.photo.CGImage scale:1 orientation:UIImageOrientationRight];
+    else
+        newImage = [[UIImage alloc] initWithCGImage:self.photo.CGImage scale:1 orientation:UIImageOrientationUp];
+    self.photo = newImage;
+}
+
+- (void) autoEnhance
+{
+    if (isAutoEnhance == NO)
+    {
+        UIImage * originImage = imageView.image;
+        [imageView setImage:[originImage autoEnhance]];
+        isAutoEnhance = YES;
+    }
+    else
+    {
+        [imageView setImage:self.photo];
+        isAutoEnhance = NO;
+    }
+    [imageView setNeedsDisplay];
+}
+
 - (void) shareThePhoto
 {
     UIActionSheet * actionSheet = [[UIActionSheet alloc]initWithTitle:@"Share" delegate:self cancelButtonTitle:@"Cancel" destructiveButtonTitle:nil otherButtonTitles:@"Facebook",@"Twitter",@"Email",@"Message",@"Print", nil];
@@ -224,7 +281,24 @@
     [actionSheet showInView:self.view];
 }
 
-#pragma mark - 
+- (void) retakePhoto
+{
+    de_MainTabBarController * tbc = (de_MainTabBarController*)self.tabBarController;
+    [tbc activateCamera];
+}
+
+
+- (void) deleteThePhoto
+{
+    
+    UIAlertView * alertView = [[UIAlertView alloc]initWithTitle:@"Dog Ear" message:@"Are you sure delete this dog ear" delegate:self cancelButtonTitle:@"Cancel" otherButtonTitles:@"Move To Trash", nil];
+    [alertView show];
+    
+    
+}
+
+#pragma mark - NSuserDefaults  Method
+
 - (NSMutableArray*) decodedCollections
 {
     NSData * data = [[[NSUserDefaults standardUserDefaults]objectForKey:@"BKDataCollections"] objectForKey:self.existingDogEar.category];
@@ -245,6 +319,40 @@
     NSLog(@"updateDogEarDataCollectionWithSelectedCollections");
 }
 
+#pragma mark -
+
+- (CGRect)centeredFrameForScrollView:(UIScrollView *)scroll andUIView:(UIView *)rView {
+	CGSize boundsSize = scroll.bounds.size;
+    CGRect frameToCenter = rView.frame;
+    
+    // center horizontally
+    if (frameToCenter.size.width < boundsSize.width) {
+        frameToCenter.origin.x = (boundsSize.width - frameToCenter.size.width) / 2;
+    }
+    else {
+        frameToCenter.origin.x = 0;
+    }
+    
+    // center vertically
+    if (frameToCenter.size.height < boundsSize.height) {
+        frameToCenter.origin.y = (boundsSize.height - frameToCenter.size.height) / 2;
+    }
+    else {
+        frameToCenter.origin.y = 0;
+    }
+	
+	return frameToCenter;
+}
+
+#pragma mark UIScrollViewDelegate
+
+- (void)scrollViewDidZoom:(UIScrollView *)scrollV {
+	imageView.frame = [self centeredFrameForScrollView:scrollV andUIView:imageView];
+}
+
+- (UIView *)viewForZoomingInScrollView:(UIScrollView *)scrollView {
+	return imageView;
+}
 
 #pragma mark - UIActionSheet Delegate Method
 
@@ -263,14 +371,14 @@
 
             if (DEVICE_OS < 6.0)
             {
-                [[twitter tweetTWComposerSheet] addImage:self.photo];
-                if ([[NSUserDefaults standardUserDefaults] objectForKey:@"Twitter_Account"])[self presentViewController:[twitter tweetTWComposerSheet] animated:YES completion:nil];
+//                [[twitter tweetTWComposerSheet] addImage:self.photo];
+                if ([[NSUserDefaults standardUserDefaults] objectForKey:@"Twitter_Account"])[self presentViewController:[twitter tweetTWComposerSheetWithSharedImage:self.photo] animated:YES completion:nil];
                 
             }
             else
             {
-                [[twitter tweetSLComposerSheet] addImage:self.photo];
-                if ([[NSUserDefaults standardUserDefaults] objectForKey:@"Twitter_Account"]) [self presentViewController:[twitter tweetSLComposerSheet] animated:YES completion:nil];
+//                [[twitter tweetSLComposerSheet] addImage:self.photo];
+                if ([[NSUserDefaults standardUserDefaults] objectForKey:@"Twitter_Account"]) [self presentViewController:[twitter tweetSLComposerSheetWithSharedImage:self.photo] animated:YES completion:nil];
                 else
                 {
                     UIAlertView * alertView = [[UIAlertView alloc]initWithTitle:@"Twitter Authorization" message:@"Dog Ear has been disconnected to Twitter account. Turn on connection in Settings" delegate:self cancelButtonTitle:@"OK" otherButtonTitles:@"Setting", nil];
