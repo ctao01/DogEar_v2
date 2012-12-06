@@ -109,6 +109,7 @@
         
         UIBarButtonItem * saveItem = [[UIBarButtonItem alloc]initWithTitle:@"Save" style:UIBarButtonItemStyleBordered target:self action:@selector(storeTheImage)];
         self.navigationItem.rightBarButtonItem = saveItem;
+        self.navigationItem.title = @"Edit Photo";
     }
     else 
     {
@@ -126,6 +127,7 @@
         
         UIBarButtonItem * detailItem = [[UIBarButtonItem alloc]initWithTitle:@"Detail" style:UIBarButtonItemStyleBordered target:self action:@selector(moreDetail)];
         self.navigationItem.rightBarButtonItem = detailItem;
+        self.navigationItem.title = self.existingDogEar.title;
     }
     [self.view addSubview:toolBar];
 

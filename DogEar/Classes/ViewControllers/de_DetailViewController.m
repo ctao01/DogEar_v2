@@ -72,19 +72,11 @@
     {
         headerView.dogEar = nil;
         headerView.thumbImage = self.image;
+        self.navigationItem.title = @"Add Dog Ear";
     }
-    else headerView.dogEar = self.existingDogEar;
-    
-    self.tableView.tableHeaderView = headerView;
-    
-    //JT-Note:
-    Class printControllerClass = NSClassFromString(@"UIPrintInteractionController");
-    if (printControllerClass) {
-        printController = [printControllerClass sharedPrintController];
-    }
-    
-    if (self.existingDogEar != nil)
+    else 
     {
+        headerView.dogEar = self.existingDogEar;
         UIBarButtonItem * editItem = [[UIBarButtonItem alloc]initWithTitle:@"Edit" style:UIBarButtonItemStyleBordered target:self action:@selector(edit:)];
         self.navigationItem.rightBarButtonItem = editItem;
         
@@ -92,11 +84,16 @@
         self.navigationItem.leftBarButtonItem = backItem;
         
         //        self.tableView.userInteractionEnabled = NO;
-        for (int c = 0; c < [self.tableView numberOfRowsInSection:0] - 1; c++) {
-            NSIndexPath * disabledIndexPath = [NSIndexPath indexPathForRow:c inSection:0];
-            UITableViewCell * disabledCell = [self.tableView cellForRowAtIndexPath:disabledIndexPath];
-            [disabledCell setUserInteractionEnabled:NO];
-        }
+        [self setTableViewUserInteractionEnable:NO];
+        self.navigationItem.title = @"Detail";
+    }
+    
+    self.tableView.tableHeaderView = headerView;
+    
+    //JT-Note:
+    Class printControllerClass = NSClassFromString(@"UIPrintInteractionController");
+    if (printControllerClass) {
+        printController = [printControllerClass sharedPrintController];
     }
     NSLog(@"existingDogEar:%@",(self.existingDogEar != nil) ? @"YES":@"NO");
     NSLog(@"existingDogEarTitle:%@",self.existingDogEar.title);
@@ -196,12 +193,13 @@
 
 - (void) backToHome
 {
-    if (self.tabBarController.selectedIndex == 0)[self.navigationController popToRootViewControllerAnimated:YES];
-    else {
-        [self.tabBarController setSelectedIndex:0];
-        UINavigationController * nc = [self.tabBarController.viewControllers objectAtIndex:0];
-        [nc popToRootViewControllerAnimated:YES];
-    }
+//    if (self.tabBarController.selectedIndex == 0)[self.navigationController popToRootViewControllerAnimated:YES];
+//    else {
+//        [self.tabBarController setSelectedIndex:0];
+//        UINavigationController * nc = [self.tabBarController.viewControllers objectAtIndex:0];
+//        [nc popToRootViewControllerAnimated:YES];
+//    }
+    [self.navigationController popViewControllerAnimated:YES];
 }
 
 - (void) cancelEditing

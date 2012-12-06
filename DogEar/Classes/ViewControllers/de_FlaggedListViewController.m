@@ -37,6 +37,7 @@
         flaggedItems = [[[NSUserDefaults standardUserDefaults] objectForKey:@"BKFlaggedItems"] copy];
     else
         flaggedItems = [[NSArray alloc]initWithObjects:@"Casual",@"Somewhat Important",@"Important",@"Very Important",@"Crucial", nil];
+    self.navigationItem.title = @"My Flagged Dog Ears";
 }
 
 - (void)didReceiveMemoryWarning
@@ -88,6 +89,7 @@
     }
     vc.collections = temp;
     [self.navigationController pushViewController:vc animated:YES];
+    vc.navigationItem.title = [flaggedItems objectAtIndex:indexPath.row];
 
 }
 

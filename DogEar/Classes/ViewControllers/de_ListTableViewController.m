@@ -13,18 +13,24 @@
 #import "de_FlaggedListViewController.h"
 
 @interface de_ListTableViewController ()
-
+@property (nonatomic , strong) UITableView * tableView;
 @end
 
 @implementation de_ListTableViewController
 @synthesize collections;
-
+/*
 - (id)initWithStyle:(UITableViewStyle)style
 {
     self = [super initWithStyle:style];
     if (self) {
         // Custom initialization
     }
+    return self;
+}*/
+
+- (id) init
+{
+    self = [super init];
     return self;
 }
 
@@ -44,22 +50,33 @@
     UIView * view = [[UIView alloc]initWithFrame:CGRectMake(0.0f, 0.0f, 320.0f, 44.0f)];
     [view addSubview:segmentControl];
     
+    CGRect bounds = self.view.bounds;
+
+    self.tableView = [[UITableView alloc]initWithFrame:CGRectMake(0.0f, 0.0f, bounds.size.width, bounds.size.height) style:UITableViewStylePlain];
+    self.tableView.frame = CGRectOffset(self.tableView.frame, 0.0f, 44.0f);
+    self.tableView.delegate = self;
+    self.tableView.dataSource = self;
+    //    self.tableView.showsHorizontalScrollIndicator = YES;
+    //    self.tableView.contentInset = UIEdgeInsetsMake(0.0f, 0.0f, 44.0f, 0.0f);]
+    [self.view addSubview:self.tableView];
+    
+    
     UIViewController * vc = (UIViewController*)[self.navigationController.viewControllers objectAtIndex:[self.navigationController.viewControllers count]-2];
-    if ([vc isMemberOfClass:[de_BrowseTableViewController class]])self.tableView.tableHeaderView = view;
-    else if ([vc isMemberOfClass:[de_FlaggedListViewController class]]) self.tableView.tableHeaderView = nil;
-    self.tableView.showsHorizontalScrollIndicator = YES;
-    self.tableView.contentInset = UIEdgeInsetsMake(0.0f, 0.0f, 44.0f, 0.0f);
-}
-
-
-- (void) viewDidAppear:(BOOL)animated
-{
-    [super viewDidAppear:animated];
+    if ([vc isMemberOfClass:[de_BrowseTableViewController class]])[self.view addSubview:view];
+    else if ([vc isMemberOfClass:[de_FlaggedListViewController class]]) self.tableView.frame = CGRectOffset(self.tableView.frame, 0.0f, -44.0f);
+    
     NSSortDescriptor *sortDescriptor = [[NSSortDescriptor alloc] initWithKey:@"insertedDate" ascending:FALSE];
     [self.collections sortUsingDescriptors:[NSArray arrayWithObject:sortDescriptor]];
-    [self.tableView reloadData];
-    
 }
+
+
+//- (void) viewDidAppear:(BOOL)animated
+//{
+//    [super viewDidAppear:animated];
+//
+//    [self.tableView reloadData];
+//    
+//}
 
 - (void)didReceiveMemoryWarning
 {

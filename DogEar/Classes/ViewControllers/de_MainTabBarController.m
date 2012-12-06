@@ -32,6 +32,8 @@
     [super viewDidLoad];
 	self.delegate = self;
     
+    [[UINavigationBar appearance] setTintColor:[UIColor colorWithRed:38.0f/255.0f green:144.0f/255.0f blue:164.0f/255.0f alpha:0.3]];
+    
     de_BrowseTableViewController * vcBrowse = [[de_BrowseTableViewController alloc]initWithStyle:UITableViewStyleGrouped];
     vcBrowse.title = @"Browse";
     

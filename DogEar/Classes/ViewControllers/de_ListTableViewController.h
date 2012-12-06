@@ -8,7 +8,7 @@
 
 #import <UIKit/UIKit.h>
 
-@interface de_ListTableViewController : UITableViewController
+@interface de_ListTableViewController : UIViewController <UITableViewDataSource , UITableViewDelegate>
 
 @property (nonatomic ,strong) NSMutableArray * collections;
 @property (nonatomic ,strong) NSMutableArray * flaggedCollections;
