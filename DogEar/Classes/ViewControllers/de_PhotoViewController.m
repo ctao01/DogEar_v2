@@ -11,7 +11,7 @@
 #import "de_DetailViewController.h"
 
 #import "de_ListTableViewController.h"
-
+#import "de_CropView.h"
 #import "TwitterManager.h"
 #import "MessageManager.h"
 
@@ -32,9 +32,12 @@ int currentAngle = 0;
     UIPrintInteractionController *printController;
     NSString * keyString;
     
-    // Zoom in/ out
+    // Zoom in - out
     UIScrollView * scrollView;
     UIImageView * imageView;
+    
+    // Crop Image
+    de_CropView * crop;
     
     BOOL isAutoEnhance;
 
@@ -273,6 +276,42 @@ int currentAngle = 0;
     }
     [imageView setNeedsDisplay];
 }
+
+#pragma mark - Crop
+
+- (void) cropPhoto
+{
+    CGSize subImageSize = CGSizeMake(150.0f, 150.0f);
+    CGRect subImageRect = CGRectMake(80.0f, 80.0f, 150.0f, 150.0f);
+    
+    crop = [[de_CropView alloc]initWithFrame:subImageRect];
+    [self.view addSubview:crop];
+    [crop setNeedsDisplay];
+    
+    
+    CGImageRef imageRef = imageView.image.CGImage;
+    CGImageRef subImageRef = CGImageCreateWithImageInRect(imageRef, subImageRect);
+    
+    UIGraphicsBeginImageContext(subImageSize);
+    CGContextRef context = UIGraphicsGetCurrentContext();
+    CGContextDrawImage(context, subImageRect, subImageRef);
+    
+    UIBarButtonItem * cropDoneItem = [[UIBarButtonItem alloc]initWithTitle:@"Crop" style:UIBarButtonItemStyleDone target:self action:@selector(cropPhotoDone:)];
+    self.navigationItem.rightBarButtonItem = cropDoneItem;
+}
+
+- (void) cropPhotoDone:(id)sender
+{
+    [crop removeFromSuperview];
+    
+    UIBarButtonItem * saveItem = [[UIBarButtonItem alloc]initWithTitle:@"Save" style:UIBarButtonItemStyleBordered target:self action:@selector(storeTheImage)];
+    self.navigationItem.rightBarButtonItem = saveItem;
+
+}
+
+
+
+#pragma mark - 
 
 - (void) shareThePhoto
 {
