@@ -35,6 +35,8 @@ int currentAngle = 0;
     // Zoom in/ out
     UIScrollView * scrollView;
     UIImageView * imageView;
+    
+    BOOL isAutoEnhance;
 
 }
 @property (nonatomic) BKToolBarType bkToolBarType;
@@ -104,7 +106,7 @@ int currentAngle = 0;
 	[scrollView setZoomScale:scrollView.minimumZoomScale];
 	[self.view addSubview:scrollView];
 	[self.view sendSubviewToBack:scrollView];
-    scrollView.frame = CGRectOffset(imageView.frame, 0.0f, - IPHONE_NAVIGATION_BAR_HEIGHT);
+    scrollView.frame = CGRectOffset(imageView.frame, 0.0f, - 68.0f);
     
 //    UIImageView * imageView = [[UIImageView alloc]initWithFrame:self.view.frame];
 //    imageView.tag = 222;
@@ -123,6 +125,8 @@ int currentAngle = 0;
     
 	if (self.existingDogEar == nil)
     {
+        isAutoEnhance = NO;
+        
         UIBarButtonItem * rotateItem = [[UIBarButtonItem alloc]initWithTitle:@"Rotate" style:UIBarButtonItemStyleBordered target:self action:@selector(rotateLeft)];
         UIBarButtonItem * enhanceItem = [[UIBarButtonItem alloc]initWithTitle:@"Enhance" style:UIBarButtonItemStyleBordered target:self action:@selector(autoEnhance)];
         UIBarButtonItem * cropItem = [[UIBarButtonItem alloc]initWithTitle:@"Crop" style:UIBarButtonItemStyleBordered target:self action:@selector(cropPhoto)];
@@ -212,6 +216,7 @@ int currentAngle = 0;
 {
     
     CGSize size = imageView.frame.size;
+    if (isAutoEnhance) self.photo = [self.photo autoEnhance];
     
     de_DetailViewController * vc = [[de_DetailViewController alloc]initWithStyle:UITableViewStyleGrouped andImage:[self.photo scaleToFitSize:size]];
 //    [vc setAction:DogEarActionEditing];
@@ -235,14 +240,36 @@ int currentAngle = 0;
 - (void) rotateLeft
 {
     currentAngle = currentAngle - 90.0f;
+    if (currentAngle == -360) currentAngle = 0.0;
     CGAffineTransform rotate = CGAffineTransformMakeRotation( currentAngle / 180.0 * 3.14 );
 	[scrollView setTransform:rotate];
+    NSLog(@"%i",currentAngle);
+
+    UIImage * newImage ;
+    if (currentAngle == -90)
+        newImage = [[UIImage alloc] initWithCGImage:self.photo.CGImage scale:1 orientation:UIImageOrientationLeft];
+    else if (currentAngle == -180)
+        newImage = [[UIImage alloc] initWithCGImage:self.photo.CGImage scale:1 orientation:UIImageOrientationDown];
+    else if (currentAngle == -270)
+        newImage = [[UIImage alloc] initWithCGImage:self.photo.CGImage scale:1 orientation:UIImageOrientationRight];
+    else
+        newImage = [[UIImage alloc] initWithCGImage:self.photo.CGImage scale:1 orientation:UIImageOrientationUp];
+    self.photo = newImage;
 }
 
 - (void) autoEnhance
 {
-    self.photo = [self.photo autoEnhance];
-    [imageView setImage:self.photo];
+    if (isAutoEnhance == NO)
+    {
+        UIImage * originImage = imageView.image;
+        [imageView setImage:[originImage autoEnhance]];
+        isAutoEnhance = YES;
+    }
+    else
+    {
+        [imageView setImage:self.photo];
+        isAutoEnhance = NO;
+    }
     [imageView setNeedsDisplay];
 }
 
