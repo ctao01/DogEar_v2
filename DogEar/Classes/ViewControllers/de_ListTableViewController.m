@@ -187,12 +187,12 @@
 
 - (void)tableView:(UITableView *)tableView didEndEditingRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    
+    DogEarObject * deletedObject = (DogEarObject*)[self.collections objectAtIndex:indexPath.row];
     [self.tableView reloadData];
     NSData * encodedObjects = [NSKeyedArchiver archivedDataWithRootObject:self.collections];
     NSMutableDictionary * dict = [[[NSUserDefaults standardUserDefaults]objectForKey:@"BKDataCollections"] mutableCopy];
     
-    [dict setObject:encodedObjects forKey:self.navigationItem.title];
+    [dict setObject:encodedObjects forKey:deletedObject.category];
     [[NSUserDefaults standardUserDefaults] setObject:dict forKey:@"BKDataCollections"];
     [[NSUserDefaults standardUserDefaults] synchronize];
 }

@@ -55,6 +55,8 @@
     self.vcSearchDispay.searchResultsDataSource = self;
     self.vcSearchDispay.searchResultsDelegate = self;
     self.vcSearchDispay.delegate = self;
+    
+    self.navigationItem.title = @"Browse Dog Ears";
 }
 
 - (void) viewWillAppear:(BOOL)animated

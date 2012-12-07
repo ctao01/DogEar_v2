@@ -32,6 +32,7 @@
 {
     [super viewDidLoad];
 	self.delegate = self;
+    [[UINavigationBar appearance] setTintColor:[UIColor colorWithRed:62.0f/255.0f green:153.0f/255.0f blue:166.0f/255.0f alpha:0.3]];
     
     de_BrowseTableViewController * vcBrowse = [[de_BrowseTableViewController alloc]initWithStyle:UITableViewStyleGrouped];
     vcBrowse.title = @"Browse";
@@ -48,7 +49,7 @@
     
     // Setup Setting View
     de_SettingViewController * vcSettings = [[de_SettingViewController alloc]initWithStyle:UITableViewStyleGrouped];
-    vcSettings.title = @"Setting";
+    vcSettings.title = @"Settings";
     
     UINavigationController * ncSettings = [[UINavigationController alloc]initWithRootViewController:vcSettings];
     

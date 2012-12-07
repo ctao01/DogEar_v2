@@ -37,6 +37,7 @@
         flaggedItems = [[[NSUserDefaults standardUserDefaults] objectForKey:@"BKFlaggedItems"] copy];
     else
         flaggedItems = [[NSArray alloc]initWithObjects:@"Casual",@"Somewhat Important",@"Important",@"Very Important",@"Crucial", nil];
+    self.navigationItem.title = @"Flagged";
 }
 
 - (void)didReceiveMemoryWarning
@@ -87,7 +88,9 @@
         }
     }
     vc.collections = temp;
+    vc.navigationItem.title = [flaggedItems objectAtIndex:indexPath.row];
     [self.navigationController pushViewController:vc animated:YES];
+
 
 }
 
