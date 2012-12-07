@@ -350,11 +350,11 @@
     [self saveDogEar];
     [self.dogEar setInsertedDate:[NSDate date]];    //JT-Note: Add "insertedDate" only when add a new object.
 
-    /*NSMutableArray * array = [[NSMutableArray alloc]initWithArray:[self decodedCollections]];
+    NSMutableArray * array = [[NSMutableArray alloc]initWithArray:[self decodedCollections]];
     [array addObject:self.dogEar];
-    [self updateDogEarDataCollectionWithSelectedCollections:array];*/
+    [self updateDogEarDataCollectionWithSelectedCollections:array];
     
-    NSIndexPath * indexPath = [NSIndexPath indexPathForRow:0 inSection:0];
+    /*NSIndexPath * indexPath = [NSIndexPath indexPathForRow:0 inSection:0];
     UITableViewCell * cell = [self.tableView cellForRowAtIndexPath:indexPath];
     NSString * key = cell.detailTextLabel.text;
     
@@ -368,7 +368,7 @@
     [dict setValue:encodedObjects forKey:key];
     
     [[NSUserDefaults standardUserDefaults]setObject:dict forKey:@"BKDataCollections"];
-    [[NSUserDefaults standardUserDefaults] synchronize];
+    [[NSUserDefaults standardUserDefaults] synchronize];*/
 //    [self updateDogEarDataCollectionWithSelectedCollections:[self decodedCollections]];
 
     if (self.tabBarController.selectedIndex == 0)[self.navigationController popToRootViewControllerAnimated:YES];

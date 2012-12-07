@@ -34,10 +34,12 @@
 {
     self = [super initWithFrame:frame];
     if (self) {
-        imageView = [[UIImageView alloc]initWithFrame:CGRectMake(0.0f, 0.0f, 100.0f, 100.0f)];
+        imageView = [[UIImageView alloc]initWithFrame:CGRectMake(0.0f, 0.0f, 95.0f, 95.0f)];
         imageView.backgroundColor = [UIColor blackColor];
-        imageView.frame = CGRectOffset(imageView.frame, 10.0f, 5.0f);
+        imageView.frame = CGRectOffset(imageView.frame, 15.0f, 10.0f);
         [self addSubview:imageView];
+        imageView.contentMode = UIViewContentModeScaleAspectFill;
+        imageView.clipsToBounds = YES;
         
         self.table = [[UITableView alloc]initWithFrame:CGRectMake(110.0f, 5.0f, 209.0f, 100.0f) style:UITableViewStyleGrouped];
         self.table.dataSource = self;
