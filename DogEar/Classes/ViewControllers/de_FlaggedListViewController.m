@@ -13,6 +13,7 @@
 {
     NSArray * flaggedItems;
 }
+@property (nonatomic , retain) NSArray * flaggedCollections;
 @end
 
 @implementation de_FlaggedListViewController
@@ -40,10 +41,36 @@
     self.navigationItem.title = @"Flagged";
 }
 
+- (void) viewWillAppear:(BOOL)animated
+{
+    [super viewWillAppear:animated];
+    self.flaggedCollections = [NSArray arrayWithArray: [self collections]];
+    
+}
+
 - (void)didReceiveMemoryWarning
 {
     [super didReceiveMemoryWarning];
     // Dispose of any resources that can be recreated.
+}
+
+- (NSMutableArray *) collections
+{
+    NSMutableArray * collections = [[NSMutableArray alloc]init];
+    NSArray * categories = [[NSArray alloc]initWithArray:[[NSUserDefaults standardUserDefaults]objectForKey:@"BKCategory"]];
+
+    for (int c = 0; c < [categories count]; c++)
+    {
+        NSData * data = [[[NSUserDefaults standardUserDefaults]objectForKey:@"BKDataCollections"] objectForKey:[categories objectAtIndex:c]];
+        NSMutableArray * decodedCollections = [NSMutableArray arrayWithArray:[NSKeyedUnarchiver unarchiveObjectWithData: data]];
+        NSArray * copyCollections = [[NSArray arrayWithArray:decodedCollections] copy];
+        
+        for (DogEarObject * object in copyCollections)
+        {
+            if (object.flagged != nil)  [collections addObject:object];
+        }
+    }
+    return collections;
 }
 
 #pragma mark - Table view data source

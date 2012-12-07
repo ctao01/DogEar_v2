@@ -8,9 +8,12 @@
 
 #import "de_MainTabBarController.h"
 
+#import "de_MainNavigationController.h"
+
 #import "de_BrowseTableViewController.h"
 #import "de_SettingViewController.h"
 #import "de_PhotoViewController.h"
+
 #import "UIImage+DGStyle.h"
 
 @interface de_MainTabBarController ()
@@ -32,12 +35,11 @@
 {
     [super viewDidLoad];
 	self.delegate = self;
-    [[UINavigationBar appearance] setTintColor:[UIColor colorWithRed:62.0f/255.0f green:153.0f/255.0f blue:166.0f/255.0f alpha:0.3]];
     
     de_BrowseTableViewController * vcBrowse = [[de_BrowseTableViewController alloc]initWithStyle:UITableViewStyleGrouped];
     vcBrowse.title = @"Browse";
     
-    UINavigationController * ncBrowse = [[UINavigationController alloc]initWithRootViewController:vcBrowse];
+    de_MainNavigationController * ncBrowse = [[de_MainNavigationController alloc]initWithRootViewController:vcBrowse];
     UITabBarItem * browseBtn = [[UITabBarItem alloc]initWithTitle:@"Browse" image:[UIImage imageNamed:@"dogear-icon-browse"] tag:0];
     [ncBrowse setTabBarItem:browseBtn];
     
@@ -51,8 +53,7 @@
     de_SettingViewController * vcSettings = [[de_SettingViewController alloc]initWithStyle:UITableViewStyleGrouped];
     vcSettings.title = @"Settings";
     
-    UINavigationController * ncSettings = [[UINavigationController alloc]initWithRootViewController:vcSettings];
-    
+    de_MainNavigationController * ncSettings = [[de_MainNavigationController alloc]initWithRootViewController:vcSettings];
     UITabBarItem * settingsBtn = [[UITabBarItem alloc]initWithTitle:@"Settings" image:[UIImage imageNamed:@"dogear-icon-settings"] tag:2];
     [ncSettings setTabBarItem:settingsBtn];
     

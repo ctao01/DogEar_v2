@@ -13,6 +13,8 @@
 #import "de_FlaggedListViewController.h"
 
 #import "de_CustomTableViewCell.h"
+#import "de_NavigationBar.h"
+
 #import "UIImageView+WebCache.h"
 #import "SDImageCache.h"
 
@@ -35,8 +37,9 @@
 - (void)viewDidLoad
 {
     [super viewDidLoad];
-//    UIImageView * bgImage = [[UIImageView alloc]initWithImage:[UIImage imageNamed:@"dogear-bg-master"]];
-//    self.tableView.backgroundView = bgImage;
+    UIImageView * bgImage = [[UIImageView alloc]initWithImage:[UIImage imageNamed:@"dogear-bg-master"]];
+//    de_BackgroundView * bgView = [[de_BackgroundView alloc]initWithFrame:self.view.frame];
+    self.tableView.backgroundView = bgImage;
     
     UISegmentedControl * segmentControl = [[UISegmentedControl alloc]initWithItems:[NSArray arrayWithObjects:@"Most Recent", @"Most Important", nil]];
     segmentControl.frame = CGRectMake(0.0f, 5.0f, 200.0f, 30.0f);
@@ -53,6 +56,7 @@
     else if ([vc isMemberOfClass:[de_FlaggedListViewController class]]) self.tableView.tableHeaderView = nil;
     self.tableView.showsHorizontalScrollIndicator = YES;
     self.tableView.contentInset = UIEdgeInsetsMake(0.0f, 0.0f, 44.0f, 0.0f);
+    self.tableView.separatorColor = [UIColor colorWithRed:33.0f/255.0f green:80.0f/255.0f blue:87.0f/255.0f alpha:0.3];
     
     [[SDImageCache sharedImageCache] clearMemory];
     [[SDImageCache sharedImageCache] clearDisk];
@@ -73,6 +77,29 @@
 {
     [super didReceiveMemoryWarning];
     // Dispose of any resources that can be recreated.
+}
+
+#pragma mark - Private Getter / Setter
+
+- (NSMutableArray*) decodedCollectionsWithCategory:(NSString*)category
+{
+    
+    NSData * data = [[[NSUserDefaults standardUserDefaults]objectForKey:@"BKDataCollections"] objectForKey:category];
+    NSMutableArray * decodedCollections = [NSMutableArray arrayWithArray:[NSKeyedUnarchiver unarchiveObjectWithData: data]];
+    
+    return decodedCollections;
+}
+
+- (void) updateDogEarDataCollectionWithSelectedCollections:(NSMutableArray*)array withCategory:(NSString*)category
+{
+    NSData * encodedObjects = [NSKeyedArchiver archivedDataWithRootObject:array];
+    NSMutableDictionary * dict = [[[NSUserDefaults standardUserDefaults]objectForKey:@"BKDataCollections"] mutableCopy];
+    
+    [dict setObject:encodedObjects forKey:category];
+    [[NSUserDefaults standardUserDefaults] setObject:dict forKey:@"BKDataCollections"];
+    [[NSUserDefaults standardUserDefaults] synchronize];
+    
+    NSLog(@"updateDogEarDataCollectionWithSelectedCollections");
 }
 
 #pragma mark - UISegmentControl Action Method
@@ -179,23 +206,40 @@
 }
 
 - (void)tableView:(UITableView *)tableView commitEditingStyle:(UITableViewCellEditingStyle)editingStyle forRowAtIndexPath:(NSIndexPath *)indexPath
-{    
-        [self.collections removeObjectAtIndex:indexPath.row];
-        NSArray * array = [NSArray arrayWithObjects:indexPath, nil];
-        [self.tableView deleteRowsAtIndexPaths:array withRowAnimation:UITableViewRowAnimationFade];
+{
+    DogEarObject * selectedDogEar = (DogEarObject*)[self.collections objectAtIndex:indexPath.row];
+    NSLog(@"category:%@",selectedDogEar.category);
+    NSLog(@"category:%@",self.collections);
+    NSLog(@"category:%@",selectedDogEar);
+
+    
+    NSMutableArray * decodedObjects = [[NSMutableArray alloc]initWithArray:[self decodedCollectionsWithCategory:selectedDogEar.category]];
+    NSLog(@"category:%i",[decodedObjects count]);
+
+    for (int d = 0; d < [decodedObjects count]; d++)
+    {
+        DogEarObject * object = [decodedObjects objectAtIndex:d];
+        if ([object.title isEqualToString:selectedDogEar.title] && [object.insertedDate isEqualToDate:selectedDogEar.insertedDate])
+            [decodedObjects removeObject:object];
+    }
+    NSLog(@"category:%i",[decodedObjects count]);
+
+    
+//    [decodedObjects removeObject:selectedDogEar];
+
+    [self updateDogEarDataCollectionWithSelectedCollections:decodedObjects withCategory:selectedDogEar.category];
+
+    [self.collections removeObjectAtIndex:indexPath.row];
+    NSArray * array = [NSArray arrayWithObjects:indexPath, nil];
+    [self.tableView deleteRowsAtIndexPaths:array withRowAnimation:UITableViewRowAnimationFade];
 }
 
 - (void)tableView:(UITableView *)tableView didEndEditingRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    DogEarObject * deletedObject = (DogEarObject*)[self.collections objectAtIndex:indexPath.row];
     [self.tableView reloadData];
-    NSData * encodedObjects = [NSKeyedArchiver archivedDataWithRootObject:self.collections];
-    NSMutableDictionary * dict = [[[NSUserDefaults standardUserDefaults]objectForKey:@"BKDataCollections"] mutableCopy];
-    
-    [dict setObject:encodedObjects forKey:deletedObject.category];
-    [[NSUserDefaults standardUserDefaults] setObject:dict forKey:@"BKDataCollections"];
-    [[NSUserDefaults standardUserDefaults] synchronize];
+
 }
+
 
 #pragma mark -
 #pragma mark Table cell image support

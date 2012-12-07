@@ -67,7 +67,7 @@
     
     UIBarButtonItem * cancelItem = [[UIBarButtonItem alloc]initWithBarButtonSystemItem:UIBarButtonSystemItemCancel target:self action:@selector(dismissTheView)];
     self.navigationItem.leftBarButtonItem = cancelItem;
-    self.navigationItem.title = @"Reminder";
+    self.navigationItem.title = @"Set A Reminder";
     
     
 }

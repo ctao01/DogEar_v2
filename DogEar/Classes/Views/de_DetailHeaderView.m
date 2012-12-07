@@ -23,7 +23,7 @@
 @implementation de_DetailHeaderView
 
 @synthesize vcParent = _vcParent;
-//@synthesize allowEditing = _allowEditing;
+@synthesize allowEditing = _allowEditing;
 @synthesize thumbImage = _thumbImage;
 @synthesize dogEar = _dogEar;
 
@@ -71,6 +71,12 @@
 //    imageView.image = self.thumbImage;
 }
 
+- (void) setNeedsDisplay
+{
+    [super setNeedsDisplay];
+    [self.table reloadData];
+}
+
 #pragma mark - 
 
 -(UITextField*) makeTextField: (NSString*)text placeholder: (NSString*)placeholder tag:(NSInteger)tag
@@ -83,16 +89,12 @@
 	tf.autocapitalizationType = UITextAutocapitalizationTypeNone;
 	tf.adjustsFontSizeToFitWidth = YES;
 	tf.textColor = [UIColor colorWithRed:56.0f/255.0f green:84.0f/255.0f blue:135.0f/255.0f alpha:1.0f];
-    if (self.dogEar != nil)
-    {
-        [tf setEnabled:NO];
-        tf.userInteractionEnabled = NO;
-    }
-    else
-    {
-        [tf setEnabled:YES];
-        [tf setUserInteractionEnabled:YES];
-    }
+    tf.delegate = self;
+
+//    if (self.dogEar != nil)
+//        [tf setEnabled:NO];
+//    else
+//        [tf setEnabled:YES];
     
     
 	return tf ;
@@ -115,13 +117,17 @@
     static NSString *CellIdentifier = @"Cell";
     UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:CellIdentifier];
     UITextField * textField = nil;
-    
+    NSLog(@"reload");
     if (cell == nil) cell = [[UITableViewCell alloc]initWithStyle:UITableViewCellStyleDefault reuseIdentifier:CellIdentifier];
     
     if (indexPath.row == 0)
     {
         cell.textLabel.text = @"Title";
         cell.tag = 1111;
+//        if (textField) [textField removeFromSuperview];
+        UITextField * tf1 = (UITextField*)[cell viewWithTag:1001];
+        if (tf1) [tf1 removeFromSuperview];
+        
         textField = [self makeTextField:self.dogEar?self.dogEar.title:@""
                             placeholder:self.dogEar?@"":@"Title"
                                     tag:1001];
@@ -132,16 +138,20 @@
     {
         cell.textLabel.text = @"Notes";
         cell.tag = 2222;
+        UITextField * tf2 = (UITextField*)[cell viewWithTag:1002];
+        if (tf2) [tf2 removeFromSuperview];
+        
         textField = [self makeTextField:self.dogEar?self.dogEar.note:@""
                             placeholder:self.dogEar?@"":@"Notes"
                                     tag:1002];
         textField.returnKeyType = UIReturnKeyDone;
         [cell addSubview:textField];
     }
+    if (self.allowEditing) [textField setEnabled:YES];
+    else [textField setEnabled:NO];
     
     textField.frame = CGRectMake(80.0f, 0.0f, 120.0f, 30);
     textField.center = CGPointMake(textField.center.x, 25.0f);
-    textField.delegate = self;
     cell.selectionStyle = UITableViewCellSelectionStyleNone;
     
     return cell;
@@ -158,6 +168,7 @@
 
 - (void)textFieldDidBeginEditing:(UITextField *)textField
 {
+    NSLog(@"textFieldDidBeginEditing");
 }
 
 - (BOOL)textFieldShouldEndEditing:(UITextField *)textField
@@ -169,11 +180,19 @@
 {
     de_DetailViewController * vc = (de_DetailViewController*)self.vcParent;
     
-    if ([textField.placeholder isEqualToString:@"Title"])
-        [vc.dogEar setTitle:textField.text];
-    
-    else if ([textField.placeholder isEqualToString:@"Notes"])
-        [vc.dogEar setNote:textField.text];
+    if (!self.dogEar){
+        if ([textField.placeholder isEqualToString:@"Title"])
+            [vc.dogEar setTitle:textField.text];
+        else if ([textField.placeholder isEqualToString:@"Notes"])
+            [vc.dogEar setNote:textField.text];
+    }
+    else{
+        if (textField.tag == 1001)
+            [vc.dogEar setTitle:textField.text];
+
+        else if (textField.tag = 1002)
+            [vc.dogEar setNote:textField.text];
+    }
 }
 
 - (BOOL)textFieldShouldReturn:(UITextField *)textField{

@@ -42,7 +42,7 @@
     self.editing = NO;
     collections = [[NSMutableArray alloc]initWithArray:[[NSUserDefaults standardUserDefaults]objectForKey:@"BKCategory"]];
 
-    self.navigationItem.title = @"Categoty";
+    self.navigationItem.title = @"Select Category";
 }
 
 //JT- TODO: Fix up pre-select

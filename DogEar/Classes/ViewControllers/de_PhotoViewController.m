@@ -128,7 +128,9 @@ int currentAngle = 0;
         isAutoEnhance = NO;
         
         UIBarButtonItem * rotateItem = [[UIBarButtonItem alloc]initWithTitle:@"Rotate" style:UIBarButtonItemStyleBordered target:self action:@selector(rotateLeft)];
-        UIBarButtonItem * enhanceItem = [[UIBarButtonItem alloc]initWithTitle:@"Enhance" style:UIBarButtonItemStyleBordered target:self action:@selector(autoEnhance)];
+//        UIBarButtonItem * enhanceItem = [[UIBarButtonItem alloc]initWithTitle:@"Enhance" style:UIBarButtonItemStyleBordered target:self action:@selector(autoEnhance)];
+        UIBarButtonItem * enhanceItem = [[UIBarButtonItem alloc]initWithTitle:[NSString stringWithFormat:@"Ehance:%@",isAutoEnhance?@"YES":@"NO"] style:UIBarButtonItemStyleBordered target:self action:@selector(autoEnhance:)];
+
         UIBarButtonItem * cropItem = [[UIBarButtonItem alloc]initWithTitle:@"Crop" style:UIBarButtonItemStyleBordered target:self action:@selector(cropPhoto)];
         
         [toolBar setItems:[NSArray arrayWithObjects:rotateItem, spaceItme, enhanceItem, spaceItme, cropItem, nil]];
@@ -258,8 +260,9 @@ int currentAngle = 0;
     self.photo = newImage;
 }
 
-- (void) autoEnhance
+- (void) autoEnhance:(id)sender
 {
+    UIBarButtonItem * button = (UIBarButtonItem*)sender;
     if (isAutoEnhance == NO)
     {
         UIImage * originImage = imageView.image;
@@ -272,6 +275,8 @@ int currentAngle = 0;
         isAutoEnhance = NO;
     }
     [imageView setNeedsDisplay];
+    button.title = [NSString stringWithFormat:@"Enhance:%@",isAutoEnhance?@"YES":@"NO"];
+
 }
 
 - (void) shareThePhoto

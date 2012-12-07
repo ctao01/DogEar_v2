@@ -36,6 +36,7 @@
     else flaggedArray = [[[NSUserDefaults standardUserDefaults]objectForKey:@"BKFlaggedItems"] copy];
     UIImageView * bgImage = [[UIImageView alloc]initWithImage:[UIImage imageNamed:@"dogear-bg-master"]];
     self.tableView.backgroundView = bgImage;
+    self.navigationItem.title = @"Flagged It";
 }
 
 - (void) viewWillAppear:(BOOL)animated
@@ -79,7 +80,7 @@
     else
         cell.accessoryType = UITableViewCellAccessoryNone;
     cell.textLabel.text = [flaggedArray objectAtIndex:indexPath.row];
-    
+    cell.selectionStyle = UITableViewCellSelectionStyleGray;
     return cell;
 }
 

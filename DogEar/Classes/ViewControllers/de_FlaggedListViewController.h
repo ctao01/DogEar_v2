@@ -9,5 +9,4 @@
 #import <UIKit/UIKit.h>
 
 @interface de_FlaggedListViewController : UITableViewController
-@property (nonatomic , retain) NSArray * flaggedCollections;
 @end

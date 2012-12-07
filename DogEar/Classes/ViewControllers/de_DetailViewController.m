@@ -20,6 +20,8 @@
 {
     UIPrintInteractionController *printController;
     UIActivityIndicatorView * activityIndicator;
+    
+    de_DetailHeaderView * headerView ;
 }
 
 @property (nonatomic) BOOL isEditing;
@@ -70,15 +72,21 @@
     self.tableView.backgroundView = bgImage;
         
     CGRect bounds = [[UIScreen mainScreen]bounds];
-    de_DetailHeaderView * headerView = [[de_DetailHeaderView alloc]initWithFrame:CGRectMake(0.0f, 0.0f, bounds.size.width, 110.0f)];
+    headerView = [[de_DetailHeaderView alloc]initWithFrame:CGRectMake(0.0f, 0.0f, bounds.size.width, 110.0f)];
     headerView.center = CGPointMake(self.view.center.x, headerView.center.y);
     headerView.vcParent = self;
     if (self.existingDogEar == nil)
     {
         headerView.dogEar = nil;
         headerView.thumbImage = self.image;
+        headerView.allowEditing = YES;
     }
-    else headerView.dogEar = self.existingDogEar;
+    else
+    {
+        headerView.dogEar = self.existingDogEar;
+        headerView.allowEditing = NO;
+
+    }
     
     self.tableView.tableHeaderView = headerView;
     
@@ -108,24 +116,34 @@
 
     if(self.existingDogEar == nil ) self.dogEar = [DogEarObject new];
     else self.dogEar = self.existingDogEar;
-
 }
-
 
 - (void) viewWillAppear:(BOOL)animated
 {
     [super viewWillAppear:animated];
+    
+    [[NSNotificationCenter defaultCenter] addObserver:self
+                                             selector:@selector(appHasGoneInBackground:)
+                                                 name:UIApplicationDidEnterBackgroundNotification
+                                               object:nil];
+    
+    [[NSNotificationCenter defaultCenter] addObserver:self
+                                             selector:@selector(appWillEnterForeground:)
+                                                 name:UIApplicationWillEnterForegroundNotification
+                                               object:nil];
+    
+    
     [self.tableView reloadData];
     
     if (self.existingDogEar == nil)
     {
-        if (![[self keyString] isEqualToString:@""])
-        {
+//        if (![[self keyString] isEqualToString:@""])
+//        {
             UIBarButtonItem * saveItem = [[UIBarButtonItem alloc]initWithTitle:@"Add" style:UIBarButtonItemStyleBordered target:self action:@selector(addDogEar)];
             self.navigationItem.rightBarButtonItem = saveItem;
-        }
-        else
-            self.navigationItem.rightBarButtonItem = nil;
+//        }
+//        else
+//            self.navigationItem.rightBarButtonItem = nil;
     }
 
 }
@@ -134,7 +152,9 @@
 {
     [super viewDidDisappear:animated];
     [activityIndicator stopAnimating];
+    [[NSNotificationCenter defaultCenter] removeObserver:self];
 }
+
 
 - (void)didReceiveMemoryWarning
 {
@@ -150,7 +170,7 @@
     {
         if (self.dogEar.category == nil)    //JT - Comment: Necessary to select Category
         {
-            UIAlertView * alertView = [[UIAlertView alloc]initWithTitle:@"Notice" message:@"Please select a category" delegate:self cancelButtonTitle:@"OK" otherButtonTitles: nil];
+            UIAlertView * alertView = [[UIAlertView alloc]initWithTitle:@"Notice" message:@"Please Select A Category (Required)" delegate:self cancelButtonTitle:@"OK" otherButtonTitles: nil];
             [alertView show];
             return;
         }
@@ -158,6 +178,8 @@
         else
         {
             [self setTableViewUserInteractionEnable:NO];
+            headerView.allowEditing = NO;
+            [headerView setNeedsDisplay];
             
             [self saveDogEar];  // update self.dogear
 
@@ -182,6 +204,8 @@
     {
         self.isEditing = YES;
         [self setTableViewUserInteractionEnable:YES];
+        headerView.allowEditing = YES;
+        [headerView setNeedsDisplay];
         
         NSMutableArray * temp = [[NSMutableArray alloc]initWithArray:[self decodedCollections]];
         
@@ -204,6 +228,45 @@
 
     }
 }
+
+#pragma mark - NSNotification Center
+
+- (void) appHasGoneInBackground:(NSNotification*) notice
+{
+    NSLog(@"appHasGoneInBackground");
+    if (self.isEditing == YES)
+    {
+        NSLog(@"self.isEditing-%@",self.dogEar);
+        NSMutableArray * array = [[NSMutableArray alloc]initWithArray:[self decodedCollections]];
+        [self saveDogEar];
+        [array addObject:self.dogEar];
+        [self updateDogEarDataCollectionWithSelectedCollections:array];
+    }
+}
+
+- (void) appWillEnterForeground:(NSNotification*) notice
+{
+    NSLog(@"appWillEnterForeground");
+    if (self.isEditing == YES)
+    {
+        NSLog(@"self.isEditing-%@",self.dogEar);
+        self.dogEar = self.existingDogEar;
+        
+        NSMutableArray * array = [[NSMutableArray alloc]initWithArray:[self decodedCollections]];
+        for (int d = 0; d < [array count]; d++)
+        {
+            DogEarObject * object = [array objectAtIndex:d];
+            if ([object.title isEqualToString:self.existingDogEar.title] && [object.insertedDate isEqualToDate:self.existingDogEar.insertedDate])
+                [array removeObject:object];
+        }
+        [self updateDogEarDataCollectionWithSelectedCollections:array];
+    }
+}
+
+
+
+
+#pragma mark - Navigation Item Method
 
 - (void) backToHome
 {
@@ -232,6 +295,7 @@
     [self updateDogEarDataCollectionWithSelectedCollections:array];
 
 }
+
 
 #pragma mark - Private Method
 
@@ -284,7 +348,6 @@
     NSString * keyString = cell.detailTextLabel.text;
     return keyString;
 }
-
 
 
 #pragma mark - DogEar Method
@@ -345,6 +408,13 @@
 
 - (void) addDogEar
 {
+    if (self.dogEar.category == nil) 
+    {
+        UIAlertView * alertView = [[UIAlertView alloc]initWithTitle:@"Notice" message:@"Please Select A Category (Required)" delegate:self cancelButtonTitle:@"OK" otherButtonTitles: nil];
+        [alertView show];
+        return;
+    }
+    
     [activityIndicator startAnimating];
     
     [self saveDogEar];

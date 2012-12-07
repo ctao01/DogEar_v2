@@ -31,6 +31,7 @@
     [super viewDidLoad];
     UIImageView * bgImage = [[UIImageView alloc]initWithImage:[UIImage imageNamed:@"dogear-bg-master"]];
     self.tableView.backgroundView = bgImage;
+    self.navigationItem.title = @"Set Repeat";
 }
 
 - (void) viewWillAppear:(BOOL)animated
