@@ -53,6 +53,8 @@
 		7E4252EF16646C9500741A41 /* de_SettingViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 7E4252EE16646C5600741A41 /* de_SettingViewController.m */; };
 		7E4252F316646D7E00741A41 /* de_ListTableViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 7E4252F216646D7E00741A41 /* de_ListTableViewController.m */; };
 		7E4D27CF1669A64000FDC78D /* de_FlaggedListViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 7E4D27CE1669A64000FDC78D /* de_FlaggedListViewController.m */; };
+		7E84F50116713BCB004A13D2 /* icon@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 7E84F50016713BCB004A13D2 /* icon@2x.png */; };
+		7E84F50316713BD6004A13D2 /* icon.png in Resources */ = {isa = PBXBuildFile; fileRef = 7E84F50216713BD6004A13D2 /* icon.png */; };
 		7E98E222166EA7D900FAFA60 /* UIImage+DGStyle.m in Sources */ = {isa = PBXBuildFile; fileRef = 7E98E221166EA7D900FAFA60 /* UIImage+DGStyle.m */; };
 		7EC5DB59166FF0B7001949AE /* CoreImage.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 7EC5DB58166FF0B7001949AE /* CoreImage.framework */; };
 		7EC5DB63166FFD5F001949AE /* NYXImagesHelper.m in Sources */ = {isa = PBXBuildFile; fileRef = 7EC5DB61166FFD5F001949AE /* NYXImagesHelper.m */; };
@@ -141,6 +143,8 @@
 		7E4252F216646D7E00741A41 /* de_ListTableViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = de_ListTableViewController.m; path = Classes/ViewControllers/de_ListTableViewController.m; sourceTree = "<group>"; };
 		7E4D27CD1669A63F00FDC78D /* de_FlaggedListViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = de_FlaggedListViewController.h; path = Classes/ViewControllers/de_FlaggedListViewController.h; sourceTree = "<group>"; };
 		7E4D27CE1669A64000FDC78D /* de_FlaggedListViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = de_FlaggedListViewController.m; path = Classes/ViewControllers/de_FlaggedListViewController.m; sourceTree = "<group>"; };
+		7E84F50016713BCB004A13D2 /* icon@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "icon@2x.png"; sourceTree = "<group>"; };
+		7E84F50216713BD6004A13D2 /* icon.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = icon.png; sourceTree = "<group>"; };
 		7E98E220166EA7D900FAFA60 /* UIImage+DGStyle.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = "UIImage+DGStyle.h"; path = "Categories/UIImage+DGStyle.h"; sourceTree = "<group>"; };
 		7E98E221166EA7D900FAFA60 /* UIImage+DGStyle.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = "UIImage+DGStyle.m"; path = "Categories/UIImage+DGStyle.m"; sourceTree = "<group>"; };
 		7EC5DB58166FF0B7001949AE /* CoreImage.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreImage.framework; path = System/Library/Frameworks/CoreImage.framework; sourceTree = SDKROOT; };
@@ -236,6 +240,8 @@
 		7E42528A16645DF400741A41 = {
 			isa = PBXGroup;
 			children = (
+				7E84F50216713BD6004A13D2 /* icon.png */,
+				7E84F50016713BCB004A13D2 /* icon@2x.png */,
 				7E42529F16645DF400741A41 /* DogEar */,
 				7E42529816645DF400741A41 /* Frameworks */,
 				7E42529616645DF400741A41 /* Products */,
@@ -541,6 +547,8 @@
 				7E4252DF16645F5800741A41 /* dogear-icon-trashcan@2x.png in Resources */,
 				7ECD4452166E8B0200B3A160 /* dogear-default.png in Resources */,
 				7ECD4453166E8B0200B3A160 /* dogear-default@2x.png in Resources */,
+				7E84F50116713BCB004A13D2 /* icon@2x.png in Resources */,
+				7E84F50316713BD6004A13D2 /* icon.png in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -656,7 +664,7 @@
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "DogEar/DogEar-Prefix.pch";
 				INFOPLIST_FILE = "DogEar/DogEar-Info.plist";
-				IPHONEOS_DEPLOYMENT_TARGET = 6.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 5.0;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				VALID_ARCHS = armv7;
 				WRAPPER_EXTENSION = app;
@@ -671,7 +679,7 @@
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "DogEar/DogEar-Prefix.pch";
 				INFOPLIST_FILE = "DogEar/DogEar-Info.plist";
-				IPHONEOS_DEPLOYMENT_TARGET = 6.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 5.0;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				VALID_ARCHS = armv7;
 				WRAPPER_EXTENSION = app;

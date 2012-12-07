@@ -50,7 +50,9 @@
     CGRect bounds = [[UIScreen mainScreen]bounds];
     picker = [[UIDatePicker alloc]initWithFrame:CGRectMake(0.0f, bounds.size.height - 250.0f -44.0f, bounds.size.width, 250.0f +44.0f)];
     picker.datePickerMode = UIDatePickerModeDateAndTime;
-    picker.date = [NSDate date];
+    
+    NSDate * oneHourAheadDate = [[NSDate date] dateByAddingTimeInterval:60 * 60];
+    picker.date = oneHourAheadDate;
     [picker addTarget:self
                action:@selector(changeDateReminder:)
      forControlEvents:UIControlEventValueChanged];
@@ -112,8 +114,8 @@
 
 - (void)changeDateReminder:(id)sender
 {
-    UIDatePicker * datePicker = (UIDatePicker*)sender;
-    self.selectedDate = datePicker.date;
+//    UIDatePicker * datePicker = (UIDatePicker*)sender;
+//    self.selectedDate = datePicker.date;
     [self.tableView reloadData];
 }
 
@@ -127,7 +129,7 @@
     de_DetailViewController * vc = (de_DetailViewController*)[self.navigationController.viewControllers objectAtIndex:[self.navigationController.viewControllers count]-2];
     if (isExpandedTable == YES)
     {
-        [vc.dogEar setReminderDate:self.selectedDate];
+        [vc.dogEar setReminderDate:picker.date];
         [vc.dogEar setRepeatingReminder:[NSNumber numberWithInteger:self.repeatedTimes]];
 
     }
@@ -176,7 +178,7 @@
     }
     
     else if (indexPath.row == 1)
-            cell.textLabel.text = (self.selectedDate != nil)? [NSString reminderStyleWithDate:self.selectedDate]:[NSString reminderStyleWithDate:[NSDate date]] ;
+            cell.textLabel.text = (self.selectedDate != nil)? [NSString reminderStyleWithDate:self.selectedDate]:[NSString reminderStyleWithDate:[[NSDate date] dateByAddingTimeInterval:60 * 60]] ;
     else if (indexPath.row == 2)
     {
             cell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
