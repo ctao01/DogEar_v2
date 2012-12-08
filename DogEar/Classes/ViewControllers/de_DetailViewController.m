@@ -150,6 +150,17 @@
 
 }
 
+- (void) viewWillDisappear:(BOOL)animated
+{
+    [super viewWillDisappear:animated];
+    if (self.editing)
+    {
+        NSMutableArray * array = [[NSMutableArray alloc]initWithArray:[self decodedCollections]];
+        [array addObject:self.existingDogEar];
+        [self updateDogEarDataCollectionWithSelectedCollections:array];
+    }
+}
+
 - (void) viewDidDisappear:(BOOL)animated
 {
     [super viewDidDisappear:animated];
