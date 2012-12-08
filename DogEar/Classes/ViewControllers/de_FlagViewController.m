@@ -32,7 +32,11 @@
 {
     [super viewDidLoad];
     if (![[NSUserDefaults standardUserDefaults]objectForKey:@"BKFlaggedItems"])
+    {
         flaggedArray = [[NSArray alloc]initWithObjects:@"Casual",@"Somewhat Important",@"Important",@"Very Important",@"Crucial", nil];
+        [[NSUserDefaults standardUserDefaults]setObject:flaggedArray forKey:@"BKFlaggedItems"];
+        [[NSUserDefaults standardUserDefaults] synchronize];
+    }
     else flaggedArray = [[[NSUserDefaults standardUserDefaults]objectForKey:@"BKFlaggedItems"] copy];
     UIImageView * bgImage = [[UIImageView alloc]initWithImage:[UIImage imageNamed:@"dogear-bg-master"]];
     self.tableView.backgroundView = bgImage;

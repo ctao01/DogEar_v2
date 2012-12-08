@@ -11,6 +11,8 @@
 #import "de_DetailViewController.h"
 
 #import "de_ListTableViewController.h"
+#import "de_BrowseTableViewController.h"
+#import "de_FlaggedListViewController.h"
 
 #import "TwitterManager.h"
 #import "MessageManager.h"
@@ -41,7 +43,6 @@ int currentAngle = 0;
 }
 @property (nonatomic) BKToolBarType bkToolBarType;
 @property (nonatomic , retain) UIImage * photo;
-@property (nonatomic , retain) DogEarObject * existingDogEar;
 
 @end
 
@@ -90,7 +91,6 @@ int currentAngle = 0;
     
     if (self.existingDogEar) keyString = self.existingDogEar.category;
     
-    CGRect bounds = [[UIScreen mainScreen]bounds];
     
     // JT:ScrollView Setup
     scrollView = [[UIScrollView alloc] initWithFrame:[[UIScreen mainScreen] applicationFrame]];
@@ -113,55 +113,6 @@ int currentAngle = 0;
 //    imageView.contentMode = UIViewContentModeScaleAspectFit;
 //    [self.view addSubview:imageView];
     
-    NSInteger cameraActiveBarHeight;
-    cameraActiveBarHeight = 68.0f;
-    
-//    imageView.frame = CGRectOffset(imageView.frame, 0.0f, - cameraActiveBarHeight);
-    
-    UIToolbar * toolBar = [[UIToolbar alloc]initWithFrame:CGRectMake(0.0f, bounds.size.height - cameraActiveBarHeight - IPHONE_TOOL_BAR_HEIGHT, bounds.size.width, IPHONE_TOOL_BAR_HEIGHT)];
-    toolBar.tag = 333;
-    toolBar.barStyle = UIBarStyleBlackOpaque;
-    UIBarButtonItem * spaceItme = [[UIBarButtonItem alloc]initWithBarButtonSystemItem:UIBarButtonSystemItemFlexibleSpace target:nil action:nil];
-    
-	if (self.existingDogEar == nil)
-    {
-        isAutoEnhance = NO;
-        
-        UIBarButtonItem * rotateItem = [[UIBarButtonItem alloc]initWithTitle:@"Rotate" style:UIBarButtonItemStyleBordered target:self action:@selector(rotateLeft)];
-//        UIBarButtonItem * enhanceItem = [[UIBarButtonItem alloc]initWithTitle:@"Enhance" style:UIBarButtonItemStyleBordered target:self action:@selector(autoEnhance)];
-        UIBarButtonItem * enhanceItem = [[UIBarButtonItem alloc]initWithTitle:[NSString stringWithFormat:@"Ehance:%@",isAutoEnhance?@"YES":@"NO"] style:UIBarButtonItemStyleBordered target:self action:@selector(autoEnhance:)];
-
-        UIBarButtonItem * cropItem = [[UIBarButtonItem alloc]initWithTitle:@"Crop" style:UIBarButtonItemStyleBordered target:self action:@selector(cropPhoto)];
-        
-        [toolBar setItems:[NSArray arrayWithObjects:rotateItem, spaceItme, enhanceItem, spaceItme, cropItem, nil]];
-        
-        UIBarButtonItem * cancelItem = [[UIBarButtonItem alloc]initWithTitle:@"Cancel" style:UIBarButtonItemStyleBordered target:self action:@selector(retakePhoto)];
-        self.navigationItem.leftBarButtonItem = cancelItem;
-        
-        UIBarButtonItem * saveItem = [[UIBarButtonItem alloc]initWithTitle:@"Save" style:UIBarButtonItemStyleBordered target:self action:@selector(storeTheImage)];
-        self.navigationItem.rightBarButtonItem = saveItem;
-        
-    }
-    else 
-    {
-        UIBarButtonItem * shareItem = [[UIBarButtonItem alloc]initWithImage:[UIImage imageNamed:@"dogear-icon-share"] style:UIBarButtonItemStylePlain target:self action:@selector(shareThePhoto)];
-        de_MainTabBarController * tbc = (de_MainTabBarController*)self.tabBarController;
-        
-        UIBarButtonItem * cameraItem = [[UIBarButtonItem alloc]initWithImage:[UIImage imageNamed:@"dogear-icon-camera"] style:UIBarButtonItemStyleDone target:tbc action:@selector(activateCamera)];
-        
-        UIBarButtonItem * trashItem = [[UIBarButtonItem alloc]initWithImage:[UIImage imageNamed:@"dogear-icon-trashcan"] style:UIBarButtonItemStylePlain target:self action:@selector(deleteThePhoto)];
-        
-        [toolBar setItems:[NSArray arrayWithObjects:shareItem, spaceItme, cameraItem, spaceItme, trashItem, nil]];
-        
-//        UIBarButtonItem * cancelItem = [[UIBarButtonItem alloc]initWithTitle:@"Cancel" style:UIBarButtonItemStyleBordered target:self action:@selector(cancel)];
-//        self.navigationItem.leftBarButtonItem = cancelItem;
-        
-        UIBarButtonItem * detailItem = [[UIBarButtonItem alloc]initWithTitle:@"Detail" style:UIBarButtonItemStyleBordered target:self action:@selector(moreDetail)];
-        self.navigationItem.rightBarButtonItem = detailItem;
-        self.navigationItem.title = self.existingDogEar.title;
-    }
-    [self.view addSubview:toolBar];
-
 }
 
 - (void)didReceiveMemoryWarning
@@ -175,6 +126,60 @@ int currentAngle = 0;
     [super viewWillAppear:animated];
     de_MainTabBarController * tbc = (de_MainTabBarController*)self.tabBarController;
     [tbc makeTabBarHidden:YES];
+}
+
+- (void) viewDidAppear:(BOOL)animated
+{
+    [super viewDidAppear:animated];
+    CGRect bounds = [[UIScreen mainScreen]bounds];
+    NSInteger cameraActiveBarHeight;
+    cameraActiveBarHeight = 68.0f;
+    
+    //    imageView.frame = CGRectOffset(imageView.frame, 0.0f, - cameraActiveBarHeight);
+    
+    UIToolbar * toolBar = [[UIToolbar alloc]initWithFrame:CGRectMake(0.0f, bounds.size.height - cameraActiveBarHeight - IPHONE_TOOL_BAR_HEIGHT, bounds.size.width, IPHONE_TOOL_BAR_HEIGHT)];
+    toolBar.tag = 333;
+    toolBar.barStyle = UIBarStyleBlackOpaque;
+    UIBarButtonItem * spaceItme = [[UIBarButtonItem alloc]initWithBarButtonSystemItem:UIBarButtonSystemItemFlexibleSpace target:nil action:nil];
+    
+	if (self.existingDogEar == nil)
+    {
+        isAutoEnhance = NO;
+        
+        UIBarButtonItem * rotateItem = [[UIBarButtonItem alloc]initWithTitle:@"Rotate" style:UIBarButtonItemStyleBordered target:self action:@selector(rotateLeft)];
+        //        UIBarButtonItem * enhanceItem = [[UIBarButtonItem alloc]initWithTitle:@"Enhance" style:UIBarButtonItemStyleBordered target:self action:@selector(autoEnhance)];
+        UIBarButtonItem * enhanceItem = [[UIBarButtonItem alloc]initWithTitle:[NSString stringWithFormat:@"Ehance:%@",isAutoEnhance?@"YES":@"NO"] style:UIBarButtonItemStyleBordered target:self action:@selector(autoEnhance:)];
+        
+        UIBarButtonItem * cropItem = [[UIBarButtonItem alloc]initWithTitle:@"Crop" style:UIBarButtonItemStyleBordered target:self action:@selector(cropPhoto)];
+        
+        [toolBar setItems:[NSArray arrayWithObjects:rotateItem, spaceItme, enhanceItem, spaceItme, cropItem, nil]];
+        
+        UIBarButtonItem * cancelItem = [[UIBarButtonItem alloc]initWithTitle:@"Cancel" style:UIBarButtonItemStyleBordered target:self action:@selector(retakePhoto)];
+        self.navigationItem.leftBarButtonItem = cancelItem;
+        
+        UIBarButtonItem * saveItem = [[UIBarButtonItem alloc]initWithTitle:@"Save" style:UIBarButtonItemStyleBordered target:self action:@selector(storeTheImage)];
+        self.navigationItem.rightBarButtonItem = saveItem;
+        
+    }
+    else
+    {
+        UIBarButtonItem * shareItem = [[UIBarButtonItem alloc]initWithImage:[UIImage imageNamed:@"dogear-icon-share"] style:UIBarButtonItemStylePlain target:self action:@selector(shareThePhoto)];
+        de_MainTabBarController * tbc = (de_MainTabBarController*)self.tabBarController;
+        
+        UIBarButtonItem * cameraItem = [[UIBarButtonItem alloc]initWithImage:[UIImage imageNamed:@"dogear-icon-camera"] style:UIBarButtonItemStyleDone target:tbc action:@selector(activateCamera)];
+        
+        UIBarButtonItem * trashItem = [[UIBarButtonItem alloc]initWithImage:[UIImage imageNamed:@"dogear-icon-trashcan"] style:UIBarButtonItemStylePlain target:self action:@selector(deleteThePhoto)];
+        
+        [toolBar setItems:[NSArray arrayWithObjects:shareItem, spaceItme, cameraItem, spaceItme, trashItem, nil]];
+        
+        UIBarButtonItem * cancelItem = [[UIBarButtonItem alloc]initWithTitle:@"Cancel" style:UIBarButtonItemStyleBordered target:self action:@selector(backToList)];
+        self.navigationItem.leftBarButtonItem = cancelItem;
+        
+        UIBarButtonItem * detailItem = [[UIBarButtonItem alloc]initWithTitle:@"Detail" style:UIBarButtonItemStyleBordered target:self action:@selector(moreDetail)];
+        self.navigationItem.rightBarButtonItem = detailItem;
+        self.navigationItem.title = self.existingDogEar.title;
+    }
+    [self.view addSubview:toolBar];
 }
 
 - (void) viewWillDisappear:(BOOL)animated
@@ -214,6 +219,12 @@ int currentAngle = 0;
 
 #pragma mark - UIBarButtonItem (UINavigationBar)
 
+- (void) retakePhoto
+{
+    de_MainTabBarController * tbc = (de_MainTabBarController*)self.tabBarController;
+    [tbc activateCamera];
+}
+
 
 - (void) storeTheImage
 {
@@ -237,6 +248,19 @@ int currentAngle = 0;
     [self.navigationController pushViewController:vc animated:YES];
 
 }
+
+- (void) backToList
+{
+    de_ListTableViewController * vc = (de_ListTableViewController*)[self.navigationController.viewControllers objectAtIndex:[self.navigationController.viewControllers count]-2];
+    de_ListTableViewController * previousVc = [self.navigationController.viewControllers objectAtIndex:[self.navigationController.viewControllers count]-3];
+    NSArray * array = [[NSUserDefaults standardUserDefaults]objectForKey:@"BKFlaggedItems"];
+    if ([previousVc isKindOfClass:[de_BrowseTableViewController class]])
+        vc.navigationItem.title = self.existingDogEar.category;
+    else if ([previousVc isKindOfClass:[de_FlaggedListViewController class]])
+        vc.navigationItem.title = [array objectAtIndex:[self.existingDogEar.flagged integerValue]];
+    [self.navigationController popToViewController:vc animated:YES];
+}
+
 
 #pragma mark - UIBarButtonItem (UIToolBar)
 
@@ -286,11 +310,6 @@ int currentAngle = 0;
     [actionSheet showInView:self.view];
 }
 
-- (void) retakePhoto
-{
-    de_MainTabBarController * tbc = (de_MainTabBarController*)self.tabBarController;
-    [tbc activateCamera];
-}
 
 
 - (void) deleteThePhoto

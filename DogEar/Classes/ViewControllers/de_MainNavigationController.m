@@ -14,7 +14,18 @@
 
 @implementation de_MainNavigationController
 
-
+- (id)init
+{
+    self = [super init];
+    if (self)
+    {
+        de_NavigationBar * navigationBar = [[de_NavigationBar alloc]init];
+        [self setValue:navigationBar forKey:@"navigationBar"];
+        [[UINavigationBar appearance] setTintColor:[UIColor colorWithRed:62.0f/255.0f green:153.0f/255.0f blue:166.0f/255.0f alpha:1.0]];
+        
+    }
+    return self;
+}
 
 - (id)initWithRootViewController:(UIViewController *)rootViewController
 {

@@ -13,6 +13,8 @@
 #import "de_ReminderViewController.h"
 #import "de_FlagViewController.h"
 
+#import "de_PhotoViewController.h"
+
 #define kPDFPageBounds CGRectMake(0, 0, 8.5 * 72, 11 * 72)
 
 
@@ -270,12 +272,9 @@
 
 - (void) backToHome
 {
-    if (self.tabBarController.selectedIndex == 0)[self.navigationController popToRootViewControllerAnimated:YES];
-    else {
-        [self.tabBarController setSelectedIndex:0];
-        UINavigationController * nc = [self.tabBarController.viewControllers objectAtIndex:0];
-        [nc popToRootViewControllerAnimated:YES];
-    }
+    de_PhotoViewController * vc = (de_PhotoViewController*)[self.navigationController.viewControllers objectAtIndex:[self.navigationController.viewControllers count]-2];
+    vc.existingDogEar = self.dogEar;
+    [self.navigationController popToViewController:vc animated:YES];
 }
 
 - (void) cancelEditing

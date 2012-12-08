@@ -20,6 +20,8 @@
 
 @interface de_ListTableViewController ()
 
+- (void) refreshDogEarDataAccrodingToCategory;
+- (void) refreshDogEarDataAccrodingToFlagged;
 @end
 
 @implementation de_ListTableViewController
@@ -67,6 +69,14 @@
 - (void) viewDidAppear:(BOOL)animated
 {
     [super viewDidAppear:animated];
+    
+    UIViewController * vc = [self.navigationController.viewControllers objectAtIndex:[self.navigationController.viewControllers count]-2];
+    if ([vc class] == [de_FlaggedListViewController class])
+        [self refreshDogEarDataAccrodingToFlagged];
+    else if ([vc class] == [de_BrowseTableViewController class])
+        [self refreshDogEarDataAccrodingToCategory];
+
+    
     NSSortDescriptor *sortDescriptor = [[NSSortDescriptor alloc] initWithKey:@"insertedDate" ascending:FALSE];
     [self.collections sortUsingDescriptors:[NSArray arrayWithObject:sortDescriptor]];
     [self.tableView reloadData];
@@ -78,6 +88,34 @@
     [super didReceiveMemoryWarning];
     // Dispose of any resources that can be recreated.
 }
+
+#pragma mark - Refresh Current Items
+
+- (void) refreshDogEarDataAccrodingToCategory
+{
+    NSData * data = [[[NSUserDefaults standardUserDefaults]objectForKey:@"BKDataCollections"] objectForKey:self.navigationItem.title];
+    
+    NSMutableArray * decodedCollections = [NSMutableArray arrayWithArray:[NSKeyedUnarchiver unarchiveObjectWithData: data]];
+    NSLog(@"%i",[decodedCollections count]);
+    self.collections = decodedCollections;
+}
+
+- (void) refreshDogEarDataAccrodingToFlagged
+{
+    NSArray * flaggedItems = [[NSArray alloc]initWithArray:[[NSUserDefaults standardUserDefaults] objectForKey:@"BKFlaggedItems"]];
+    NSMutableArray * temp = [[NSMutableArray alloc]init];
+    for (DogEarObject * object in [self.flaggedCollections copy])
+    {
+        if ((object.flagged != nil) && (object.flagged == [NSNumber numberWithInteger:[flaggedItems indexOfObject:self.navigationItem.title]]))
+        {
+            [temp addObject:object];
+        }
+    }
+    NSLog(@"%i",[temp count]);
+    self.collections = temp;
+    
+}
+
 
 #pragma mark - Private Getter / Setter
 

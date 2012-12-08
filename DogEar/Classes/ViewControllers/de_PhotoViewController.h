@@ -23,5 +23,6 @@ typedef enum {
 - (id) initWithImage:(UIImage*)image toolBarType:(BKToolBarType)toolBarType;
 - (id) initWithImage:(UIImage*)image andExistingDogEar:(DogEarObject*)object;
 
+@property (nonatomic , retain) DogEarObject * existingDogEar;
 
 @end

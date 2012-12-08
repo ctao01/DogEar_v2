@@ -234,18 +234,18 @@
         }
         else if (indexPath.section == 1)
         {
-            NSString * keyString = [categories objectAtIndex:indexPath.row];
-            NSData * data = [[[NSUserDefaults standardUserDefaults]objectForKey:@"BKDataCollections"] objectForKey:keyString];
-            NSMutableArray * decodedCollections = [NSMutableArray arrayWithArray:[NSKeyedUnarchiver unarchiveObjectWithData: data]];
+//            NSString * keyString = [categories objectAtIndex:indexPath.row];
+//            NSData * data = [[[NSUserDefaults standardUserDefaults]objectForKey:@"BKDataCollections"] objectForKey:keyString];
+//            NSMutableArray * decodedCollections = [NSMutableArray arrayWithArray:[NSKeyedUnarchiver unarchiveObjectWithData: data]];
 //
             de_ListTableViewController * vc = [[de_ListTableViewController alloc]init];
 
             [self.navigationController pushViewController:vc animated:YES];
 
 //            vc.navigationItem.title = [NSString stringWithFormat:@"Category:%@",keyString];
-            vc.navigationItem.title = keyString;
+            vc.navigationItem.title = [categories objectAtIndex:indexPath.row];
 
-            vc.collections = decodedCollections;
+//            vc.collections = decodedCollections;
         }
     }
 }

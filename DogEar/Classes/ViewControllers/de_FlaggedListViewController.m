@@ -37,7 +37,11 @@
     if ([[NSUserDefaults standardUserDefaults] objectForKey:@"BKFlaggedItems"])
         flaggedItems = [[[NSUserDefaults standardUserDefaults] objectForKey:@"BKFlaggedItems"] copy];
     else
+    {
         flaggedItems = [[NSArray alloc]initWithObjects:@"Casual",@"Somewhat Important",@"Important",@"Very Important",@"Crucial", nil];
+        [[NSUserDefaults standardUserDefaults]setObject:flaggedItems forKey:@"BKFlaggedItems"];
+        [[NSUserDefaults standardUserDefaults] synchronize];
+    }
     self.navigationItem.title = @"Flagged";
 }
 
@@ -105,17 +109,18 @@
 {
     de_ListTableViewController * vc = [[de_ListTableViewController alloc]init];
     
-    NSMutableArray * temp = [[NSMutableArray alloc]init];
-    
-    for (DogEarObject * object in [self.flaggedCollections copy])
-    {
-        if ((object.flagged != nil) && (object.flagged == [NSNumber numberWithInteger:indexPath.row]))
-        {
-            [temp addObject:object];
-        }
-    }
-    vc.collections = temp;
+//    NSMutableArray * temp = [[NSMutableArray alloc]init];
+//    
+//    for (DogEarObject * object in [self.flaggedCollections copy])
+//    {
+//        if ((object.flagged != nil) && (object.flagged == [NSNumber numberWithInteger:indexPath.row]))
+//        {
+//            [temp addObject:object];
+//        }
+//    }
+//    vc.collections = temp;
     vc.navigationItem.title = [flaggedItems objectAtIndex:indexPath.row];
+    vc.flaggedCollections = self.flaggedCollections;
     [self.navigationController pushViewController:vc animated:YES];
 
 
