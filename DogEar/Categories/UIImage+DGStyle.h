@@ -24,5 +24,11 @@
 -(UIImage*)cropToSize:(CGSize)newSize;
 -(UIImage*)scaleByFactor:(float)scaleFactor;
 -(UIImage*)scaleToFitSize:(CGSize)newSize;
+-(UIImage*) getSubImage:(CGRect)rect fromImage:(CGRect)originRect;
+-(UIImage*) getSubImage:(CGRect)rect;
+
+- (UIImage *)imageByScalingAndCroppingForSize:(CGSize)targetSize;
+- (UIImage*)imageByCropping:(UIImage *)imageToCrop toRect:(CGRect)rect;
+
 
 @end

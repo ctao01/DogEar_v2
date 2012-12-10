@@ -13,15 +13,22 @@
 
 #import <UIKit/UIKit.h>
 
-typedef enum {
-    BKToolBarTypeEditing,
-    BKToolBarTypeViewing
-}BKToolBarType;
+//typedef enum {
+//    BKToolBarTypeEditing,
+//    BKToolBarTypeViewing
+//}BKToolBarType;
 
 @interface de_PhotoViewController : UIViewController <UIActionSheetDelegate , UIAlertViewDelegate , UIPrintInteractionControllerDelegate , UIScrollViewDelegate>
-
-- (id) initWithImage:(UIImage*)image toolBarType:(BKToolBarType)toolBarType;
+{
+    bool isTappedInCropView;
+	bool isTappedOnUpperLeftCorner;
+	bool isTappedOnUpperRightCorner;
+	bool isTappedOnLowerLeftCorner;
+	bool isTappedOnLowerRightCorner;
+}
+//- (id) initWithImage:(UIImage*)image toolBarType:(BKToolBarType)toolBarType;
 - (id) initWithImage:(UIImage*)image andExistingDogEar:(DogEarObject*)object;
 
+@property (nonatomic , retain) DogEarObject * existingDogEar;
 
 @end

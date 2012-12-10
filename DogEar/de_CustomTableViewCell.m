@@ -23,11 +23,15 @@
         self.deTitleLabel.font = [UIFont fontWithName:@"HelveticaNeue-Bold" size:16];
         self.deTitleLabel.textColor = [UIColor blackColor];
         self.deTitleLabel.frame = CGRectOffset(self.deTitleLabel.frame, 53.0f, 1.0f);
+        self.deTitleLabel.backgroundColor = [UIColor clearColor];
+
 
         self.deSubtitleLabel = [[UILabel alloc]initWithFrame:CGRectMake(0, 0, 170, 30)];
         self.deSubtitleLabel.font = [UIFont fontWithName:@"HelveticaNeue" size:14];
         self.deSubtitleLabel.textColor = [UIColor darkGrayColor];
         self.deSubtitleLabel.frame = CGRectOffset(self.deSubtitleLabel.frame, 54.0f, 27.0f);
+        self.deSubtitleLabel.backgroundColor = [UIColor clearColor];
+
 
         
         self.dePhotoImageView = [[UIImageView alloc]initWithFrame:CGRectMake(0.0f, 0.0f, 44.0f, 44.0f)];
@@ -35,6 +39,8 @@
         self.dePhotoImageView.layer.shadowRadius = 8.0f;
         self.dePhotoImageView.layer.shadowOffset = CGSizeMake(0.0f, 2.0f);
         self.dePhotoImageView.frame = CGRectOffset(self.dePhotoImageView.frame, 5.0f, 5.0f);
+        self.dePhotoImageView.backgroundColor = [UIColor clearColor];
+
         self.contentMode = UIViewContentModeScaleAspectFit;
         
         [self addSubview:self.deTitleLabel];

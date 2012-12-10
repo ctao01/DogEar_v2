@@ -8,9 +8,12 @@
 
 #import "de_MainTabBarController.h"
 
+#import "de_MainNavigationController.h"
+
 #import "de_BrowseTableViewController.h"
 #import "de_SettingViewController.h"
 #import "de_PhotoViewController.h"
+
 #import "UIImage+DGStyle.h"
 
 @interface de_MainTabBarController ()
@@ -36,7 +39,7 @@
     de_BrowseTableViewController * vcBrowse = [[de_BrowseTableViewController alloc]initWithStyle:UITableViewStyleGrouped];
     vcBrowse.title = @"Browse";
     
-    UINavigationController * ncBrowse = [[UINavigationController alloc]initWithRootViewController:vcBrowse];
+    de_MainNavigationController * ncBrowse = [[de_MainNavigationController alloc]initWithRootViewController:vcBrowse];
     UITabBarItem * browseBtn = [[UITabBarItem alloc]initWithTitle:@"Browse" image:[UIImage imageNamed:@"dogear-icon-browse"] tag:0];
     [ncBrowse setTabBarItem:browseBtn];
     
@@ -48,10 +51,9 @@
     
     // Setup Setting View
     de_SettingViewController * vcSettings = [[de_SettingViewController alloc]initWithStyle:UITableViewStyleGrouped];
-    vcSettings.title = @"Setting";
+    vcSettings.title = @"Settings";
     
-    UINavigationController * ncSettings = [[UINavigationController alloc]initWithRootViewController:vcSettings];
-    
+    de_MainNavigationController * ncSettings = [[de_MainNavigationController alloc]initWithRootViewController:vcSettings];
     UITabBarItem * settingsBtn = [[UITabBarItem alloc]initWithTitle:@"Settings" image:[UIImage imageNamed:@"dogear-icon-settings"] tag:2];
     [ncSettings setTabBarItem:settingsBtn];
     
@@ -158,7 +160,9 @@
     UIImage * originImage = [info objectForKey:@"UIImagePickerControllerOriginalImage"];
     [self dismissViewControllerAnimated:YES completion:^{
         
-        UINavigationController * nc = [self.viewControllers objectAtIndex:1];
+        [self.tabBarController setSelectedIndex:1];
+        
+        de_MainNavigationController * nc = (de_MainNavigationController*)[self.viewControllers objectAtIndex:1];
 //        de_PhotoViewController * vc = [[de_PhotoViewController alloc]initWithImage:originImage toolBarType:BKToolBarTypeEditing];
         de_PhotoViewController * vc = [[de_PhotoViewController alloc]initWithImage:[UIImage rotateImage:originImage] andExistingDogEar:nil];
         [nc pushViewController:vc animated:YES];

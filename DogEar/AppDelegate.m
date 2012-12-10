@@ -68,8 +68,9 @@
 
 - (void) application:(UIApplication *)application didReceiveLocalNotification:(UILocalNotification *)notification
 {
-    [self.bkSplashScreenVC showReminderWithLocalNotification:notification];
     application.applicationIconBadgeNumber = notification.applicationIconBadgeNumber - 1;
-    [application cancelLocalNotification:notification];}
+    [self.bkSplashScreenVC showReminderWithLocalNotification:notification];
+    [application cancelLocalNotification:notification];
+}
 
 @end

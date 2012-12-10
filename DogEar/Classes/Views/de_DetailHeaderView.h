@@ -12,7 +12,7 @@
 @interface de_DetailHeaderView : UIView <UITableViewDataSource, UITableViewDelegate , UITextFieldDelegate >
 
 @property (nonatomic , strong) UIViewController * vcParent;
-//@property (nonatomic ) BOOL allowEditing;
+@property (nonatomic ) BOOL allowEditing;
 
 @property (nonatomic , assign) UIImage * thumbImage;
 @property (nonatomic , strong) DogEarObject * dogEar;

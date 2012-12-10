@@ -15,6 +15,7 @@
 #import "de_FlaggedListViewController.h"
 #import "de_PhotoViewController.h"
 
+
 @interface de_BrowseTableViewController ()
 {
     NSArray * categories;
@@ -55,11 +56,13 @@
     self.vcSearchDispay.searchResultsDataSource = self;
     self.vcSearchDispay.searchResultsDelegate = self;
     self.vcSearchDispay.delegate = self;
+    
 }
 
 - (void) viewWillAppear:(BOOL)animated
 {
     [super viewWillAppear:animated];
+     self.navigationItem.title = @"Browse Dog Ears";
     
     UIImageView *backgroundImage = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"dogear-bg-instructions"]];
     backgroundImage.tag = 999;
@@ -98,6 +101,12 @@
     }
     
     [self.tableView reloadData];
+}
+
+- (void) viewWillDisappear:(BOOL)animated
+{
+    [super viewWillDisappear:animated];
+    self.navigationItem.title = @"Browse";
 }
 
 
@@ -203,37 +212,40 @@
     {
         if (indexPath.section == 0)
         {
-            NSMutableArray * collections = [[NSMutableArray alloc]init];
-            
-            for (int c = 0; c < [categories count]; c++)
-            {
-                NSData * data = [[[NSUserDefaults standardUserDefaults]objectForKey:@"BKDataCollections"] objectForKey:[categories objectAtIndex:c]];
-                NSMutableArray * decodedCollections = [NSMutableArray arrayWithArray:[NSKeyedUnarchiver unarchiveObjectWithData: data]];
-                NSArray * copyCollections = [[NSArray arrayWithArray:decodedCollections] copy];
-                
-                for (DogEarObject * object in copyCollections)
-                {
-                    if (object.flagged != nil)  [collections addObject:object];
-                }
-            }
-            NSLog(@"%i",[collections count]);
+//            NSMutableArray * collections = [[NSMutableArray alloc]init];
+//            
+//            for (int c = 0; c < [categories count]; c++)
+//            {
+//                NSData * data = [[[NSUserDefaults standardUserDefaults]objectForKey:@"BKDataCollections"] objectForKey:[categories objectAtIndex:c]];
+//                NSMutableArray * decodedCollections = [NSMutableArray arrayWithArray:[NSKeyedUnarchiver unarchiveObjectWithData: data]];
+//                NSArray * copyCollections = [[NSArray arrayWithArray:decodedCollections] copy];
+//                
+//                for (DogEarObject * object in copyCollections)
+//                {
+//                    if (object.flagged != nil)  [collections addObject:object];
+//                }
+//            }
+//            NSLog(@"%i",[collections count]);
             
             de_FlaggedListViewController * vc = [[de_FlaggedListViewController alloc]initWithStyle:UITableViewStyleGrouped];
-            vc.flaggedCollections = collections;
+//            vc.flaggedCollections = collections;
             [self.navigationController pushViewController:vc animated:YES];
+
         }
         else if (indexPath.section == 1)
         {
-            NSString * keyString = [categories objectAtIndex:indexPath.row];
-            NSData * data = [[[NSUserDefaults standardUserDefaults]objectForKey:@"BKDataCollections"] objectForKey:keyString];
-            NSMutableArray * decodedCollections = [NSMutableArray arrayWithArray:[NSKeyedUnarchiver unarchiveObjectWithData: data]];
+//            NSString * keyString = [categories objectAtIndex:indexPath.row];
+//            NSData * data = [[[NSUserDefaults standardUserDefaults]objectForKey:@"BKDataCollections"] objectForKey:keyString];
+//            NSMutableArray * decodedCollections = [NSMutableArray arrayWithArray:[NSKeyedUnarchiver unarchiveObjectWithData: data]];
 //
             de_ListTableViewController * vc = [[de_ListTableViewController alloc]init];
-            [self.navigationController pushViewController:vc animated:YES];
-//            vc.navigationItem.title = [NSString stringWithFormat:@"Category:%@",keyString];
-            vc.navigationItem.title = keyString;
 
-            vc.collections = decodedCollections;
+            [self.navigationController pushViewController:vc animated:YES];
+
+//            vc.navigationItem.title = [NSString stringWithFormat:@"Category:%@",keyString];
+            vc.navigationItem.title = [categories objectAtIndex:indexPath.row];
+
+//            vc.collections = decodedCollections;
         }
     }
 }

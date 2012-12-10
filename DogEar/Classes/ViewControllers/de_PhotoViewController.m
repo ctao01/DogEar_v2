@@ -11,18 +11,26 @@
 #import "de_DetailViewController.h"
 
 #import "de_ListTableViewController.h"
+#import "de_BrowseTableViewController.h"
+#import "de_FlaggedListViewController.h"
 
 #import "TwitterManager.h"
 #import "MessageManager.h"
 
 #import "UIImage+DGStyle.h"
+#import "CropView.h"
 
 #define IPHONE_NAVIGATION_BAR_HEIGHT 44
 #define IPHONE_TOOL_BAR_HEIGHT 45
 #define IPHONE_STATUS_BAR_HEIGHT 20
 
+
 #define DEVICE_OS [[[UIDevice currentDevice] systemVersion] intValue]
 #define kPDFPageBounds CGRectMake(0, 0, 8.5 * 72, 11 * 72)
+
+#define ktapDiff 10
+#define kWidthDifference 30 
+#define kHeightDifference 30
 
 int currentAngle = 0;
 
@@ -32,16 +40,25 @@ int currentAngle = 0;
     UIPrintInteractionController *printController;
     NSString * keyString;
     
-    // Zoom in/ out
+    // Zoom
     UIScrollView * scrollView;
     UIImageView * imageView;
     
+    // Auto Enhance Image
     BOOL isAutoEnhance;
+    
+    // Image Crop
 
+    UIView *overlayView;
+    CropView * cropView;
+    
+    CGFloat cropTL_y; //top Left
+    CGFloat cropTR_x; //top Right
+    CGFloat cropBR_y; // Botton Right
+    CGFloat cropBL_x;
 }
-@property (nonatomic) BKToolBarType bkToolBarType;
+//@property (nonatomic) BKToolBarType bkToolBarType;
 @property (nonatomic , retain) UIImage * photo;
-@property (nonatomic , retain) DogEarObject * existingDogEar;
 
 @end
 
@@ -59,17 +76,17 @@ int currentAngle = 0;
 
 // JT-TODO: get rid of toolBarType - using "initWithImage: andDogEar:(DogEar*)dogEar"
 
-- (id) initWithImage:(UIImage*)image toolBarType:(BKToolBarType)toolBarType
-{
-    self = [self init];
-    if (self)
-    {
-        self.bkToolBarType = toolBarType;
-        self.photo = image;
-        self.view.backgroundColor = [UIColor blackColor];
-    }
-    return self;
-}
+//- (id) initWithImage:(UIImage*)image toolBarType:(BKToolBarType)toolBarType
+//{
+//    self = [self init];
+//    if (self)
+//    {
+//        self.bkToolBarType = toolBarType;
+//        self.photo = image;
+//        self.view.backgroundColor = [UIColor blackColor];
+//    }
+//    return self;
+//}
 
 - (id) initWithImage:(UIImage*)image andExistingDogEar:(DogEarObject*)object
 {
@@ -90,7 +107,6 @@ int currentAngle = 0;
     
     if (self.existingDogEar) keyString = self.existingDogEar.category;
     
-    CGRect bounds = [[UIScreen mainScreen]bounds];
     
     // JT:ScrollView Setup
     scrollView = [[UIScrollView alloc] initWithFrame:[[UIScreen mainScreen] applicationFrame]];
@@ -98,7 +114,6 @@ int currentAngle = 0;
 	scrollView.backgroundColor = [UIColor blackColor];
 	scrollView.delegate = self;
 	imageView = [[UIImageView alloc] initWithImage:self.photo];
-	scrollView.contentSize = imageView.frame.size;
 	[scrollView addSubview:imageView];
 	scrollView.minimumZoomScale = scrollView.frame.size.width / imageView.frame.size.width;
 	scrollView.maximumZoomScale = 2.0;
@@ -106,59 +121,13 @@ int currentAngle = 0;
 	[scrollView setZoomScale:scrollView.minimumZoomScale];
 	[self.view addSubview:scrollView];
 	[self.view sendSubviewToBack:scrollView];
-    scrollView.frame = CGRectOffset(imageView.frame, 0.0f, - 68.0f);
+    scrollView.frame = CGRectOffset(scrollView.frame, 0.0f, - 68.0f);
     
 //    UIImageView * imageView = [[UIImageView alloc]initWithFrame:self.view.frame];
 //    imageView.tag = 222;
 //    imageView.contentMode = UIViewContentModeScaleAspectFit;
 //    [self.view addSubview:imageView];
     
-    NSInteger cameraActiveBarHeight;
-    cameraActiveBarHeight = 68.0f;
-    
-//    imageView.frame = CGRectOffset(imageView.frame, 0.0f, - cameraActiveBarHeight);
-    
-    UIToolbar * toolBar = [[UIToolbar alloc]initWithFrame:CGRectMake(0.0f, bounds.size.height - cameraActiveBarHeight - IPHONE_TOOL_BAR_HEIGHT, bounds.size.width, IPHONE_TOOL_BAR_HEIGHT)];
-    toolBar.tag = 333;
-    toolBar.barStyle = UIBarStyleBlackOpaque;
-    UIBarButtonItem * spaceItme = [[UIBarButtonItem alloc]initWithBarButtonSystemItem:UIBarButtonSystemItemFlexibleSpace target:nil action:nil];
-    
-	if (self.existingDogEar == nil)
-    {
-        isAutoEnhance = NO;
-        
-        UIBarButtonItem * rotateItem = [[UIBarButtonItem alloc]initWithTitle:@"Rotate" style:UIBarButtonItemStyleBordered target:self action:@selector(rotateLeft)];
-        UIBarButtonItem * enhanceItem = [[UIBarButtonItem alloc]initWithTitle:@"Enhance" style:UIBarButtonItemStyleBordered target:self action:@selector(autoEnhance)];
-        UIBarButtonItem * cropItem = [[UIBarButtonItem alloc]initWithTitle:@"Crop" style:UIBarButtonItemStyleBordered target:self action:@selector(cropPhoto)];
-        
-        [toolBar setItems:[NSArray arrayWithObjects:rotateItem, spaceItme, enhanceItem, spaceItme, cropItem, nil]];
-        
-        UIBarButtonItem * cancelItem = [[UIBarButtonItem alloc]initWithTitle:@"Cancel" style:UIBarButtonItemStyleBordered target:self action:@selector(retakePhoto)];
-        self.navigationItem.leftBarButtonItem = cancelItem;
-        
-        UIBarButtonItem * saveItem = [[UIBarButtonItem alloc]initWithTitle:@"Save" style:UIBarButtonItemStyleBordered target:self action:@selector(storeTheImage)];
-        self.navigationItem.rightBarButtonItem = saveItem;
-        
-    }
-    else 
-    {
-        UIBarButtonItem * shareItem = [[UIBarButtonItem alloc]initWithImage:[UIImage imageNamed:@"dogear-icon-share"] style:UIBarButtonItemStylePlain target:self action:@selector(shareThePhoto)];
-        de_MainTabBarController * tbc = (de_MainTabBarController*)self.tabBarController;
-        
-        UIBarButtonItem * cameraItem = [[UIBarButtonItem alloc]initWithImage:[UIImage imageNamed:@"dogear-icon-camera"] style:UIBarButtonItemStyleDone target:tbc action:@selector(activateCamera)];
-        
-        UIBarButtonItem * trashItem = [[UIBarButtonItem alloc]initWithImage:[UIImage imageNamed:@"dogear-icon-trashcan"] style:UIBarButtonItemStylePlain target:self action:@selector(deleteThePhoto)];
-        
-        [toolBar setItems:[NSArray arrayWithObjects:shareItem, spaceItme, cameraItem, spaceItme, trashItem, nil]];
-        
-//        UIBarButtonItem * cancelItem = [[UIBarButtonItem alloc]initWithTitle:@"Cancel" style:UIBarButtonItemStyleBordered target:self action:@selector(cancel)];
-//        self.navigationItem.leftBarButtonItem = cancelItem;
-        
-        UIBarButtonItem * detailItem = [[UIBarButtonItem alloc]initWithTitle:@"Detail" style:UIBarButtonItemStyleBordered target:self action:@selector(moreDetail)];
-        self.navigationItem.rightBarButtonItem = detailItem;
-    }
-    [self.view addSubview:toolBar];
-
 }
 
 - (void)didReceiveMemoryWarning
@@ -172,6 +141,60 @@ int currentAngle = 0;
     [super viewWillAppear:animated];
     de_MainTabBarController * tbc = (de_MainTabBarController*)self.tabBarController;
     [tbc makeTabBarHidden:YES];
+}
+
+- (void) viewDidAppear:(BOOL)animated
+{
+    [super viewDidAppear:animated];
+    CGRect bounds = [[UIScreen mainScreen]bounds];
+    NSInteger cameraActiveBarHeight;
+    cameraActiveBarHeight = 68.0f;
+    
+    //    imageView.frame = CGRectOffset(imageView.frame, 0.0f, - cameraActiveBarHeight);
+    
+    UIToolbar * toolBar = [[UIToolbar alloc]initWithFrame:CGRectMake(0.0f, bounds.size.height - cameraActiveBarHeight - IPHONE_TOOL_BAR_HEIGHT, bounds.size.width, IPHONE_TOOL_BAR_HEIGHT)];
+    toolBar.tag = 333;
+    toolBar.barStyle = UIBarStyleBlackOpaque;
+    UIBarButtonItem * spaceItme = [[UIBarButtonItem alloc]initWithBarButtonSystemItem:UIBarButtonSystemItemFlexibleSpace target:nil action:nil];
+    
+	if (self.existingDogEar == nil)
+    {
+        isAutoEnhance = NO;
+        
+        UIBarButtonItem * rotateItem = [[UIBarButtonItem alloc]initWithTitle:@"Rotate" style:UIBarButtonItemStyleBordered target:self action:@selector(rotateLeft)];
+        //        UIBarButtonItem * enhanceItem = [[UIBarButtonItem alloc]initWithTitle:@"Enhance" style:UIBarButtonItemStyleBordered target:self action:@selector(autoEnhance)];
+        UIBarButtonItem * enhanceItem = [[UIBarButtonItem alloc]initWithTitle:[NSString stringWithFormat:@"Ehance:%@",isAutoEnhance?@"YES":@"NO"] style:UIBarButtonItemStyleBordered target:self action:@selector(autoEnhance:)];
+        
+        UIBarButtonItem * cropItem = [[UIBarButtonItem alloc]initWithTitle:@"Crop" style:UIBarButtonItemStyleBordered target:self action:@selector(cropPhoto)];
+        
+        [toolBar setItems:[NSArray arrayWithObjects:rotateItem, spaceItme, enhanceItem, spaceItme, cropItem, nil]];
+        
+        UIBarButtonItem * cancelItem = [[UIBarButtonItem alloc]initWithTitle:@"Retake" style:UIBarButtonItemStyleBordered target:self action:@selector(retakePhoto)];
+        self.navigationItem.leftBarButtonItem = cancelItem;
+        
+        UIBarButtonItem * saveItem = [[UIBarButtonItem alloc]initWithTitle:@"Save" style:UIBarButtonItemStyleBordered target:self action:@selector(storeTheImage)];
+        self.navigationItem.rightBarButtonItem = saveItem;
+        
+    }
+    else
+    {
+        UIBarButtonItem * shareItem = [[UIBarButtonItem alloc]initWithImage:[UIImage imageNamed:@"dogear-icon-share"] style:UIBarButtonItemStylePlain target:self action:@selector(shareThePhoto)];
+        de_MainTabBarController * tbc = (de_MainTabBarController*)self.tabBarController;
+        
+        UIBarButtonItem * cameraItem = [[UIBarButtonItem alloc]initWithImage:[UIImage imageNamed:@"dogear-icon-camera"] style:UIBarButtonItemStyleDone target:tbc action:@selector(activateCamera)];
+        
+        UIBarButtonItem * trashItem = [[UIBarButtonItem alloc]initWithImage:[UIImage imageNamed:@"dogear-icon-trashcan"] style:UIBarButtonItemStylePlain target:self action:@selector(deleteThePhoto)];
+        
+        [toolBar setItems:[NSArray arrayWithObjects:shareItem, spaceItme, cameraItem, spaceItme, trashItem, nil]];
+        
+        UIBarButtonItem * cancelItem = [[UIBarButtonItem alloc]initWithTitle:@"Cancel" style:UIBarButtonItemStyleBordered target:self action:@selector(backToList)];
+        self.navigationItem.leftBarButtonItem = cancelItem;
+        
+        UIBarButtonItem * detailItem = [[UIBarButtonItem alloc]initWithTitle:@"Detail" style:UIBarButtonItemStyleBordered target:self action:@selector(moreDetail)];
+        self.navigationItem.rightBarButtonItem = detailItem;
+        self.navigationItem.title = self.existingDogEar.title;
+    }
+    [self.view addSubview:toolBar];
 }
 
 - (void) viewWillDisappear:(BOOL)animated
@@ -211,6 +234,12 @@ int currentAngle = 0;
 
 #pragma mark - UIBarButtonItem (UINavigationBar)
 
+- (void) retakePhoto
+{
+    de_MainTabBarController * tbc = (de_MainTabBarController*)self.tabBarController;
+    [tbc activateCamera];
+}
+
 
 - (void) storeTheImage
 {
@@ -235,6 +264,23 @@ int currentAngle = 0;
 
 }
 
+- (void) backToList
+{
+    if ([self.navigationController.viewControllers count]>3)
+    {
+        de_ListTableViewController * vc = (de_ListTableViewController*)[self.navigationController.viewControllers objectAtIndex:[self.navigationController.viewControllers count]-2];
+        de_ListTableViewController * previousVc = [self.navigationController.viewControllers objectAtIndex:[self.navigationController.viewControllers count]-3];
+        NSArray * array = [[NSUserDefaults standardUserDefaults]objectForKey:@"BKFlaggedItems"];
+        if ([previousVc isKindOfClass:[de_BrowseTableViewController class]])
+            vc.navigationItem.title = self.existingDogEar.category;
+        else if ([previousVc isKindOfClass:[de_FlaggedListViewController class]])
+            vc.navigationItem.title = [array objectAtIndex:[self.existingDogEar.flagged integerValue]];
+        [self.navigationController popToViewController:vc animated:YES];
+    }
+    else [self.navigationController popToRootViewControllerAnimated:YES];
+}
+
+
 #pragma mark - UIBarButtonItem (UIToolBar)
 
 - (void) rotateLeft
@@ -257,8 +303,9 @@ int currentAngle = 0;
     self.photo = newImage;
 }
 
-- (void) autoEnhance
+- (void) autoEnhance:(id)sender
 {
+    UIBarButtonItem * button = (UIBarButtonItem*)sender;
     if (isAutoEnhance == NO)
     {
         UIImage * originImage = imageView.image;
@@ -271,19 +318,269 @@ int currentAngle = 0;
         isAutoEnhance = NO;
     }
     [imageView setNeedsDisplay];
+    button.title = [NSString stringWithFormat:@"Enhance:%@",isAutoEnhance?@"YES":@"NO"];
+
 }
+
+/******************************************************************************************/
+- (void) cropPhoto
+{
+    CGRect cropFrame = CGRectMake(40.0f, 40.0f, 240, 320.0f);
+    cropTL_y = cropFrame.origin.y;
+    cropTR_x = cropFrame.origin.x + cropFrame.size.width;
+    cropBR_y = cropFrame.origin.y + cropFrame.size.height;
+    cropBL_x = cropFrame.origin.x;
+    
+    cropView = [[CropView alloc]initWithOuterFrame:self.view.frame andInnerFrame:cropFrame];
+    [self.view addSubview:cropView];
+    [cropView setNeedsDisplay];
+    
+    UIBarButtonItem * cancelButton = [[UIBarButtonItem alloc]initWithBarButtonSystemItem:UIBarButtonSystemItemCancel target:self action:@selector(cancelCrop)];
+    self.navigationItem.leftBarButtonItem = cancelButton;
+    
+    UIBarButtonItem * doneButton = [[UIBarButtonItem alloc]initWithBarButtonSystemItem:UIBarButtonSystemItemDone target:self action:@selector(doneCrop)];
+    self.navigationItem.rightBarButtonItem = doneButton;
+}
+
+- (void) doneCrop
+{
+    CGRect rect = CGRectMake(cropBL_x, cropTL_y, cropTR_x - cropBL_x, cropBR_y - cropTL_y);
+    CGSize imageViewSize = imageView.frame.size;
+    UIImage * image = [[UIImage alloc]imageByCropping:[self.photo scaleToFitSize:imageViewSize] toRect:rect];
+    imageView.image = image;
+    [imageView setNeedsDisplay];
+
+    self.navigationItem.rightBarButtonItem = [[UIBarButtonItem alloc]initWithTitle:@"Save" style:UIBarButtonItemStyleDone target:self action:@selector(storeTheImage)];
+    self.navigationItem.leftBarButtonItem = [[UIBarButtonItem alloc]initWithTitle:@"Retake" style:UIBarButtonItemStyleBordered target:self action:@selector(retakePhoto)];
+    [cropView removeFromSuperview];
+}
+
+- (void) cancelCrop
+{
+    [cropView removeFromSuperview];
+}
+
+//- (void) doneCropPhoto
+//{
+//    CGRect rect = CGRectMake(cropBL_x, cropTL_y, cropTR_x - cropBL_x, cropBR_y - cropTL_y);
+//    CGSize imageViewSize = imageView.frame.size;
+//    UIImage * image = [[UIImage alloc]imageByCropping:[self.photo scaleToFitSize:imageViewSize] toRect:rect];
+//    
+//    self.photo = image;
+//    
+//    self.navigationItem.rightBarButtonItem = [[UIBarButtonItem alloc]initWithTitle:@"Save" style:UIBarButtonItemStyleDone target:self action:@selector(storeTheImage)];
+//    self.navigationItem.leftBarButtonItem = [[UIBarButtonItem alloc]initWithTitle:@"Retake" style:UIBarButtonItemStyleBordered target:self action:@selector(retakePhoto)];
+//}
+//
+//- (void) cancelCropPhoto
+//{
+//    self.navigationItem.rightBarButtonItem = [[UIBarButtonItem alloc]initWithTitle:@"Save" style:UIBarButtonItemStyleDone target:self action:@selector(storeTheImage)];
+//    self.navigationItem.leftBarButtonItem = [[UIBarButtonItem alloc]initWithTitle:@"Retake" style:UIBarButtonItemStyleBordered target:self action:@selector(retakePhoto)];
+//}
+
+
+- (void)ControlCropView:(NSSet *)touches {
+	
+    
+    CGPoint movedPoint = [[touches anyObject] locationInView:self.view];
+	    
+    if ((fabs(movedPoint.x - cropBL_x)<=ktapDiff)&&(fabs(movedPoint.y -cropTL_y)<= ktapDiff))
+        //    if ((abs(movedPoint.x - cropBL_x)<ktapDiff) && ((cropTL_y -movedPoint.y <= ktapDiff)||(cropTL_y -movedPoint.y <= ktapDiff)))
+    {
+        NSLog(@"Touched upper left corner");
+        isTappedOnUpperLeftCorner = TRUE;
+    }
+    else if((fabs(movedPoint.x - cropTR_x)<=ktapDiff)&&(fabs(movedPoint.y -cropTL_y)<= ktapDiff))
+        //    else if(((movedPoint.x - cropTR_x <= ktapDiff)||(cropTR_x - movedPoint.x <= ktapDiff)) && ((cropTL_y -movedPoint.y <= ktapDiff)||(cropTL_y -movedPoint.y <= ktapDiff)))
+    {
+        NSLog(@"Touched upper Right corner");
+        isTappedOnUpperRightCorner = TRUE;
+    }
+    else if((fabs(movedPoint.x - cropTR_x)<=ktapDiff)&&(fabs(movedPoint.y -cropBR_y)<= ktapDiff))
+        
+        //    else if (((movedPoint.x - cropTR_x <= ktapDiff)||(cropTR_x -movedPoint.x <= ktapDiff)) && ((cropBR_y -movedPoint.y <= ktapDiff)||(cropBR_y -movedPoint.y <= ktapDiff)))
+        
+    {
+        NSLog(@"Touched lower Right corner");
+        isTappedOnLowerRightCorner = TRUE;
+
+    }
+    else if((fabs(movedPoint.x - cropBL_x)<=ktapDiff)&&(fabs(movedPoint.y -cropBR_y)<= ktapDiff))
+        
+        //    else if (((movedPoint.x - cropBL_x <= ktapDiff)||(cropBL_x -movedPoint.x <= ktapDiff)) && ((cropBR_y -movedPoint.y <= ktapDiff)||(cropBR_y -movedPoint.y <= ktapDiff)))
+    {
+        NSLog(@"Touched lower left corner");
+        isTappedOnLowerLeftCorner = TRUE;
+    }
+}
+
+#pragma mark -
+#pragma mark UITOUCHES Stuff
+
+- (void)touchesBegan:(NSSet *)touches withEvent:(UIEvent *)event {
+	[self ControlCropView:touches];
+}
+- (void)touchesCancelled:(NSSet *)touches withEvent:(UIEvent *)event{
+	isTappedOnLowerLeftCorner = FALSE;
+	isTappedOnLowerRightCorner = FALSE;
+	isTappedOnUpperLeftCorner = FALSE;
+	isTappedOnUpperRightCorner = FALSE;
+}
+- (void)touchesEnded:(NSSet *)touches withEvent:(UIEvent *)event {
+    //    messageLabel.text = @"Touches Stopped.";
+	isTappedOnLowerLeftCorner = FALSE;
+	isTappedOnLowerRightCorner = FALSE;
+	isTappedOnUpperLeftCorner = FALSE;
+	isTappedOnUpperRightCorner = FALSE;
+}
+
+- (void)touchesMoved:(NSSet *)touches withEvent:(UIEvent *)event
+{
+    CGPoint movedPoint = [[touches anyObject] locationInView:self.view];
+    
+    CGRect viewFrame = imageView.frame;
+    
+    if ((movedPoint.x <= 10 && movedPoint.x >= 310))
+		return;
+	if ((movedPoint.y <= 10  && movedPoint.y >= viewFrame.size.height - 10)) {
+		return;
+	}
+    
+    
+    if (isTappedOnUpperLeftCorner)
+    {
+        if (movedPoint.x >= cropView.frame.origin.x + cropView.frame.size.width) return;
+        if (movedPoint.y >= cropView.frame.origin.y + cropView.frame.size.height) return;
+        
+        // TODO: move left
+        
+        if ((cropBL_x - movedPoint.x) >= kWidthDifference)
+        {
+            if ((cropTL_y - movedPoint.y)>=kHeightDifference) // move up
+                cropTL_y = movedPoint.y;
+            else if ((movedPoint.y -cropTL_y)>= kHeightDifference) // move down
+                cropTL_y = movedPoint.y;
+            else return;
+            
+            cropBL_x = movedPoint.x;
+            
+        }
+        // TODO: move right
+        else if ((movedPoint.x -cropBL_x) >= kWidthDifference)
+        {
+            if ((cropTL_y - movedPoint.y)>=kHeightDifference) // move up
+                cropTL_y = movedPoint.y;
+            else if ((movedPoint.y -cropTL_y)>= kHeightDifference) // move down
+                cropTL_y = movedPoint.y;
+            else return;
+            
+            cropBL_x = movedPoint.x;
+        }
+        else return;
+    }
+    
+    else if (isTappedOnUpperRightCorner)
+    {
+        if (movedPoint.x <= cropView.frame.origin.x) return;
+        if (movedPoint.y >= cropView.frame.origin.y + cropView.frame.size.height) return;
+        
+        if ((cropTR_x - movedPoint.x) >= kWidthDifference)
+        {
+            if ((cropTL_y - movedPoint.y)>=kHeightDifference) // move up
+                cropTL_y = movedPoint.y;
+            else if ((movedPoint.y -cropTL_y)>= kHeightDifference) // move down
+                cropTL_y = movedPoint.y;
+            else return;
+            
+            cropTR_x = movedPoint.x;
+            
+        }
+        // TODO: move right
+        else if ((movedPoint.x -cropTR_x) >= kWidthDifference)
+        {
+            if ((cropTL_y - movedPoint.y)>=kHeightDifference) // move up
+                cropTL_y = movedPoint.y;
+            else if ((movedPoint.y -cropTL_y)>= kHeightDifference) // move down
+                cropTL_y = movedPoint.y;
+            else return;
+            
+            cropTR_x = movedPoint.x;
+        }
+        else return;
+    }
+    
+     else if (isTappedOnLowerRightCorner)
+     {
+         if (movedPoint.x <= cropView.frame.origin.x) return;
+         if (movedPoint.y <=cropView.frame.origin.y) return;
+         
+         if ((cropTR_x - movedPoint.x) >= kWidthDifference)
+         {
+             if ((cropBR_y - movedPoint.y)>=kHeightDifference) // move up
+             cropBR_y = movedPoint.y;
+             else if ((movedPoint.y -cropBR_y)>= kHeightDifference) // move down
+             cropBR_y = movedPoint.y;
+             else return;
+             
+             cropTR_x = movedPoint.x;
+             
+             }
+             // TODO: move right
+             else if ((movedPoint.x -cropTR_x) >= kWidthDifference)
+             {
+             if ((cropBR_y - movedPoint.y)>=kHeightDifference) // move up
+             cropBR_y = movedPoint.y;
+             else if ((movedPoint.y -cropBR_y)>= kHeightDifference) // move down
+             cropBR_y = movedPoint.y;
+             else return;
+             
+             cropTR_x = movedPoint.x;
+             }
+         else return;
+     }
+     
+     else if (isTappedOnLowerLeftCorner)
+     {
+         if (movedPoint.x >= cropView.frame.origin.x + cropView.frame.size.width) return;
+         if (movedPoint.y <=cropView.frame.origin.y) return;
+
+         
+         if ((cropBL_x - movedPoint.x) >= kWidthDifference)
+         {
+             if ((cropBR_y - movedPoint.y)>=kHeightDifference) // move up
+             cropBR_y = movedPoint.y;
+             else if ((movedPoint.y -cropBR_y)>= kHeightDifference) // move down
+             cropBR_y = movedPoint.y;
+             else return;
+             
+             cropBL_x = movedPoint.x;
+         
+         }
+         // TODO: move right
+         else if ((movedPoint.x -cropBL_x) >= kWidthDifference)
+         {
+             if ((cropBR_y - movedPoint.y)>=kHeightDifference) // move up
+             cropBR_y = movedPoint.y;
+             else if ((movedPoint.y -cropBR_y)>= kHeightDifference) // move down
+             cropBR_y = movedPoint.y;
+             else return;
+             
+             cropBL_x = movedPoint.x;
+         }
+         else return;
+     }
+    cropView.cropFrame = CGRectMake(cropBL_x, cropTL_y, cropTR_x - cropBL_x, cropBR_y - cropTL_y);
+    [cropView setNeedsDisplay];
+    
+}
+/******************************************************************************************/
+
 
 - (void) shareThePhoto
 {
     UIActionSheet * actionSheet = [[UIActionSheet alloc]initWithTitle:@"Share" delegate:self cancelButtonTitle:@"Cancel" destructiveButtonTitle:nil otherButtonTitles:@"Facebook",@"Twitter",@"Email",@"Message",@"Print", nil];
     actionSheet.delegate = self;
     [actionSheet showInView:self.view];
-}
-
-- (void) retakePhoto
-{
-    de_MainTabBarController * tbc = (de_MainTabBarController*)self.tabBarController;
-    [tbc activateCamera];
 }
 
 
@@ -347,6 +644,7 @@ int currentAngle = 0;
 
 - (void)scrollViewDidZoom:(UIScrollView *)scrollV {
 	imageView.frame = [self centeredFrameForScrollView:scrollV andUIView:imageView];
+
 }
 
 - (UIView *)viewForZoomingInScrollView:(UIScrollView *)scrollView {
