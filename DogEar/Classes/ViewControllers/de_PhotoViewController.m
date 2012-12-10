@@ -341,17 +341,13 @@ int currentAngle = 0;
 - (void) doneCrop
 {
     CGRect rect = CGRectMake(cropBL_x, cropTL_y, cropTR_x - cropBL_x, cropBR_y - cropTL_y);
-    NSLog(@"rect:%@",NSStringFromCGRect(rect));
-    NSLog(@"rect:%@",NSStringFromCGRect(imageView.frame));
-
-    [self.photo scaleToFitSize:imageView.frame.size];
-    UIImage * image = [self.photo getSubImage:rect];
+    CGSize imageViewSize = imageView.frame.size;
+    UIImage * image = [[UIImage alloc]imageByCropping:[self.photo scaleToFitSize:imageViewSize] toRect:rect];
     imageView.image = image;
     [imageView setNeedsDisplay];
-    self.photo = imageView.image;
 
-    self.navigationItem.rightBarButtonItem = [[UIBarButtonItem alloc]initWithTitle:@"Save" style:UIBarButtonItemStyleBordered target:self action:@selector(storeTheImage)];
-    self.navigationItem.leftBarButtonItem = [[UIBarButtonItem alloc]initWithTitle:@"Retake" style:UIBarButtonItemStyleBordered target:self action:@selector(retakePhoto)];;
+    self.navigationItem.rightBarButtonItem = [[UIBarButtonItem alloc]initWithTitle:@"Save" style:UIBarButtonItemStyleDone target:self action:@selector(storeTheImage)];
+    self.navigationItem.leftBarButtonItem = [[UIBarButtonItem alloc]initWithTitle:@"Retake" style:UIBarButtonItemStyleBordered target:self action:@selector(retakePhoto)];
     [cropView removeFromSuperview];
 }
 
@@ -360,13 +356,30 @@ int currentAngle = 0;
     [cropView removeFromSuperview];
 }
 
+//- (void) doneCropPhoto
+//{
+//    CGRect rect = CGRectMake(cropBL_x, cropTL_y, cropTR_x - cropBL_x, cropBR_y - cropTL_y);
+//    CGSize imageViewSize = imageView.frame.size;
+//    UIImage * image = [[UIImage alloc]imageByCropping:[self.photo scaleToFitSize:imageViewSize] toRect:rect];
+//    
+//    self.photo = image;
+//    
+//    self.navigationItem.rightBarButtonItem = [[UIBarButtonItem alloc]initWithTitle:@"Save" style:UIBarButtonItemStyleDone target:self action:@selector(storeTheImage)];
+//    self.navigationItem.leftBarButtonItem = [[UIBarButtonItem alloc]initWithTitle:@"Retake" style:UIBarButtonItemStyleBordered target:self action:@selector(retakePhoto)];
+//}
+//
+//- (void) cancelCropPhoto
+//{
+//    self.navigationItem.rightBarButtonItem = [[UIBarButtonItem alloc]initWithTitle:@"Save" style:UIBarButtonItemStyleDone target:self action:@selector(storeTheImage)];
+//    self.navigationItem.leftBarButtonItem = [[UIBarButtonItem alloc]initWithTitle:@"Retake" style:UIBarButtonItemStyleBordered target:self action:@selector(retakePhoto)];
+//}
+
+
 - (void)ControlCropView:(NSSet *)touches {
 	
     
     CGPoint movedPoint = [[touches anyObject] locationInView:self.view];
-	
-    NSLog(@" movedPoint = (%f,%f)",movedPoint.x,movedPoint.y);
-    
+	    
     if ((fabs(movedPoint.x - cropBL_x)<=ktapDiff)&&(fabs(movedPoint.y -cropTL_y)<= ktapDiff))
         //    if ((abs(movedPoint.x - cropBL_x)<ktapDiff) && ((cropTL_y -movedPoint.y <= ktapDiff)||(cropTL_y -movedPoint.y <= ktapDiff)))
     {
@@ -627,6 +640,7 @@ int currentAngle = 0;
 
 - (void)scrollViewDidZoom:(UIScrollView *)scrollV {
 	imageView.frame = [self centeredFrameForScrollView:scrollV andUIView:imageView];
+
 }
 
 - (UIView *)viewForZoomingInScrollView:(UIScrollView *)scrollView {

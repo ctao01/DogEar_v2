@@ -129,7 +129,7 @@
 	
     // Set up the cell...
 	if(indexPath.row == ([collections count]) && self.editing){
-		cell.textLabel.text = @"add new row";
+		cell.textLabel.text = @"Add New Row";
 		return cell;
 	}
     
@@ -181,7 +181,7 @@
     }
     else if (editingStyle == UITableViewCellEditingStyleInsert)
     {
-        UIAlertView * newCategoryView = [[UIAlertView alloc]initWithTitle:@"Add Catagory" message:@"Category Name" delegate:self cancelButtonTitle:@"Cancel" otherButtonTitles:@"Save", nil];
+        UIAlertView * newCategoryView = [[UIAlertView alloc]initWithTitle:@"Add Category" message:@"Category Name" delegate:self cancelButtonTitle:@"Cancel" otherButtonTitles:@"Save", nil];
         newCategoryView.alertViewStyle = UIAlertViewStylePlainTextInput;
         [newCategoryView show];
     }

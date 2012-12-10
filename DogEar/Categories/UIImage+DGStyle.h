@@ -27,4 +27,8 @@
 -(UIImage*) getSubImage:(CGRect)rect fromImage:(CGRect)originRect;
 -(UIImage*) getSubImage:(CGRect)rect;
 
+- (UIImage *)imageByScalingAndCroppingForSize:(CGSize)targetSize;
+- (UIImage*)imageByCropping:(UIImage *)imageToCrop toRect:(CGRect)rect;
+
+
 @end
