@@ -106,7 +106,10 @@
     NSLog(@"existingDogEar:%@",(self.existingDogEar != nil) ? @"YES":@"NO");
     NSLog(@"existingDogEarTitle:%@",self.existingDogEar.title);
 
-    if(self.existingDogEar == nil ) self.dogEar = [DogEarObject new];
+    if(self.existingDogEar == nil )
+    {   self.dogEar = [DogEarObject new];
+        [self.dogEar setInsertedDate:[NSDate date]]; 
+    }
     else self.dogEar = self.existingDogEar;
 
 }
@@ -326,7 +329,7 @@
         else if (repeatingType == 5) reminder.repeatInterval = NSYearCalendarUnit;
         
         NSDictionary * userDict = [NSDictionary dictionaryWithObject:
-                                  reminder.alertBody forKey:@"DogEarReminderNotificationDataKey"];
+                                  [self.dogEar insertedDate] forKey:@"DogEarObjectInsertedDate"];
         reminder.userInfo = userDict;
         
         [[UIApplication sharedApplication] scheduleLocalNotification:reminder];
@@ -347,8 +350,8 @@
 {
     [activityIndicator startAnimating];
     
+       //JT-Note: Add "insertedDate" only when add a new object.
     [self saveDogEar];
-    [self.dogEar setInsertedDate:[NSDate date]];    //JT-Note: Add "insertedDate" only when add a new object.
 
     NSMutableArray * array = [[NSMutableArray alloc]initWithArray:[self decodedCollections]];
     [array addObject:self.dogEar];

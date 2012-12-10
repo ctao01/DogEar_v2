@@ -16,15 +16,20 @@
     // Override point for customization after application launch.
     self.window.backgroundColor = [UIColor whiteColor];
     [self.window makeKeyAndVisible];
-    
     self.bkSplashScreenVC = [[de_DefaultViewController alloc]init];
+
+    //JT-Note: Handle Local Notification
+    UILocalNotification * localNotification = [launchOptions objectForKey:@"UIApplicationLaunchOptionsLocalNotificationKey"];
+    
+    if (localNotification)
+    {
+        self.bkSplashScreenVC.notification = localNotification;
+        application.applicationIconBadgeNumber = localNotification.applicationIconBadgeNumber - 1;
+        [application cancelLocalNotification:localNotification];
+    }
+        
     self.bkMainNav = [[UINavigationController alloc]initWithRootViewController:self.bkSplashScreenVC];
     self.window.rootViewController = self.bkMainNav;
-    
-    //JT-Note: Handle Local Notification
-
-    [application setApplicationIconBadgeNumber:0];
-    
     return YES;
 }
 
@@ -60,10 +65,11 @@
     return YES;
 }
 #pragma mark - NSLocalNotification
-/*
+
 - (void) application:(UIApplication *)application didReceiveLocalNotification:(UILocalNotification *)notification
 {
-    [application setApplicationIconBadgeNumber:0];
-}*/
+    [self.bkSplashScreenVC showReminderWithLocalNotification:notification];
+    application.applicationIconBadgeNumber = notification.applicationIconBadgeNumber - 1;
+    [application cancelLocalNotification:notification];}
 
 @end
