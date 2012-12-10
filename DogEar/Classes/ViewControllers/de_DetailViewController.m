@@ -118,6 +118,8 @@
 
     if(self.existingDogEar == nil ) self.dogEar = [DogEarObject new];
     else self.dogEar = self.existingDogEar;
+    [self.dogEar setInsertedDate:[NSDate date]];    //JT-Note: Add "insertedDate" only when add a new object.
+
 }
 
 - (void) viewWillAppear:(BOOL)animated
@@ -385,7 +387,8 @@
         reminder.fireDate = self.dogEar.reminderDate;
         reminder.timeZone = [NSTimeZone defaultTimeZone];
         
-        reminder.alertBody = [NSString stringWithFormat:@"%@,%@",[self keyString],self.dogEar.title? self.dogEar.title: @"DogEar"];
+        reminder.alertBody = [NSString stringWithFormat:@"%@:%@",[self keyString],self.dogEar.title? self.dogEar.title: @"DogEar"];
+        reminder.hasAction = TRUE;
         reminder.alertAction = @"Check it";
         reminder.soundName = UILocalNotificationDefaultSoundName;   //JT-TODO: Select Notification sound
         reminder.applicationIconBadgeNumber = 1;
@@ -399,7 +402,7 @@
         else if (repeatingType == 5) reminder.repeatInterval = NSYearCalendarUnit;
         
         NSDictionary * userDict = [NSDictionary dictionaryWithObject:
-                                  reminder.alertBody forKey:@"DogEarReminderNotificationDataKey"];
+                                  [self.dogEar insertedDate] forKey:@"DogEarReminderNotificationDataKey"];
         reminder.userInfo = userDict;
         
         [[UIApplication sharedApplication] scheduleLocalNotification:reminder];
@@ -426,9 +429,9 @@
     }
     
     [activityIndicator startAnimating];
+
     
     [self saveDogEar];
-    [self.dogEar setInsertedDate:[NSDate date]];    //JT-Note: Add "insertedDate" only when add a new object.
 
     NSMutableArray * array = [[NSMutableArray alloc]initWithArray:[self decodedCollections]];
     [array addObject:self.dogEar];
