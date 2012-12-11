@@ -8,6 +8,7 @@
 
 #import "de_DetailViewController.h"
 #import "de_DetailHeaderView.h"
+#import "de_HeaderView.h"
 
 #import "de_CategoryListViewController.h"
 #import "de_ReminderViewController.h"
@@ -23,7 +24,7 @@
     UIPrintInteractionController *printController;
     UIActivityIndicatorView * activityIndicator;
     
-    de_DetailHeaderView * headerView ;
+    de_HeaderView * headerView ;
 }
 
 @property (nonatomic) BOOL isEditing;
@@ -32,10 +33,10 @@
 - (NSData *)generatePDFDataForPrinting;
 
 - (void) setTableViewUserInteractionEnable:(BOOL)enable;
-- (void) updateDogEarDataCollectionWithSelectedCollections:(NSMutableArray*)collections;
-- (void) handleImageWith:(DogEarObject*)object;
+- (void) updateDogEarDataCollectionWithSelectedCollections:(NSMutableArray*)collections withObject:(DogEarObject*)object;
+- (void) handleImageWithDogEarObject:(DogEarObject*)object;
 
-- (NSMutableArray*) decodedCollections;
+- (NSMutableArray*) decodedCollectionsWithObject:(DogEarObject*)object;
 - (NSString *) keyString;
 
 @end
@@ -65,6 +66,9 @@
 - (void)viewDidLoad
 {
     [super viewDidLoad];
+    
+    NSLog(@"viewDidLoad");
+    
     activityIndicator = [[UIActivityIndicatorView alloc]initWithActivityIndicatorStyle:UIActivityIndicatorViewStyleGray];
     activityIndicator.frame = CGRectMake(0.0f, 0.0f, 60.0f, 60.0f);
     activityIndicator.center = self.view.center;
@@ -73,38 +77,44 @@
     UIImageView * bgImage = [[UIImageView alloc]initWithImage:[UIImage imageNamed:@"dogear-bg-master"]];
     self.tableView.backgroundView = bgImage;
         
-    CGRect bounds = [[UIScreen mainScreen]bounds];
-    headerView = [[de_DetailHeaderView alloc]initWithFrame:CGRectMake(0.0f, 0.0f, bounds.size.width, 110.0f)];
+    headerView = [[de_HeaderView alloc]initWithFrame:CGRectMake(0.0f, 0.0f, 320.0f, 200.0f)];
     headerView.center = CGPointMake(self.view.center.x, headerView.center.y);
-    headerView.vcParent = self;
+//    headerView.vcParent = self;
     if (self.existingDogEar == nil)
     {
         headerView.dogEar = nil;
         headerView.thumbImage = self.image;
-        headerView.allowEditing = YES;
+//        [headerView.titleField setEnabled:YES];
+//        [headerView.notesField setEditable:YES];
+        [self setHeaderViewEditingEnable:YES];
+
+//        headerView.allowEditing = YES;
+//        headerView.label.text = [NSString mediumStyleDateAndShortStyleTimeWithDate:[NSDate date]];
+//        [self handleImageWithDogEarObject:self.dogEar];
+
+        self.dogEar = [DogEarObject new];
+        [self.dogEar setInsertedDate:[NSDate date]];
+        
+        UIBarButtonItem * saveItem = [[UIBarButtonItem alloc]initWithTitle:@"Add" style:UIBarButtonItemStyleBordered target:self action:@selector(addDogEar)];
+        self.navigationItem.rightBarButtonItem = saveItem;
+        self.navigationItem.title = @"Add Dog Ear";
+
+        
     }
-    else
+    else if (self.existingDogEar != nil)
     {
         headerView.dogEar = self.existingDogEar;
+        headerView.thumbImage = [UIImage imageWithData:[NSData dataWithContentsOfFile:self.existingDogEar.imagePath]];
         headerView.allowEditing = NO;
+        
+        [self setHeaderViewEditingEnable:NO];
 
-    }
-    
-    self.tableView.tableHeaderView = headerView;
-    
-    //JT-Note:
-    Class printControllerClass = NSClassFromString(@"UIPrintInteractionController");
-    if (printControllerClass) {
-        printController = [printControllerClass sharedPrintController];
-    }
-    
-    if (self.existingDogEar != nil)
-    {
         UIBarButtonItem * editItem = [[UIBarButtonItem alloc]initWithTitle:@"Edit" style:UIBarButtonItemStyleBordered target:self action:@selector(edit:)];
         self.navigationItem.rightBarButtonItem = editItem;
         
         UIBarButtonItem * backItem = [[UIBarButtonItem alloc]initWithTitle:@"Back" style:UIBarButtonItemStylePlain target:self action:@selector(backToHome)];
         self.navigationItem.leftBarButtonItem = backItem;
+        self.navigationItem.title = @"Detail";
         
         //        self.tableView.userInteractionEnabled = NO;
         for (int c = 0; c < [self.tableView numberOfRowsInSection:0] - 1; c++) {
@@ -112,16 +122,17 @@
             UITableViewCell * disabledCell = [self.tableView cellForRowAtIndexPath:disabledIndexPath];
             [disabledCell setUserInteractionEnabled:NO];
         }
-    }
-    NSLog(@"existingDogEar:%@",(self.existingDogEar != nil) ? @"YES":@"NO");
-    NSLog(@"existingDogEarTitle:%@",self.existingDogEar.title);
+        self.dogEar = [self setupNewObjectWithObject:self.existingDogEar];
 
-    if(self.existingDogEar == nil )
-    {   self.dogEar = [DogEarObject new];
-        [self.dogEar setInsertedDate:[NSDate date]]; 
     }
-    else self.dogEar = self.existingDogEar;
-    [self.dogEar setInsertedDate:[NSDate date]];    //JT-Note: Add "insertedDate" only when add a new object.
+    headerView.vcParent = self;
+    self.tableView.tableHeaderView = headerView;
+    
+    //JT-Note:
+    Class printControllerClass = NSClassFromString(@"UIPrintInteractionController");
+    if (printControllerClass) {
+        printController = [printControllerClass sharedPrintController];
+    }
 
 }
 
@@ -141,29 +152,18 @@
     
     
     [self.tableView reloadData];
-    
-    if (self.existingDogEar == nil)
-    {
-//        if (![[self keyString] isEqualToString:@""])
-//        {
-            UIBarButtonItem * saveItem = [[UIBarButtonItem alloc]initWithTitle:@"Add" style:UIBarButtonItemStyleBordered target:self action:@selector(addDogEar)];
-            self.navigationItem.rightBarButtonItem = saveItem;
-//        }
-//        else
-//            self.navigationItem.rightBarButtonItem = nil;
-    }
 
 }
 
-- (void) viewWillDisappear:(BOOL)animated
+- (void) viewDidAppear:(BOOL)animated
 {
-    [super viewWillDisappear:animated];
-    if (self.editing)
-    {
-        NSMutableArray * array = [[NSMutableArray alloc]initWithArray:[self decodedCollections]];
-        [array addObject:self.existingDogEar];
-        [self updateDogEarDataCollectionWithSelectedCollections:array];
-    }
+    [super viewDidAppear:animated];
+    NSLog(@"%@,%@",self.dogEar.category, self.existingDogEar.category);
+
+//    if ([self.dogEar.category isEqualToString:self.existingDogEar.category] == NO)
+//    {
+
+//    }
 }
 
 - (void) viewDidDisappear:(BOOL)animated
@@ -195,19 +195,26 @@
         
         else
         {
+            NSLog(@"complete editing");
+            
             [self setTableViewUserInteractionEnable:NO];
-            headerView.allowEditing = NO;
-            [headerView setNeedsDisplay];
-            
-            [self saveDogEar];  // update self.dogear
+            [self setHeaderViewEditingEnable:NO];
 
-            NSMutableArray * array = [[NSMutableArray alloc]initWithArray:[self decodedCollections]];
+//            [headerView.titleField setEnabled:NO];
+//            [headerView.notesField setEditable:NO];
             
-            [array addObject:self.dogEar];
-            [self updateDogEarDataCollectionWithSelectedCollections:array];
+//            [self saveDogEar];
+            [self updateNewDogEarObject];
+            
+
+//            NSMutableArray * array = [[NSMutableArray alloc]initWithArray:[self decodedCollections]];
+//            
+//            [array addObject:self.dogEar];
+//            [self updateDogEarDataCollectionWithSelectedCollections:array];
 
             [self.navigationItem.rightBarButtonItem setTitle:@"Edit"];
             [self.navigationItem.rightBarButtonItem setStyle:UIBarButtonItemStylePlain];
+
             
             [self.navigationItem.leftBarButtonItem setTitle:@"Back"];
             [self.navigationItem.leftBarButtonItem setStyle:UIBarButtonItemStylePlain];
@@ -222,10 +229,13 @@
     {
         self.isEditing = YES;
         [self setTableViewUserInteractionEnable:YES];
-        headerView.allowEditing = YES;
-        [headerView setNeedsDisplay];
+        [self setHeaderViewEditingEnable:YES];
+        [self removeOldDogEarObject];
+
+//        [headerView.titleField setEnabled:YES];
+//        [headerView.notesField setEditable:YES];
         
-        NSMutableArray * temp = [[NSMutableArray alloc]initWithArray:[self decodedCollections]];
+        /*NSMutableArray * temp = [[NSMutableArray alloc]initWithArray:[self decodedCollections]];
         
         for (int d = 0; d < [temp count]; d++)
         {
@@ -234,10 +244,11 @@
                 [temp removeObject:object];
         }
 
-        [self updateDogEarDataCollectionWithSelectedCollections:temp];
+        [self updateDogEarDataCollectionWithSelectedCollections:temp];*/
         
         [self.navigationItem.rightBarButtonItem setTitle:@"Done"];
-        [self.navigationItem.rightBarButtonItem setStyle:UIBarButtonItemStyleDone];
+        [self.navigationItem.rightBarButtonItem setStyle:UIBarButtonItemStylePlain];
+
         
         [self.navigationItem.leftBarButtonItem setTitle:@"Cancel"];
         [self.navigationItem.leftBarButtonItem setStyle:UIBarButtonItemStylePlain];
@@ -252,45 +263,32 @@
 - (void) appHasGoneInBackground:(NSNotification*) notice
 {
     NSLog(@"appHasGoneInBackground");
-    if (self.isEditing == YES)
-    {
-        NSLog(@"self.isEditing-%@",self.dogEar);
-        NSMutableArray * array = [[NSMutableArray alloc]initWithArray:[self decodedCollections]];
-        [self saveDogEar];
-        [array addObject:self.dogEar];
-        [self updateDogEarDataCollectionWithSelectedCollections:array];
-    }
+//    if (self.isEditing == YES)
+//    {
+//        NSLog(@"self.isEditing-%@",self.dogEar);
+//        NSMutableArray * array = [[NSMutableArray alloc]initWithArray:[self decodedCollections]];
+//        [self saveDogEar];
+//        [array addObject:self.dogEar];
+//        [self updateDogEarDataCollectionWithSelectedCollections:array];
+//    }
 }
-
-- (void) appWillEnterForeground:(NSNotification*) notice
-{
-    NSLog(@"appWillEnterForeground");
-    if (self.isEditing == YES)
-    {
-        NSLog(@"self.isEditing-%@",self.dogEar);
-        self.dogEar = self.existingDogEar;
-        
-        NSMutableArray * array = [[NSMutableArray alloc]initWithArray:[self decodedCollections]];
-        for (int d = 0; d < [array count]; d++)
-        {
-            DogEarObject * object = [array objectAtIndex:d];
-            if ([object.title isEqualToString:self.existingDogEar.title] && [object.insertedDate isEqualToDate:self.existingDogEar.insertedDate])
-                [array removeObject:object];
-        }
-        [self updateDogEarDataCollectionWithSelectedCollections:array];
-    }
-}
-
-
 
 
 #pragma mark - Navigation Item Method
 
 - (void) backToHome
 {
+    NSLog(@"backToHome");
     de_PhotoViewController * vc = (de_PhotoViewController*)[self.navigationController.viewControllers objectAtIndex:[self.navigationController.viewControllers count]-2];
     vc.existingDogEar = self.dogEar;
     [self.navigationController popToViewController:vc animated:YES];
+    
+    NSLog(@"reminderDate:%@",self.dogEar.reminderDate);
+    NSLog(@"repeatingReminder:%@",self.dogEar.repeatingReminder);
+    NSLog(@"category:%@",self.dogEar.category);
+    NSLog(@"flagged:%@",self.dogEar.flagged);
+    NSLog(@"title:%@",self.dogEar.title);
+    NSLog(@"note:%@",self.dogEar.note);
 }
 
 - (void) cancelEditing
@@ -303,16 +301,57 @@
     [self.navigationItem.leftBarButtonItem setAction:@selector(backToHome)];
     
     [self setTableViewUserInteractionEnable:NO];
+    [self setHeaderViewEditingEnable:NO];
     self.isEditing = NO;
     
-    NSMutableArray * array = [[NSMutableArray alloc]initWithArray:[self decodedCollections]];
-    [array addObject:self.existingDogEar];
-    [self updateDogEarDataCollectionWithSelectedCollections:array];
+//    NSMutableArray * array = [[NSMutableArray alloc]initWithArray:[self decodedCollections]];
+//    [array addObject:self.existingDogEar];
+//    [self updateDogEarDataCollectionWithSelectedCollections:array];
 
 }
 
 
 #pragma mark - Private Method
+
+- (DogEarObject*) setupNewObjectWithObject:(DogEarObject*)object
+{
+    DogEarObject * dogEarObject = [DogEarObject new];
+    [dogEarObject setCategory:object.category];
+    [dogEarObject setTitle:object.title];
+    [dogEarObject setNote:object.note];
+    [dogEarObject setInsertedDate:object.insertedDate];
+    [dogEarObject setFlagged:object.flagged];
+    [dogEarObject setReminderDate:object.reminderDate];
+    [dogEarObject setRepeatingReminder:object.repeatingReminder];
+    [dogEarObject setImagePath:object.imagePath];
+    
+    return dogEarObject;
+}
+
+- (void) removeOldDogEarObject
+{
+    NSMutableArray * temp = [[NSMutableArray alloc]initWithArray:[self decodedCollectionsWithObject:self.existingDogEar]];
+    
+    for (int d = 0; d < [temp count]; d++)
+    {
+        DogEarObject * object = [temp objectAtIndex:d];
+        if ([object.title isEqualToString:self.existingDogEar.title] && [object.insertedDate isEqualToDate:self.existingDogEar.insertedDate])
+            [temp removeObject:object];
+    }
+    
+    [self updateDogEarDataCollectionWithSelectedCollections:temp withObject:self.existingDogEar];
+}
+
+- (void) updateNewDogEarObject
+{
+    NSMutableArray * array = [[NSMutableArray alloc]initWithArray:[self decodedCollectionsWithObject:self.dogEar]];
+    
+    [array addObject:self.dogEar];
+    [self updateDogEarDataCollectionWithSelectedCollections:array withObject:self.dogEar];
+    
+    self.existingDogEar = [self setupNewObjectWithObject:self.dogEar];
+
+}
 
 - (void) setTableViewUserInteractionEnable:(BOOL)enable
 {
@@ -323,22 +362,27 @@
     }
 }
 
-- (void) updateDogEarDataCollectionWithSelectedCollections:(NSMutableArray*)collections
+- (void) setHeaderViewEditingEnable:(BOOL)enable
+{
+    [headerView.titleField setEnabled:enable];
+    [headerView.notesField setEditable:enable];
+}
+
+- (void) updateDogEarDataCollectionWithSelectedCollections:(NSMutableArray*)collections withObject:(DogEarObject*)object
 {
     NSData * encodedObjects = [NSKeyedArchiver archivedDataWithRootObject:collections];
     NSMutableDictionary * dict = [[[NSUserDefaults standardUserDefaults]objectForKey:@"BKDataCollections"] mutableCopy];
     
-    [dict setObject:encodedObjects forKey:[self keyString]];
+    [dict setObject:encodedObjects forKey:object.category];
     [[NSUserDefaults standardUserDefaults] setObject:dict forKey:@"BKDataCollections"];
     [[NSUserDefaults standardUserDefaults] synchronize];
     
     NSLog(@"updateDogEarDataCollectionWithSelectedCollections");
 }
 
-- (void) handleImageWith:(DogEarObject*)object
+- (void) handleImageWithDogEarObject:(DogEarObject*)object
 {
     [object setImagePath:[NSString imagePathWithFileName:[object.title stringByAppendingFormat:@"%@",[NSString generateRandomString]]]];
-    [object setImageOrientation: [NSNumber numberWithInteger:[self.image imageOrientation]]];
     //JT-Note: Save Image to Device
     NSData *pngData = UIImagePNGRepresentation(self.image);
     [pngData writeToFile:object.imagePath atomically:YES];
@@ -346,12 +390,9 @@
 
 #pragma mark - Private Getter / Setter
 
-- (NSMutableArray*) decodedCollections 
+- (NSMutableArray*) decodedCollectionsWithObject:(DogEarObject*)object
 {
-    UITableViewCell * cell = [self.tableView cellForRowAtIndexPath:[NSIndexPath indexPathForRow:0 inSection:0]];
-    NSString * keyString = cell.detailTextLabel.text;
-    
-    NSData * data = [[[NSUserDefaults standardUserDefaults]objectForKey:@"BKDataCollections"] objectForKey:keyString];
+    NSData * data = [[[NSUserDefaults standardUserDefaults]objectForKey:@"BKDataCollections"] objectForKey:object.category];
     NSMutableArray * decodedCollections = [NSMutableArray arrayWithArray:[NSKeyedUnarchiver unarchiveObjectWithData: data]];
         
     return decodedCollections;
@@ -359,9 +400,9 @@
 
 - (NSString *) keyString    //JT- TODO: keyString v.s. self.dog.ear category
 {
-    UITableViewCell * cell = [self.tableView cellForRowAtIndexPath:[NSIndexPath indexPathForRow:0 inSection:0]];
-    NSString * keyString = cell.detailTextLabel.text;
-    return keyString;
+//    UITableViewCell * cell = [self.tableView cellForRowAtIndexPath:[NSIndexPath indexPathForRow:0 inSection:0]];
+//    NSString * keyString = cell.detailTextLabel.text;
+//    return keyString;
 }
 
 
@@ -371,9 +412,6 @@
 {
     //JT
     
-    if (self.existingDogEar != nil)
-        [self handleImageWith:self.existingDogEar];
-    else [self handleImageWith:self.dogEar];
     
     /*[self.dogEar setImagePath:[NSString imagePathWithFileName:[self.dogEar.title stringByAppendingFormat:@"%@",[NSString generateRandomString]]]];
     [self.dogEar setImageOrientation: [NSNumber numberWithInteger:[self.image imageOrientation]]];
@@ -383,33 +421,33 @@
     
     
     //JT-Note: Set Notification
-    if ((self.dogEar.reminderDate != NULL) && (self.dogEar.repeatingReminder!= NULL))
-    {
-        UILocalNotification * reminder = [[UILocalNotification alloc]init];
-        if (reminder == nil) return;
-        reminder.fireDate = self.dogEar.reminderDate;
-        reminder.timeZone = [NSTimeZone defaultTimeZone];
-        
-        reminder.alertBody = [NSString stringWithFormat:@"%@:%@",[self keyString],self.dogEar.title? self.dogEar.title: @"DogEar"];
-        reminder.hasAction = TRUE;
-        reminder.alertAction = @"Check it";
-        reminder.soundName = UILocalNotificationDefaultSoundName;   //JT-TODO: Select Notification sound
-        reminder.applicationIconBadgeNumber = 1;
-        
-        //JT-Note: Repeating Notification
-        NSInteger repeatingType = [self.dogEar.repeatingReminder integerValue];
-        if (repeatingType == 1) reminder.repeatInterval = NSHourCalendarUnit;
-        else if (repeatingType == 2) reminder.repeatInterval = NSDayCalendarUnit;
-        else if (repeatingType == 3) reminder.repeatInterval = NSWeekCalendarUnit;
-        else if (repeatingType == 4) reminder.repeatInterval = NSMonthCalendarUnit;
-        else if (repeatingType == 5) reminder.repeatInterval = NSYearCalendarUnit;
-        
-        NSDictionary * userDict = [NSDictionary dictionaryWithObject:
-                                  [self.dogEar insertedDate] forKey:@"DogEarObjectInsertedDate"];
-        reminder.userInfo = userDict;
-        
-        [[UIApplication sharedApplication] scheduleLocalNotification:reminder];
-    }
+//    if ((self.dogEar.reminderDate != NULL) && (self.dogEar.repeatingReminder!= NULL))
+//    {
+//        UILocalNotification * reminder = [[UILocalNotification alloc]init];
+//        if (reminder == nil) return;
+//        reminder.fireDate = self.dogEar.reminderDate;
+//        reminder.timeZone = [NSTimeZone defaultTimeZone];
+//        
+//        reminder.alertBody = [NSString stringWithFormat:@"%@:%@",[self keyString],self.dogEar.title? self.dogEar.title: @"DogEar"];
+//        reminder.hasAction = TRUE;
+//        reminder.alertAction = @"Check it";
+//        reminder.soundName = UILocalNotificationDefaultSoundName;   //JT-TODO: Select Notification sound
+//        reminder.applicationIconBadgeNumber = 1;
+//        
+//        //JT-Note: Repeating Notification
+//        NSInteger repeatingType = [self.dogEar.repeatingReminder integerValue];
+//        if (repeatingType == 1) reminder.repeatInterval = NSHourCalendarUnit;
+//        else if (repeatingType == 2) reminder.repeatInterval = NSDayCalendarUnit;
+//        else if (repeatingType == 3) reminder.repeatInterval = NSWeekCalendarUnit;
+//        else if (repeatingType == 4) reminder.repeatInterval = NSMonthCalendarUnit;
+//        else if (repeatingType == 5) reminder.repeatInterval = NSYearCalendarUnit;
+//        
+//        NSDictionary * userDict = [NSDictionary dictionaryWithObject:
+//                                  [self.dogEar insertedDate] forKey:@"DogEarObjectInsertedDate"];
+//        reminder.userInfo = userDict;
+//        
+//        [[UIApplication sharedApplication] scheduleLocalNotification:reminder];
+//    }
     
     NSLog(@"reminderDate:%@",self.dogEar.reminderDate);
     NSLog(@"repeatingReminder:%@",self.dogEar.repeatingReminder);
@@ -424,6 +462,7 @@
 
 - (void) addDogEar
 {
+    NSLog(@"addDogEar");
     if (self.dogEar.category == nil) 
     {
         UIAlertView * alertView = [[UIAlertView alloc]initWithTitle:@"Notice" message:@"Please Select A Category (Required)" delegate:self cancelButtonTitle:@"OK" otherButtonTitles: nil];
@@ -432,14 +471,24 @@
     }
     
     [activityIndicator startAnimating];
+    if (self.existingDogEar != nil)
+        [self handleImageWithDogEarObject:self.existingDogEar];
+    else [self handleImageWithDogEarObject:self.dogEar];
 
     
        //JT-Note: Add "insertedDate" only when add a new object.
-    [self saveDogEar];
+//    [self saveDogEar];
+    
+    NSLog(@"reminderDate:%@",self.dogEar.reminderDate);
+    NSLog(@"repeatingReminder:%@",self.dogEar.repeatingReminder);
+    NSLog(@"category:%@",self.dogEar.category);
+    NSLog(@"flagged:%@",self.dogEar.flagged);
+    NSLog(@"title:%@",self.dogEar.title);
+    NSLog(@"note:%@",self.dogEar.note);
 
-    NSMutableArray * array = [[NSMutableArray alloc]initWithArray:[self decodedCollections]];
+    NSMutableArray * array = [[NSMutableArray alloc]initWithArray:[self decodedCollectionsWithObject:self.dogEar]];
     [array addObject:self.dogEar];
-    [self updateDogEarDataCollectionWithSelectedCollections:array];
+    [self updateDogEarDataCollectionWithSelectedCollections:array withObject:self.dogEar];
     
     /*NSIndexPath * indexPath = [NSIndexPath indexPathForRow:0 inSection:0];
     UITableViewCell * cell = [self.tableView cellForRowAtIndexPath:indexPath];
@@ -558,6 +607,7 @@
         
 //        tv.categoryString = cell.detailTextLabel.text;
         [self.navigationController pushViewController:tv animated:YES];
+//        [self removeOldDogEarObject];
         
     }
     else if (indexPath.row == 1)

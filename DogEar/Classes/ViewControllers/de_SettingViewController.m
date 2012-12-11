@@ -10,7 +10,6 @@
 #import "de_AccountSettingViewController.h"
 
 @interface de_SettingViewController ()
-
 @end
 
 @implementation de_SettingViewController
@@ -19,7 +18,6 @@
 {
     self = [super initWithStyle:style];
     if (self) {
-        // Custom initialization
     }
     return self;
 }
@@ -36,6 +34,57 @@
     [super didReceiveMemoryWarning];
     // Dispose of any resources that can be recreated.
 }
+
+#pragma mark -
+
+- (void) rescheduleAllNotifications
+{
+    NSData * decodedObjects = [[NSUserDefaults standardUserDefaults]objectForKey:@"DogEar_Notifications"];
+    NSArray * notifications = [NSKeyedUnarchiver unarchiveObjectWithData:decodedObjects ];
+    
+    NSLog(@"rescheduleAllNotifications:%i",[notifications count]);
+
+    for (UILocalNotification *notification in notifications)
+        [[UIApplication sharedApplication] scheduleLocalNotification:notification];
+
+}
+
+- (void) cancelAllNotifications
+{
+    NSArray * notifications = [NSArray arrayWithArray:[[UIApplication sharedApplication]scheduledLocalNotifications]];
+    NSLog(@"cancelAllNotifications:%i",[notifications count]);
+    [UIApplication sharedApplication].applicationIconBadgeNumber = 0;
+    
+    NSData * encodedObjects = [NSKeyedArchiver archivedDataWithRootObject:notifications];
+    [[NSUserDefaults standardUserDefaults] setObject:encodedObjects forKey:@"DogEar_Notifications"];
+    [[NSUserDefaults standardUserDefaults] synchronize];
+    
+    [[UIApplication sharedApplication] cancelAllLocalNotifications];
+}
+
+#pragma mark -
+
+- (void) switchTurnOnOff:(id)sender
+{
+    UISwitch * toggle = (UISwitch*)sender;
+    
+    if (toggle.on)
+    {
+        [[NSUserDefaults standardUserDefaults] setBool:YES forKey:@"DogEar_PostNotification"];
+        [self rescheduleAllNotifications];
+        [toggle setOn:YES animated:YES];
+    }
+    else
+    {
+        [[NSUserDefaults standardUserDefaults] setBool:NO forKey:@"DogEar_PostNotification"];
+        [self cancelAllNotifications];
+
+        [toggle setOn:NO animated:YES];
+        
+    }
+    [[NSUserDefaults standardUserDefaults]synchronize];
+}
+
 
 #pragma mark - Table view data source
 
@@ -63,7 +112,13 @@
             cell.textLabel.text = @"About";
             break;
         case 1:
+        {
             cell.textLabel.text = @"Notification";
+            UISwitch * reminderSwitch = [[UISwitch alloc]initWithFrame:CGRectMake(0.0f, 0.0f, 80.0f, 44.0f)];
+            [reminderSwitch addTarget:self action:@selector(switchTurnOnOff:) forControlEvents:UIControlEventValueChanged];
+            reminderSwitch.on = ([[NSUserDefaults standardUserDefaults]boolForKey:@"DogEar_PostNotification"]==YES) ? YES:NO;
+            cell.accessoryView = reminderSwitch;
+        }
             break;
         case 2:
             cell.textLabel.text = @"Facebook/Twitter";
@@ -95,12 +150,12 @@
     else if (indexPath.row == 3)
     {
         UIViewController * vc = [[UIViewController alloc]init];
+        [self.navigationController pushViewController:vc animated:YES];
         UIImageView *backgroundImage = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"dogear-bg-instructions"]];
-        backgroundImage.contentMode = UIViewContentModeScaleAspectFit;
+        backgroundImage.frame = CGRectOffset(backgroundImage.frame, 0.0f, -20.0f);
+        backgroundImage.contentMode = UIViewContentModeScaleAspectFill;
         [vc.view addSubview:backgroundImage];
         [vc.navigationItem setTitle:cell.textLabel.text];
-        
-        [self.navigationController pushViewController:vc animated:YES];
     }
         
 }

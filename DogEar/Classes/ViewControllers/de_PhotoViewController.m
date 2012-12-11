@@ -187,7 +187,7 @@ int currentAngle = 0;
         
         [toolBar setItems:[NSArray arrayWithObjects:shareItem, spaceItme, cameraItem, spaceItme, trashItem, nil]];
         
-        UIBarButtonItem * cancelItem = [[UIBarButtonItem alloc]initWithTitle:@"Cancel" style:UIBarButtonItemStyleBordered target:self action:@selector(backToList)];
+        UIBarButtonItem * cancelItem = [[UIBarButtonItem alloc]initWithTitle:@"Back" style:UIBarButtonItemStyleBordered target:self action:@selector(backToList)];
         self.navigationItem.leftBarButtonItem = cancelItem;
         
         UIBarButtonItem * detailItem = [[UIBarButtonItem alloc]initWithTitle:@"Detail" style:UIBarButtonItemStyleBordered target:self action:@selector(moreDetail)];
@@ -204,15 +204,6 @@ int currentAngle = 0;
     [tbc makeTabBarHidden:NO];
     
 //    self.existingDogEar = nil;
-}
-
-- (void) viewWillLayoutSubviews
-{
-    [super viewWillLayoutSubviews];
-//    UIImageView * imageView = (UIImageView*)[self.view viewWithTag:222];
-//    imageView.image = self.photo;
-//    imageView.frame = CGRectMake(imageView.frame.origin.x, imageView.frame.origin.y, self.view.frame.size.width, self.view.frame.size.height);
-    
 }
 
 #pragma mark - Print Feature

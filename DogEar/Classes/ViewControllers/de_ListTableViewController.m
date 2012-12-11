@@ -103,8 +103,9 @@
 - (void) refreshDogEarDataAccrodingToFlagged
 {
     NSArray * flaggedItems = [[NSArray alloc]initWithArray:[[NSUserDefaults standardUserDefaults] objectForKey:@"BKFlaggedItems"]];
+    NSMutableArray * flaggedCollections = [[NSMutableArray alloc]initWithArray:[self refreshAllFlaggedItems]];
     NSMutableArray * temp = [[NSMutableArray alloc]init];
-    for (DogEarObject * object in [self.flaggedCollections copy])
+    for (DogEarObject * object in [flaggedCollections copy])
     {
         if ((object.flagged != nil) && (object.flagged == [NSNumber numberWithInteger:[flaggedItems indexOfObject:self.navigationItem.title]]))
         {
@@ -114,6 +115,25 @@
     NSLog(@"%i",[temp count]);
     self.collections = temp;
     
+}
+
+- (NSMutableArray *) refreshAllFlaggedItems
+{
+    NSMutableArray * flaggedCollections = [[NSMutableArray alloc]init];
+    NSArray * categories = [[NSArray alloc]initWithArray:[[NSUserDefaults standardUserDefaults]objectForKey:@"BKCategory"]];
+    
+    for (int c = 0; c < [categories count]; c++)
+    {
+        NSData * data = [[[NSUserDefaults standardUserDefaults]objectForKey:@"BKDataCollections"] objectForKey:[categories objectAtIndex:c]];
+        NSMutableArray * decodedCollections = [NSMutableArray arrayWithArray:[NSKeyedUnarchiver unarchiveObjectWithData: data]];
+        NSArray * copyCollections = [[NSArray arrayWithArray:decodedCollections] copy];
+        
+        for (DogEarObject * object in copyCollections)
+        {
+            if (object.flagged != nil)  [flaggedCollections addObject:object];
+        }
+    }
+    return flaggedCollections;
 }
 
 
@@ -181,19 +201,6 @@
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    /*static NSString *CellIdentifier = @"Cell";
-    UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:CellIdentifier];
-    if (cell == nil)
-        if (cell == nil) cell = [[UITableViewCell alloc]initWithStyle:UITableViewCellStyleSubtitle reuseIdentifier:CellIdentifier];
-    
-    DogEarObject * dogEar = (DogEarObject*)[self.collections objectAtIndex:indexPath.row];
-    cell.textLabel.text = dogEar.title;
-    cell.detailTextLabel.text = [NSString mediumStyleDateAndShortStyleTimeWithDate:dogEar.insertedDate];
-    
-    UIImage * image = [UIImage imageWithData:[NSData dataWithContentsOfFile:dogEar.imagePath]];
-    UIImage * orienteImg = [[UIImage alloc] initWithCGImage:image.CGImage scale:1.0 orientation:[dogEar.imageOrientation integerValue]];
-    cell.imageView.image = orienteImg;*/
-    
     static NSString * CellIdentifier = @"CustomCell";
     de_CustomTableViewCell * cell = [tableView dequeueReusableCellWithIdentifier:CellIdentifier];
     if (cell == nil) cell = [[de_CustomTableViewCell alloc]initWithStyle:UITableViewCellStyleSubtitle reuseIdentifier:CellIdentifier];

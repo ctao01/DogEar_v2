@@ -20,7 +20,6 @@
 @end
 
 @implementation de_DefaultViewController
-@synthesize notification;
 @synthesize bkTabBarVC;
 
 - (id)init
@@ -71,19 +70,18 @@
 - (DogEarObject*) getDogEarObjectWithNotification:(UILocalNotification*)aNotification
 {
     NSArray * allItems = [[NSArray alloc]initWithArray:[self allItems]];
-    NSLog(@"count:%i",[allItems count]);
     NSDate * date = [aNotification.userInfo objectForKey:@"DogEarObjectInsertedDate"];
-    NSLog(@"date:%@",date);
 
     DogEarObject * dogEar = [DogEarObject new];
     
     for (int count = 0 ; count < [allItems count]; count++)
     {
         DogEarObject * object = (DogEarObject*)[allItems objectAtIndex:count];
-        NSLog(@"object:%@",object.insertedDate);
-
         if ([object.insertedDate isEqualToDate:date])
+        {
+            
             dogEar = object;
+        }
     }
     return dogEar;
 }
@@ -101,8 +99,6 @@
     //    [self.view removeFromSuperview];
     self.bkTabBarVC = [[de_MainTabBarController alloc]init];
     [self presentViewController:self.bkTabBarVC animated:NO completion:^{
-        if (self.notification)
-            [self showReminderWithLocalNotification:self.notification];
     }];
 }
 
@@ -110,11 +106,14 @@
 {
     if (!self.bkTabBarVC) return;
     
-    UIImage * image = [UIImage imageWithData:[NSData dataWithContentsOfFile:[self getDogEarObjectWithNotification:aNotification].imagePath]];
-    NSLog(@"%@",[self getDogEarObjectWithNotification:aNotification].imagePath);
+    DogEarObject * dogEar = (DogEarObject*)[self getDogEarObjectWithNotification:aNotification];
+    
+    UIImage * image = [UIImage imageWithData:[NSData dataWithContentsOfFile:dogEar.imagePath]];
+//    if (dogEar.reminderDate != NULL) dogEar.reminderDate = NULL;
+//    if (dogEar.repeatingReminder != NULL) dogEar.repeatingReminder = NULL;
     
     UINavigationController * nc = [self.bkTabBarVC.viewControllers objectAtIndex:0];
-    de_PhotoViewController * vc = [[de_PhotoViewController alloc]initWithImage:image andExistingDogEar:[self getDogEarObjectWithNotification:aNotification]];
+    de_PhotoViewController * vc = [[de_PhotoViewController alloc]initWithImage:image andExistingDogEar:dogEar];
     [nc pushViewController:vc animated:YES];
     
     [self.bkTabBarVC setSelectedIndex:0];

@@ -8,6 +8,10 @@
 
 #import "AppDelegate.h"
 
+@interface AppDelegate ()
+@property (nonatomic , strong) UILocalNotification * localNotification;
+@end
+
 @implementation AppDelegate
 
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions
@@ -19,17 +23,31 @@
     self.bkSplashScreenVC = [[de_DefaultViewController alloc]init];
 
     //JT-Note: Handle Local Notification
-    UILocalNotification * localNotification = [launchOptions objectForKey:@"UIApplicationLaunchOptionsLocalNotificationKey"];
+    UILocalNotification * notification = [launchOptions objectForKey:@"UIApplicationLaunchOptionsLocalNotificationKey"];
     
-    if (localNotification)
+    if (notification)
     {
-        self.bkSplashScreenVC.notification = localNotification;
-        application.applicationIconBadgeNumber = localNotification.applicationIconBadgeNumber - 1;
-        [application cancelLocalNotification:localNotification];
+        UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Dog Ear Reminder"
+                                                        message:notification.alertBody
+                                                       delegate:self
+                                              cancelButtonTitle:@"Cancel"
+                                              otherButtonTitles:@"Check it",nil];
+        application.applicationIconBadgeNumber = 0;
+        [application cancelLocalNotification:notification];
+        [alert show];
     }
-        
+
+    
+    
     self.bkMainNav = [[UINavigationController alloc]initWithRootViewController:self.bkSplashScreenVC];
     self.window.rootViewController = self.bkMainNav;
+    
+    if (![[NSUserDefaults standardUserDefaults]boolForKey:@"DogEar_PostNotification"])
+    {
+        [[NSUserDefaults standardUserDefaults] setBool:YES forKey:@"DogEar_PostNotification"];
+        [[NSUserDefaults standardUserDefaults] synchronize];
+    }
+    
     return YES;
 }
 
@@ -68,9 +86,28 @@
 
 - (void) application:(UIApplication *)application didReceiveLocalNotification:(UILocalNotification *)notification
 {
+    NSLog(@"didReceiveLocalNotification");
+//    [self.bkSplashScreenVC showReminderWithLocalNotification:notification];
+    self.localNotification = notification;
+    UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Dog Ear Reminder"
+                                                    message:notification.alertBody
+                                                   delegate:self
+                                          cancelButtonTitle:@"Cancel"
+                                          otherButtonTitles:@"Check it",nil];
+    [alert show];
     application.applicationIconBadgeNumber = notification.applicationIconBadgeNumber - 1;
-    [self.bkSplashScreenVC showReminderWithLocalNotification:notification];
     [application cancelLocalNotification:notification];
+}
+
+#pragma mark - 
+
+- (void) alertView:(UIAlertView *)alertView clickedButtonAtIndex:(NSInteger)buttonIndex
+{
+    if (buttonIndex != alertView.cancelButtonIndex)
+    {
+        [self.bkSplashScreenVC showReminderWithLocalNotification:self.localNotification];
+        
+    }
 }
 
 @end

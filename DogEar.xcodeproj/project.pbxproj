@@ -56,6 +56,7 @@
 		7E4252EF16646C9500741A41 /* de_SettingViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 7E4252EE16646C5600741A41 /* de_SettingViewController.m */; };
 		7E4252F316646D7E00741A41 /* de_ListTableViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 7E4252F216646D7E00741A41 /* de_ListTableViewController.m */; };
 		7E4D27CF1669A64000FDC78D /* de_FlaggedListViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 7E4D27CE1669A64000FDC78D /* de_FlaggedListViewController.m */; };
+		7E4D39BB1676EC2700739546 /* de_HeaderView.m in Sources */ = {isa = PBXBuildFile; fileRef = 7E4D39BA1676EC2700739546 /* de_HeaderView.m */; };
 		7E84F50116713BCB004A13D2 /* icon@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 7E84F50016713BCB004A13D2 /* icon@2x.png */; };
 		7E84F50316713BD6004A13D2 /* icon.png in Resources */ = {isa = PBXBuildFile; fileRef = 7E84F50216713BD6004A13D2 /* icon.png */; };
 		7E98E222166EA7D900FAFA60 /* UIImage+DGStyle.m in Sources */ = {isa = PBXBuildFile; fileRef = 7E98E221166EA7D900FAFA60 /* UIImage+DGStyle.m */; };
@@ -152,6 +153,8 @@
 		7E4252F216646D7E00741A41 /* de_ListTableViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = de_ListTableViewController.m; path = Classes/ViewControllers/de_ListTableViewController.m; sourceTree = "<group>"; };
 		7E4D27CD1669A63F00FDC78D /* de_FlaggedListViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = de_FlaggedListViewController.h; path = Classes/ViewControllers/de_FlaggedListViewController.h; sourceTree = "<group>"; };
 		7E4D27CE1669A64000FDC78D /* de_FlaggedListViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = de_FlaggedListViewController.m; path = Classes/ViewControllers/de_FlaggedListViewController.m; sourceTree = "<group>"; };
+		7E4D39B91676EC2600739546 /* de_HeaderView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = de_HeaderView.h; path = Classes/Views/de_HeaderView.h; sourceTree = "<group>"; };
+		7E4D39BA1676EC2700739546 /* de_HeaderView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = de_HeaderView.m; path = Classes/Views/de_HeaderView.m; sourceTree = "<group>"; };
 		7E84F50016713BCB004A13D2 /* icon@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "icon@2x.png"; sourceTree = "<group>"; };
 		7E84F50216713BD6004A13D2 /* icon.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = icon.png; sourceTree = "<group>"; };
 		7E98E220166EA7D900FAFA60 /* UIImage+DGStyle.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = "UIImage+DGStyle.h"; path = "Categories/UIImage+DGStyle.h"; sourceTree = "<group>"; };
@@ -398,6 +401,8 @@
 				7E2CB6941665D2FB00A5B40D /* de_DetailHeaderView.m */,
 				3D1A66531672671E00699B30 /* de_NavigationBar.h */,
 				3D1A665616726C1B00699B30 /* de_NavigationBar.m */,
+				7E4D39B91676EC2600739546 /* de_HeaderView.h */,
+				7E4D39BA1676EC2700739546 /* de_HeaderView.m */,
 			);
 			name = Views;
 			sourceTree = "<group>";
@@ -416,16 +421,40 @@
 		7E4252F016646CBE00741A41 /* TableViewControllers */ = {
 			isa = PBXGroup;
 			children = (
-				3DD76483166C5E7D00C7CA9B /* de_AccountSettingViewController.h */,
-				3DD76484166C5E7D00C7CA9B /* de_AccountSettingViewController.m */,
+				7E4D39B21676CFFD00739546 /* Browse */,
+				7E4D39B41676D01A00739546 /* Settings */,
+				7E4D39B51676D02C00739546 /* Detail */,
+			);
+			name = TableViewControllers;
+			sourceTree = "<group>";
+		};
+		7E4D39B21676CFFD00739546 /* Browse */ = {
+			isa = PBXGroup;
+			children = (
 				7E4252EA16646AA100741A41 /* de_BrowseTableViewController.h */,
 				7E4252EB16646AA100741A41 /* de_BrowseTableViewController.m */,
 				7E4252F116646D7E00741A41 /* de_ListTableViewController.h */,
 				7E4252F216646D7E00741A41 /* de_ListTableViewController.m */,
 				7E4D27CD1669A63F00FDC78D /* de_FlaggedListViewController.h */,
 				7E4D27CE1669A64000FDC78D /* de_FlaggedListViewController.m */,
+			);
+			name = Browse;
+			sourceTree = "<group>";
+		};
+		7E4D39B41676D01A00739546 /* Settings */ = {
+			isa = PBXGroup;
+			children = (
 				7E4252ED16646C5600741A41 /* de_SettingViewController.h */,
 				7E4252EE16646C5600741A41 /* de_SettingViewController.m */,
+				3DD76483166C5E7D00C7CA9B /* de_AccountSettingViewController.h */,
+				3DD76484166C5E7D00C7CA9B /* de_AccountSettingViewController.m */,
+			);
+			name = Settings;
+			sourceTree = "<group>";
+		};
+		7E4D39B51676D02C00739546 /* Detail */ = {
+			isa = PBXGroup;
+			children = (
 				7E2CB6901665B71900A5B40D /* de_DetailViewController.h */,
 				7E2CB6911665B71A00A5B40D /* de_DetailViewController.m */,
 				7E2CB6961665D62C00A5B40D /* de_CategoryListViewController.h */,
@@ -437,7 +466,7 @@
 				7ECEB4CB1667B7D000FC007D /* de_FlagViewController.h */,
 				7ECEB4CC1667B7D100FC007D /* de_FlagViewController.m */,
 			);
-			name = TableViewControllers;
+			name = Detail;
 			sourceTree = "<group>";
 		};
 		7EC5DB5F166FFD5F001949AE /* ImageHelper */ = {
@@ -608,6 +637,7 @@
 				3D1A665116724D0E00699B30 /* de_MainNavigationController.m in Sources */,
 				3D1A665716726C1B00699B30 /* de_NavigationBar.m in Sources */,
 				3D1A666E1672EED200699B30 /* CropView.m in Sources */,
+				7E4D39BB1676EC2700739546 /* de_HeaderView.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

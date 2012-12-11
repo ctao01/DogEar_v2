@@ -13,11 +13,9 @@
 {
     NSArray * flaggedItems;
 }
-@property (nonatomic , retain) NSArray * flaggedCollections;
 @end
 
 @implementation de_FlaggedListViewController
-@synthesize flaggedCollections = _flaggedCollections;
 
 - (id)initWithStyle:(UITableViewStyle)style
 {
@@ -48,7 +46,7 @@
 - (void) viewWillAppear:(BOOL)animated
 {
     [super viewWillAppear:animated];
-    self.flaggedCollections = [NSArray arrayWithArray: [self collections]];
+//    self.flaggedCollections = [NSArray arrayWithArray: [self collections]];
     
 }
 
@@ -120,7 +118,7 @@
 //    }
 //    vc.collections = temp;
     vc.navigationItem.title = [flaggedItems objectAtIndex:indexPath.row];
-    vc.flaggedCollections = self.flaggedCollections;
+//    vc.flaggedCollections = self.flaggedCollections;
     [self.navigationController pushViewController:vc animated:YES];
 
 

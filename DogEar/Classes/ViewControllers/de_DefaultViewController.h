@@ -10,7 +10,6 @@
 
 @interface de_DefaultViewController : UIViewController
 
-@property (nonatomic , strong) UILocalNotification * notification;
 - (void) showReminderWithLocalNotification:(UILocalNotification*)aNotification;
 
 @end
