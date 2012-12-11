@@ -459,13 +459,14 @@
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView
 {
     // Return the number of sections.
-    return 1;
+    return 2;
 }
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
 {
     // Return the number of rows in the section.
-    return 4;
+    if (section == 0) return 1;
+    else return 4;
 }
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
@@ -476,39 +477,48 @@
     
     if (cell == nil) cell = [[UITableViewCell alloc]initWithStyle:UITableViewCellStyleValue1 reuseIdentifier:CellIdentifier];
     // Configure the cell...
-    switch (indexPath.row) {
-        case 0:
-            cell.textLabel.text = @"Category";
-            cell.detailTextLabel.text = self.dogEar.category ? self.dogEar.category : @"";
-            cell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
-            break;
-        case 1:
-            
-            cell.textLabel.text = @"Reminder";
-            cell.detailTextLabel.text = (self.dogEar.reminderDate != NULL)? [NSString reminderSubtitleStyleWithDate:self.dogEar.reminderDate]: @"";
-            cell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
-            
-            break;
-        case 2:
-        {
-            cell.textLabel.text = @"Flagged";
-            NSArray * flaggedItems = [[NSArray alloc]init];
-            
-            if ([[NSUserDefaults standardUserDefaults] objectForKey:@"BKFlaggedItems"])
-                flaggedItems = [[[NSUserDefaults standardUserDefaults] objectForKey:@"BKFlaggedItems"] copy];
-            else
-                flaggedItems = [[NSArray alloc]initWithObjects:@"Casual",@"Somewhat Important",@"Important",@"Very Important",@"Crucial", nil];
-            cell.detailTextLabel.text = (self.dogEar.flagged != NULL)?[flaggedItems objectAtIndex:[self.dogEar.flagged integerValue]]:@"";
-            cell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
-        }
-            break;
-        case 3:
-            cell.textLabel.text = @"Print";
-            break;
-            
-        default:
-            break;
+   
+    if (indexPath.section == 0)
+    {
+        cell.textLabel.text = @"Note";
+        cell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
     }
+    else if (indexPath.section == 1)
+   {
+       switch (indexPath.row) {
+           case 0:
+               cell.textLabel.text = @"Category";
+               cell.detailTextLabel.text = self.dogEar.category ? self.dogEar.category : @"";
+               cell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
+               break;
+           case 1:
+               
+               cell.textLabel.text = @"Reminder";
+               cell.detailTextLabel.text = (self.dogEar.reminderDate != NULL)? [NSString reminderSubtitleStyleWithDate:self.dogEar.reminderDate]: @"";
+               cell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
+               
+               break;
+           case 2:
+           {
+               cell.textLabel.text = @"Flagged";
+               NSArray * flaggedItems = [[NSArray alloc]init];
+               
+               if ([[NSUserDefaults standardUserDefaults] objectForKey:@"BKFlaggedItems"])
+                   flaggedItems = [[[NSUserDefaults standardUserDefaults] objectForKey:@"BKFlaggedItems"] copy];
+               else
+                   flaggedItems = [[NSArray alloc]initWithObjects:@"Casual",@"Somewhat Important",@"Important",@"Very Important",@"Crucial", nil];
+               cell.detailTextLabel.text = (self.dogEar.flagged != NULL)?[flaggedItems objectAtIndex:[self.dogEar.flagged integerValue]]:@"";
+               cell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
+           }
+               break;
+           case 3:
+               cell.textLabel.text = @"Print";
+               break;
+               
+           default:
+               break;
+       }
+   }
 
     
     return cell;
@@ -519,42 +529,53 @@
 {
     NSArray * array = [[NSUserDefaults standardUserDefaults]objectForKey:@"BKCategory"];
     UITableViewCell * cell = [self.tableView cellForRowAtIndexPath:indexPath];
-    if (indexPath.row == 0)
+    if (indexPath.section == 0)
     {
-        de_CategoryListViewController * tv = [[de_CategoryListViewController alloc]initWithStyle:UITableViewStylePlain];
-        if (cell.detailTextLabel.text) tv.selectedIndexPath = [NSIndexPath indexPathForRow:[array indexOfObject:cell.detailTextLabel.text] inSection:0];
-        else tv.selectedIndexPath = nil;    // JT-TODO: default choose the first category ?
-        
-//        tv.categoryString = cell.detailTextLabel.text;
-        [self.navigationController pushViewController:tv animated:YES];
-//        [self removeOldDogEarObject];
-        
+        UIViewController * vcNote = [[UIViewController alloc]init];
+        [self.navigationController pushViewController:vcNote animated:YES];
+        UITextView * textView = [[UITextView alloc]initWithFrame:vcNote.view.frame];
+        textView.text = self.dogEar.note ? self.dogEar.note : @"";
+        [vcNote.view addSubview:textView];
     }
-    else if (indexPath.row == 1)
+    else if (indexPath.section == 1)
     {
-        de_ReminderViewController * vc = [[de_ReminderViewController alloc]initWithStyle:UITableViewStyleGrouped];
-        vc.selectedDate = self.dogEar && (self.dogEar.reminderDate != nil) ? self.dogEar.reminderDate:nil;
-        vc.repeatedTimes = self.dogEar && (self.dogEar.repeatingReminder != nil) ? [self.dogEar.repeatingReminder integerValue]:0;
-        [self.navigationController pushViewController:vc animated:YES];
-    }
-    else if (indexPath.row == 2)
-    {
-        de_FlagViewController * vc = [[de_FlagViewController alloc]initWithStyle:UITableViewStyleGrouped];
-        if (self.dogEar.flagged != nil) vc.selectedIndexPath = [NSIndexPath indexPathForRow:[self.dogEar.flagged integerValue] inSection:0];
-        else vc.selectedIndexPath = nil;
-//        vc.selectedRow = self.dogEar && self.dogEar.flagged ? self.dogEar.flagged : nil;
-        [self.navigationController pushViewController:vc animated:YES];
-    }
-    else if (indexPath.row == 3)
-    {
-        void (^completionHandler)(UIPrintInteractionController *, BOOL, NSError *) =
-        ^(UIPrintInteractionController *pic, BOOL completed, NSError *error) {
-            if (!completed && error) NSLog(@"Print error: %@", error);
-        };
-        
-        NSData *pdfData = [self generatePDFDataForPrinting];
-        printController.printingItem = pdfData;
-        [printController presentAnimated:YES completionHandler:completionHandler];
+        if (indexPath.row == 0)
+        {
+            de_CategoryListViewController * tv = [[de_CategoryListViewController alloc]initWithStyle:UITableViewStylePlain];
+            if (cell.detailTextLabel.text) tv.selectedIndexPath = [NSIndexPath indexPathForRow:[array indexOfObject:cell.detailTextLabel.text] inSection:0];
+            else tv.selectedIndexPath = nil;    // JT-TODO: default choose the first category ?
+            
+            //        tv.categoryString = cell.detailTextLabel.text;
+            [self.navigationController pushViewController:tv animated:YES];
+            //        [self removeOldDogEarObject];
+            
+        }
+        else if (indexPath.row == 1)
+        {
+            de_ReminderViewController * vc = [[de_ReminderViewController alloc]initWithStyle:UITableViewStyleGrouped];
+            vc.selectedDate = self.dogEar && (self.dogEar.reminderDate != nil) ? self.dogEar.reminderDate:nil;
+            vc.repeatedTimes = self.dogEar && (self.dogEar.repeatingReminder != nil) ? [self.dogEar.repeatingReminder integerValue]:0;
+            [self.navigationController pushViewController:vc animated:YES];
+        }
+        else if (indexPath.row == 2)
+        {
+            de_FlagViewController * vc = [[de_FlagViewController alloc]initWithStyle:UITableViewStyleGrouped];
+            if (self.dogEar.flagged != nil) vc.selectedIndexPath = [NSIndexPath indexPathForRow:[self.dogEar.flagged integerValue] inSection:0];
+            else vc.selectedIndexPath = nil;
+            //        vc.selectedRow = self.dogEar && self.dogEar.flagged ? self.dogEar.flagged : nil;
+            [self.navigationController pushViewController:vc animated:YES];
+        }
+        else if (indexPath.row == 3)
+        {
+            void (^completionHandler)(UIPrintInteractionController *, BOOL, NSError *) =
+            ^(UIPrintInteractionController *pic, BOOL completed, NSError *error) {
+                if (!completed && error) NSLog(@"Print error: %@", error);
+            };
+            
+            NSData *pdfData = [self generatePDFDataForPrinting];
+            printController.printingItem = pdfData;
+            [printController presentAnimated:YES completionHandler:completionHandler];
+        }
     }
 }
 
