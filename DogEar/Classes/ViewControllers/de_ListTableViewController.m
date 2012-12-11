@@ -40,7 +40,6 @@
 {
     [super viewDidLoad];
     UIImageView * bgImage = [[UIImageView alloc]initWithImage:[UIImage imageNamed:@"dogear-bg-master"]];
-//    de_BackgroundView * bgView = [[de_BackgroundView alloc]initWithFrame:self.view.frame];
     self.tableView.backgroundView = bgImage;
     
     UISegmentedControl * segmentControl = [[UISegmentedControl alloc]initWithItems:[NSArray arrayWithObjects:@"Most Recent", @"Most Important", nil]];
@@ -58,7 +57,7 @@
     else if ([vc isMemberOfClass:[de_FlaggedListViewController class]]) self.tableView.tableHeaderView = nil;
     self.tableView.showsHorizontalScrollIndicator = YES;
     self.tableView.contentInset = UIEdgeInsetsMake(0.0f, 0.0f, 44.0f, 0.0f);
-    self.tableView.separatorColor = [UIColor colorWithRed:33.0f/255.0f green:80.0f/255.0f blue:87.0f/255.0f alpha:0.3];
+    self.tableView.scrollIndicatorInsets = UIEdgeInsetsMake(0.0f, 0.0f, 0.0f, 0.0f);
     
     [[SDImageCache sharedImageCache] clearMemory];
     [[SDImageCache sharedImageCache] clearDisk];
@@ -207,7 +206,6 @@
     DogEarObject * dogEar = (DogEarObject*)[self.collections objectAtIndex:indexPath.row];
     cell.deTitleLabel.text = dogEar.title;
     cell.deSubtitleLabel.text =[ NSString mediumStyleDateAndShortStyleTimeWithDate:dogEar.insertedDate];
-    NSLog(@"%@",dogEar.imagePath);
     if (self.tableView.dragging == NO && self.tableView.decelerating == NO)
     {
         [cell.dePhotoImageView setImageWithURL:[NSURL fileURLWithPath:dogEar.imagePath]
@@ -253,13 +251,8 @@
 - (void)tableView:(UITableView *)tableView commitEditingStyle:(UITableViewCellEditingStyle)editingStyle forRowAtIndexPath:(NSIndexPath *)indexPath
 {
     DogEarObject * selectedDogEar = (DogEarObject*)[self.collections objectAtIndex:indexPath.row];
-    NSLog(@"category:%@",selectedDogEar.category);
-    NSLog(@"category:%@",self.collections);
-    NSLog(@"category:%@",selectedDogEar);
 
-    
     NSMutableArray * decodedObjects = [[NSMutableArray alloc]initWithArray:[self decodedCollectionsWithCategory:selectedDogEar.category]];
-    NSLog(@"category:%i",[decodedObjects count]);
 
     for (int d = 0; d < [decodedObjects count]; d++)
     {
@@ -304,7 +297,6 @@
         }
     }
 }
-
 
 #pragma mark -
 #pragma mark Deferred image loading (UIScrollViewDelegate)

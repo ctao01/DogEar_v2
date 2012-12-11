@@ -37,12 +37,10 @@
 - (void) handleImageWithDogEarObject:(DogEarObject*)object;
 
 - (NSMutableArray*) decodedCollectionsWithObject:(DogEarObject*)object;
-- (NSString *) keyString;
 
 @end
 
 @implementation de_DetailViewController
-@synthesize action = _action;
 @synthesize isEditing = _isEditing;
 @synthesize image = _image;
 
@@ -84,13 +82,7 @@
     {
         headerView.dogEar = nil;
         headerView.thumbImage = self.image;
-//        [headerView.titleField setEnabled:YES];
-//        [headerView.notesField setEditable:YES];
         [self setHeaderViewEditingEnable:YES];
-
-//        headerView.allowEditing = YES;
-//        headerView.label.text = [NSString mediumStyleDateAndShortStyleTimeWithDate:[NSDate date]];
-//        [self handleImageWithDogEarObject:self.dogEar];
 
         self.dogEar = [DogEarObject new];
         [self.dogEar setInsertedDate:[NSDate date]];
@@ -108,6 +100,7 @@
         headerView.allowEditing = NO;
         
         [self setHeaderViewEditingEnable:NO];
+        [self setTableViewUserInteractionEnable:NO];
 
         UIBarButtonItem * editItem = [[UIBarButtonItem alloc]initWithTitle:@"Edit" style:UIBarButtonItemStyleBordered target:self action:@selector(edit:)];
         self.navigationItem.rightBarButtonItem = editItem;
@@ -117,16 +110,18 @@
         self.navigationItem.title = @"Detail";
         
         //        self.tableView.userInteractionEnabled = NO;
-        for (int c = 0; c < [self.tableView numberOfRowsInSection:0] - 1; c++) {
-            NSIndexPath * disabledIndexPath = [NSIndexPath indexPathForRow:c inSection:0];
-            UITableViewCell * disabledCell = [self.tableView cellForRowAtIndexPath:disabledIndexPath];
-            [disabledCell setUserInteractionEnabled:NO];
-        }
+//        for (int c = 0; c < [self.tableView numberOfRowsInSection:0] - 1; c++) {
+//            NSIndexPath * disabledIndexPath = [NSIndexPath indexPathForRow:c inSection:0];
+//            UITableViewCell * disabledCell = [self.tableView cellForRowAtIndexPath:disabledIndexPath];
+//            [disabledCell setUserInteractionEnabled:NO];
+//        }
         self.dogEar = [self setupNewObjectWithObject:self.existingDogEar];
 
     }
     headerView.vcParent = self;
     self.tableView.tableHeaderView = headerView;
+    self.tableView.contentInset = UIEdgeInsetsMake(0.0f, 0.0f, 44.0f, 0.0f);
+    self.tableView.scrollIndicatorInsets = UIEdgeInsetsMake(0.0f, 0.0f, 20.0, 0.0f);
     
     //JT-Note:
     Class printControllerClass = NSClassFromString(@"UIPrintInteractionController");
@@ -152,18 +147,6 @@
     
     
     [self.tableView reloadData];
-
-}
-
-- (void) viewDidAppear:(BOOL)animated
-{
-    [super viewDidAppear:animated];
-    NSLog(@"%@,%@",self.dogEar.category, self.existingDogEar.category);
-
-//    if ([self.dogEar.category isEqualToString:self.existingDogEar.category] == NO)
-//    {
-
-//    }
 }
 
 - (void) viewDidDisappear:(BOOL)animated
@@ -199,12 +182,8 @@
             
             [self setTableViewUserInteractionEnable:NO];
             [self setHeaderViewEditingEnable:NO];
-
-//            [headerView.titleField setEnabled:NO];
-//            [headerView.notesField setEditable:NO];
-            
-//            [self saveDogEar];
-            [self updateNewDogEarObject];
+            [self removeOldDogEarObject];
+            [self updateNewDogEarObject];   // add latest object to saved Array
             
 
 //            NSMutableArray * array = [[NSMutableArray alloc]initWithArray:[self decodedCollections]];
@@ -230,7 +209,6 @@
         self.isEditing = YES;
         [self setTableViewUserInteractionEnable:YES];
         [self setHeaderViewEditingEnable:YES];
-        [self removeOldDogEarObject];
 
 //        [headerView.titleField setEnabled:YES];
 //        [headerView.notesField setEditable:YES];
@@ -398,67 +376,9 @@
     return decodedCollections;
 }
 
-- (NSString *) keyString    //JT- TODO: keyString v.s. self.dog.ear category
-{
-//    UITableViewCell * cell = [self.tableView cellForRowAtIndexPath:[NSIndexPath indexPathForRow:0 inSection:0]];
-//    NSString * keyString = cell.detailTextLabel.text;
-//    return keyString;
-}
-
 
 #pragma mark - DogEar Method
 
-- (void) saveDogEar
-{
-    //JT
-    
-    
-    /*[self.dogEar setImagePath:[NSString imagePathWithFileName:[self.dogEar.title stringByAppendingFormat:@"%@",[NSString generateRandomString]]]];
-    [self.dogEar setImageOrientation: [NSNumber numberWithInteger:[self.image imageOrientation]]];
-    //JT-Note: Save Image to Device
-    NSData *pngData = UIImagePNGRepresentation(self.image);
-    [pngData writeToFile:self.dogEar.imagePath atomically:YES];*/
-    
-    
-    //JT-Note: Set Notification
-//    if ((self.dogEar.reminderDate != NULL) && (self.dogEar.repeatingReminder!= NULL))
-//    {
-//        UILocalNotification * reminder = [[UILocalNotification alloc]init];
-//        if (reminder == nil) return;
-//        reminder.fireDate = self.dogEar.reminderDate;
-//        reminder.timeZone = [NSTimeZone defaultTimeZone];
-//        
-//        reminder.alertBody = [NSString stringWithFormat:@"%@:%@",[self keyString],self.dogEar.title? self.dogEar.title: @"DogEar"];
-//        reminder.hasAction = TRUE;
-//        reminder.alertAction = @"Check it";
-//        reminder.soundName = UILocalNotificationDefaultSoundName;   //JT-TODO: Select Notification sound
-//        reminder.applicationIconBadgeNumber = 1;
-//        
-//        //JT-Note: Repeating Notification
-//        NSInteger repeatingType = [self.dogEar.repeatingReminder integerValue];
-//        if (repeatingType == 1) reminder.repeatInterval = NSHourCalendarUnit;
-//        else if (repeatingType == 2) reminder.repeatInterval = NSDayCalendarUnit;
-//        else if (repeatingType == 3) reminder.repeatInterval = NSWeekCalendarUnit;
-//        else if (repeatingType == 4) reminder.repeatInterval = NSMonthCalendarUnit;
-//        else if (repeatingType == 5) reminder.repeatInterval = NSYearCalendarUnit;
-//        
-//        NSDictionary * userDict = [NSDictionary dictionaryWithObject:
-//                                  [self.dogEar insertedDate] forKey:@"DogEarObjectInsertedDate"];
-//        reminder.userInfo = userDict;
-//        
-//        [[UIApplication sharedApplication] scheduleLocalNotification:reminder];
-//    }
-    
-    NSLog(@"reminderDate:%@",self.dogEar.reminderDate);
-    NSLog(@"repeatingReminder:%@",self.dogEar.repeatingReminder);
-    NSLog(@"category:%@",self.dogEar.category);
-    NSLog(@"flagged:%@",self.dogEar.flagged);
-    NSLog(@"title:%@",self.dogEar.title);
-    NSLog(@"note:%@",self.dogEar.note);
-
-
-
-}
 
 - (void) addDogEar
 {

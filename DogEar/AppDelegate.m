@@ -32,13 +32,10 @@
                                                        delegate:self
                                               cancelButtonTitle:@"Cancel"
                                               otherButtonTitles:@"Check it",nil];
-        application.applicationIconBadgeNumber = 0;
         [application cancelLocalNotification:notification];
         [alert show];
     }
-
-    
-    
+    application.applicationIconBadgeNumber = 0;
     self.bkMainNav = [[UINavigationController alloc]initWithRootViewController:self.bkSplashScreenVC];
     self.window.rootViewController = self.bkMainNav;
     

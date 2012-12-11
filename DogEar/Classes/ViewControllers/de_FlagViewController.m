@@ -45,10 +45,6 @@
 
 - (void) viewWillAppear:(BOOL)animated
 {
-//    [super viewWillAppear:animated];
-//    if (self.selectedRow != nil)
-//        self.selectedIndexPath = [NSIndexPath indexPathForRow:[self.selectedRow integerValue] inSection:0];
-//    NSLog(@"%@",self.selectedIndexPath);
     [self.tableView reloadData];
 }
 

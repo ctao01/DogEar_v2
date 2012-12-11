@@ -56,6 +56,11 @@ int currentAngle = 0;
     CGFloat cropTR_x; //top Right
     CGFloat cropBR_y; // Botton Right
     CGFloat cropBL_x;
+    
+    UIImageView * ivleftUp ;
+	UIImageView * ivRightUp ;
+	UIImageView * ivleftDown ;
+	UIImageView * ivRightDown;
 }
 //@property (nonatomic) BKToolBarType bkToolBarType;
 @property (nonatomic , retain) UIImage * photo;
@@ -326,6 +331,22 @@ int currentAngle = 0;
     [self.view addSubview:cropView];
     [cropView setNeedsDisplay];
     
+    UIImage * cropPointImg = [UIImage imageNamed:@"cropPoint.png"];
+	ivleftUp = [[UIImageView alloc]initWithImage:cropPointImg];
+	ivRightUp = [[UIImageView alloc]initWithImage:cropPointImg];
+	ivleftDown = [[UIImageView alloc]initWithImage:cropPointImg];
+	ivRightDown = [[UIImageView alloc]initWithImage:cropPointImg];
+	
+	ivleftUp.center = CGPointMake(cropBL_x, cropTL_y);
+	ivleftDown.center = CGPointMake(cropBL_x, cropBR_y);;
+	ivRightUp.center = CGPointMake(cropTR_x, cropTL_y);
+	ivRightDown.center = CGPointMake(cropTR_x, cropBR_y);;
+	
+	[cropView addSubview:ivleftUp];
+	[cropView addSubview:ivleftDown];
+	[cropView addSubview:ivRightUp];
+	[cropView addSubview:ivRightDown];
+    
     UIBarButtonItem * cancelButton = [[UIBarButtonItem alloc]initWithBarButtonSystemItem:UIBarButtonSystemItemCancel target:self action:@selector(cancelCrop)];
     self.navigationItem.leftBarButtonItem = cancelButton;
     
@@ -403,6 +424,14 @@ int currentAngle = 0;
         NSLog(@"Touched lower left corner");
         isTappedOnLowerLeftCorner = TRUE;
     }
+}
+
+-(void) updateCropPoints
+{
+	ivleftUp.center = CGPointMake(cropBL_x, cropTL_y);
+	ivleftDown.center = CGPointMake(cropBL_x, cropBR_y);;
+	ivRightUp.center = CGPointMake(cropTR_x, cropTL_y);
+	ivRightDown.center = CGPointMake(cropTR_x, cropBR_y);;
 }
 
 #pragma mark -
@@ -561,6 +590,7 @@ int currentAngle = 0;
          else return;
      }
     cropView.cropFrame = CGRectMake(cropBL_x, cropTL_y, cropTR_x - cropBL_x, cropBR_y - cropTL_y);
+    [self updateCropPoints];
     [cropView setNeedsDisplay];
     
 }

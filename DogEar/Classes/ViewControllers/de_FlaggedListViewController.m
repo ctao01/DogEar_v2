@@ -41,6 +41,8 @@
         [[NSUserDefaults standardUserDefaults] synchronize];
     }
     self.navigationItem.title = @"Flagged";
+    self.tableView.contentInset = UIEdgeInsetsMake(0.0f, 0.0f, 44.0f, 0.0f);
+    self.tableView.scrollIndicatorInsets = UIEdgeInsetsMake(0.0f, 0.0f, 0.0f, 0.0f);
 }
 
 - (void) viewWillAppear:(BOOL)animated
@@ -105,20 +107,8 @@
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    de_ListTableViewController * vc = [[de_ListTableViewController alloc]init];
-    
-//    NSMutableArray * temp = [[NSMutableArray alloc]init];
-//    
-//    for (DogEarObject * object in [self.flaggedCollections copy])
-//    {
-//        if ((object.flagged != nil) && (object.flagged == [NSNumber numberWithInteger:indexPath.row]))
-//        {
-//            [temp addObject:object];
-//        }
-//    }
-//    vc.collections = temp;
+    de_ListTableViewController * vc = [[de_ListTableViewController alloc]initWithStyle:UITableViewStyleGrouped];
     vc.navigationItem.title = [flaggedItems objectAtIndex:indexPath.row];
-//    vc.flaggedCollections = self.flaggedCollections;
     [self.navigationController pushViewController:vc animated:YES];
 
 

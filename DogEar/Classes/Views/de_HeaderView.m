@@ -33,12 +33,16 @@
 {
     self = [super initWithFrame:frame];
     if (self) {
-        imageView = [[UIImageView alloc]initWithFrame:CGRectMake(0.0f, 0.0f, 95.0f, 95.0f)];
+        imageView = [[UIImageView alloc]initWithFrame:CGRectMake(0.0f, 0.0f, 80.0f, 80.0f)];
         imageView.backgroundColor = [UIColor blackColor];
-        imageView.frame = CGRectOffset(imageView.frame, 15.0f, 10.0f);
-        [self addSubview:imageView];
+        imageView.frame = CGRectOffset(imageView.frame, 15.0f, 20.0f);
         imageView.contentMode = UIViewContentModeScaleAspectFill;
         imageView.clipsToBounds = YES;
+        imageView.layer.borderColor = [[UIColor whiteColor]CGColor];
+        imageView.layer.borderWidth = 2.0f;
+        imageView.layer.cornerRadius = 6.0f;
+        imageView.layer.shadowOffset =CGSizeMake(5.0f, 3.0f);
+        imageView.layer.shadowColor = [[UIColor blackColor]CGColor];
         
         txtField = [[UITextField alloc]initWithFrame:CGRectMake(120.0f, 25.0f, 180.0f, 30.0f)];
         txtField.font = [UIFont fontWithName:@"HelveticaNeue-Bold" size:14];
@@ -47,7 +51,7 @@
         txtField.backgroundColor = [UIColor whiteColor];
         txtField.layer.borderColor = [[UIColor grayColor] CGColor];
         txtField.layer.borderWidth = 1.0f;
-        txtField.layer.cornerRadius = 5.0f;
+        txtField.layer.cornerRadius = 2.0f;
         txtField.clipsToBounds = YES;
 
         

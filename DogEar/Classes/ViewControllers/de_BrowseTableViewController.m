@@ -50,7 +50,11 @@
     searchBar.barStyle = UIBarStyleBlackTranslucent;
     searchBar.tintColor = [UIColor colorWithRed:129.0/255.0f green:129.0/255.0f blue:130.0/255.0f alpha:.80];
     searchBar.showsSearchResultsButton = YES;
+    
     self.tableView.tableHeaderView = searchBar;
+    self.tableView.contentInset = UIEdgeInsetsMake(0.0f, 0.0f, 44.0f, 0.0f);
+    self.tableView.scrollIndicatorInsets = UIEdgeInsetsMake(0.0f, 0.0f, 0.0f, 0.0f);
+
     
     self.vcSearchDispay = [[UISearchDisplayController alloc]initWithSearchBar:searchBar contentsController:self];
     self.vcSearchDispay.searchResultsDataSource = self;
@@ -136,7 +140,7 @@
 - (void) filterContentForSearchText:(NSString*)searchText andScope:(NSString*)scope
 {
     self.allItems = [[NSArray alloc]initWithArray:[self allItems]];   
-    NSPredicate * resultPredict = [NSPredicate predicateWithFormat:@"SELF.title contains[cd] %@",searchText];
+    NSPredicate * resultPredict = [NSPredicate predicateWithFormat:@"SELF.title contains[cd] %@ OR SELF.note contains[cd] %@ " ,searchText,searchText];
     self.searchItems = [self.allItems filteredArrayUsingPredicate:resultPredict];
 }
 
@@ -212,40 +216,16 @@
     {
         if (indexPath.section == 0)
         {
-//            NSMutableArray * collections = [[NSMutableArray alloc]init];
-//            
-//            for (int c = 0; c < [categories count]; c++)
-//            {
-//                NSData * data = [[[NSUserDefaults standardUserDefaults]objectForKey:@"BKDataCollections"] objectForKey:[categories objectAtIndex:c]];
-//                NSMutableArray * decodedCollections = [NSMutableArray arrayWithArray:[NSKeyedUnarchiver unarchiveObjectWithData: data]];
-//                NSArray * copyCollections = [[NSArray arrayWithArray:decodedCollections] copy];
-//                
-//                for (DogEarObject * object in copyCollections)
-//                {
-//                    if (object.flagged != nil)  [collections addObject:object];
-//                }
-//            }
-//            NSLog(@"%i",[collections count]);
-            
             de_FlaggedListViewController * vc = [[de_FlaggedListViewController alloc]initWithStyle:UITableViewStyleGrouped];
-//            vc.flaggedCollections = collections;
             [self.navigationController pushViewController:vc animated:YES];
 
         }
         else if (indexPath.section == 1)
         {
-//            NSString * keyString = [categories objectAtIndex:indexPath.row];
-//            NSData * data = [[[NSUserDefaults standardUserDefaults]objectForKey:@"BKDataCollections"] objectForKey:keyString];
-//            NSMutableArray * decodedCollections = [NSMutableArray arrayWithArray:[NSKeyedUnarchiver unarchiveObjectWithData: data]];
-//
-            de_ListTableViewController * vc = [[de_ListTableViewController alloc]init];
+            de_ListTableViewController * vc = [[de_ListTableViewController alloc]initWithStyle:UITableViewStyleGrouped];
 
             [self.navigationController pushViewController:vc animated:YES];
-
-//            vc.navigationItem.title = [NSString stringWithFormat:@"Category:%@",keyString];
             vc.navigationItem.title = [categories objectAtIndex:indexPath.row];
-
-//            vc.collections = decodedCollections;
         }
     }
 }
