@@ -41,8 +41,7 @@
     activityIndicator.frame = CGRectMake(0.0f, 0.0f, 60.0f, 60.0f);
     activityIndicator.center = self.view.center;
     [self.view addSubview:activityIndicator];
-
-
+    
 }
 
 - (void)didReceiveMemoryWarning
@@ -59,7 +58,25 @@
     ACAccountStore * accountStore = [[ACAccountStore alloc]init];
     if (button.tag == 0)
     {
-        
+        if (    [[NSUserDefaults standardUserDefaults] objectForKey:@"DGFacebookSession_Token"])
+        {
+            if ( [FBSession.activeSession isOpen])
+            {
+                [FBSession.activeSession closeAndClearTokenInformationWithSeccess:nil];
+                [[NSUserDefaults standardUserDefaults]removeObjectForKey:@"DGFacebookSession_Token"];
+                [[NSUserDefaults standardUserDefaults]synchronize];
+            }
+        }
+        else
+            [FBSession openActiveSessionWithAllowLoginUI:YES success:^(FBSession *session, FBSessionState status, NSError *error) {
+                button.on = [FBSession.activeSession isOpen];
+                
+                [[NSUserDefaults standardUserDefaults]setObject:session.accessToken forKey:@"DGFacebookSession_Token"];
+                [[NSUserDefaults standardUserDefaults]synchronize];
+                
+            }  failure:^(FBSession *session, FBSessionState status, NSError *error) {
+                button.on = [FBSession.activeSession isOpen];
+            }];
     }
     
     else if (button.tag == 1)
@@ -164,7 +181,8 @@
     {
         cell.textLabel.text = @"Facebook";
         UISwitch * toggle = (UISwitch*)cell.accessoryView;
-        toggle.on = [[NSUserDefaults standardUserDefaults]objectForKey:@"Facebook_Account"]?YES:NO;
+//        toggle.on = [[NSUserDefaults standardUserDefaults]objectForKey:@"FACEBOOK_ACCESS_TOKEN"]? YES:NO;
+        toggle.on = [[NSUserDefaults standardUserDefaults]objectForKey:@"DGFacebookSession_Token"]?YES:NO;
         toggle.tag = indexPath.row;
     }
     else if (indexPath.row == 1)

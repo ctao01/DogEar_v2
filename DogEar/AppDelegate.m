@@ -77,7 +77,7 @@
 
 - (BOOL)application:(UIApplication *)application openURL:(NSURL *)url sourceApplication:(NSString *)sourceApplication annotation:(id)annotation
 {
-    return YES;
+    return [FBSession.activeSession handleOpenURL:url];
 }
 #pragma mark - NSLocalNotification
 

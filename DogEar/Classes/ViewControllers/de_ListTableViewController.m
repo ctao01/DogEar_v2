@@ -233,7 +233,7 @@
 {
     DogEarObject * selectedDogEar = (DogEarObject*)[self.collections objectAtIndex:indexPath.row];
     UIImage * image = [UIImage imageWithData:[NSData dataWithContentsOfFile:selectedDogEar.imagePath]];
-    de_PhotoViewController * vc = [[de_PhotoViewController alloc]initWithImage:[[UIImage alloc] initWithCGImage:image.CGImage scale:1.0 orientation:[selectedDogEar.imageOrientation integerValue] ] andExistingDogEar:selectedDogEar];
+    de_PhotoViewController * vc = [[de_PhotoViewController alloc]initWithImage:image andExistingDogEar:selectedDogEar];
     [self.navigationController pushViewController:vc animated:YES];
    
 }

@@ -56,6 +56,10 @@
 		7E4252EC16646AA100741A41 /* de_BrowseTableViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 7E4252EB16646AA100741A41 /* de_BrowseTableViewController.m */; };
 		7E4252EF16646C9500741A41 /* de_SettingViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 7E4252EE16646C5600741A41 /* de_SettingViewController.m */; };
 		7E4252F316646D7E00741A41 /* de_ListTableViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 7E4252F216646D7E00741A41 /* de_ListTableViewController.m */; };
+		7E4CA5B9167A66EF003F0013 /* FBSession+DGAdditions.m in Sources */ = {isa = PBXBuildFile; fileRef = 7E4CA5B8167A66EF003F0013 /* FBSession+DGAdditions.m */; };
+		7E4CA5BC167A6901003F0013 /* FacebookSDK.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 7E4CA5BB167A6901003F0013 /* FacebookSDK.framework */; };
+		7E4CA5BE167A6922003F0013 /* FacebookSDKResources.bundle in Resources */ = {isa = PBXBuildFile; fileRef = 7E4CA5BD167A6922003F0013 /* FacebookSDKResources.bundle */; };
+		7E4CA5C0167A698F003F0013 /* AdSupport.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 7E4CA5BF167A698F003F0013 /* AdSupport.framework */; settings = {ATTRIBUTES = (Weak, ); }; };
 		7E4D27CF1669A64000FDC78D /* de_FlaggedListViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 7E4D27CE1669A64000FDC78D /* de_FlaggedListViewController.m */; };
 		7E4D39BB1676EC2700739546 /* de_HeaderView.m in Sources */ = {isa = PBXBuildFile; fileRef = 7E4D39BA1676EC2700739546 /* de_HeaderView.m */; };
 		7E84F50116713BCB004A13D2 /* icon@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 7E84F50016713BCB004A13D2 /* icon@2x.png */; };
@@ -153,6 +157,11 @@
 		7E4252EE16646C5600741A41 /* de_SettingViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; name = de_SettingViewController.m; path = Classes/ViewControllers/de_SettingViewController.m; sourceTree = "<group>"; };
 		7E4252F116646D7E00741A41 /* de_ListTableViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = de_ListTableViewController.h; path = Classes/ViewControllers/de_ListTableViewController.h; sourceTree = "<group>"; };
 		7E4252F216646D7E00741A41 /* de_ListTableViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = de_ListTableViewController.m; path = Classes/ViewControllers/de_ListTableViewController.m; sourceTree = "<group>"; };
+		7E4CA5B7167A66EF003F0013 /* FBSession+DGAdditions.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = "FBSession+DGAdditions.h"; path = "Categories/FBSession+DGAdditions.h"; sourceTree = "<group>"; };
+		7E4CA5B8167A66EF003F0013 /* FBSession+DGAdditions.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = "FBSession+DGAdditions.m"; path = "Categories/FBSession+DGAdditions.m"; sourceTree = "<group>"; };
+		7E4CA5BB167A6901003F0013 /* FacebookSDK.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = FacebookSDK.framework; sourceTree = "<group>"; };
+		7E4CA5BD167A6922003F0013 /* FacebookSDKResources.bundle */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.plug-in"; path = FacebookSDKResources.bundle; sourceTree = "<group>"; };
+		7E4CA5BF167A698F003F0013 /* AdSupport.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AdSupport.framework; path = System/Library/Frameworks/AdSupport.framework; sourceTree = SDKROOT; };
 		7E4D27CD1669A63F00FDC78D /* de_FlaggedListViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = de_FlaggedListViewController.h; path = Classes/ViewControllers/de_FlaggedListViewController.h; sourceTree = "<group>"; };
 		7E4D27CE1669A64000FDC78D /* de_FlaggedListViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = de_FlaggedListViewController.m; path = Classes/ViewControllers/de_FlaggedListViewController.m; sourceTree = "<group>"; };
 		7E4D39B91676EC2600739546 /* de_HeaderView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = de_HeaderView.h; path = Classes/Views/de_HeaderView.h; sourceTree = "<group>"; };
@@ -203,6 +212,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				7E4CA5C0167A698F003F0013 /* AdSupport.framework in Frameworks */,
 				7EC5DB59166FF0B7001949AE /* CoreImage.framework in Frameworks */,
 				7ECD4454166E8D5600B3A160 /* Social.framework in Frameworks */,
 				3DD764DA166D4FE500C7CA9B /* MessageUI.framework in Frameworks */,
@@ -212,6 +222,7 @@
 				7E42529A16645DF400741A41 /* UIKit.framework in Frameworks */,
 				7E42529C16645DF400741A41 /* Foundation.framework in Frameworks */,
 				7E42529E16645DF400741A41 /* CoreGraphics.framework in Frameworks */,
+				7E4CA5BC167A6901003F0013 /* FacebookSDK.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -256,6 +267,7 @@
 		7E42528A16645DF400741A41 = {
 			isa = PBXGroup;
 			children = (
+				7E4CA5BF167A698F003F0013 /* AdSupport.framework */,
 				7E84F50216713BD6004A13D2 /* icon.png */,
 				7E84F50016713BCB004A13D2 /* icon@2x.png */,
 				7E42529F16645DF400741A41 /* DogEar */,
@@ -275,6 +287,8 @@
 		7E42529816645DF400741A41 /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				7E4CA5BD167A6922003F0013 /* FacebookSDKResources.bundle */,
+				7E4CA5BB167A6901003F0013 /* FacebookSDK.framework */,
 				7EC5DB58166FF0B7001949AE /* CoreImage.framework */,
 				3DD764D9166D4FE500C7CA9B /* MessageUI.framework */,
 				3DD7648D166D048D00C7CA9B /* Social.framework */,
@@ -381,6 +395,8 @@
 				7ECEB4BD1666CA2100FC007D /* NSString+DGStyle.m */,
 				7E98E220166EA7D900FAFA60 /* UIImage+DGStyle.h */,
 				7E98E221166EA7D900FAFA60 /* UIImage+DGStyle.m */,
+				7E4CA5B7167A66EF003F0013 /* FBSession+DGAdditions.h */,
+				7E4CA5B8167A66EF003F0013 /* FBSession+DGAdditions.m */,
 			);
 			name = Categories;
 			sourceTree = "<group>";
@@ -597,6 +613,7 @@
 				7E84F50116713BCB004A13D2 /* icon@2x.png in Resources */,
 				7E84F50316713BD6004A13D2 /* icon.png in Resources */,
 				3D3EC7801677C33E0074945F /* cropPoint.png in Resources */,
+				7E4CA5BE167A6922003F0013 /* FacebookSDKResources.bundle in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -642,6 +659,7 @@
 				3D1A665716726C1B00699B30 /* de_NavigationBar.m in Sources */,
 				3D1A666E1672EED200699B30 /* CropView.m in Sources */,
 				7E4D39BB1676EC2700739546 /* de_HeaderView.m in Sources */,
+				7E4CA5B9167A66EF003F0013 /* FBSession+DGAdditions.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -713,10 +731,15 @@
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = YES;
 				ARCHS = armv7;
+				FRAMEWORK_SEARCH_PATHS = (
+					"$(inherited)",
+					"\"$(SRCROOT)\"",
+				);
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "DogEar/DogEar-Prefix.pch";
 				INFOPLIST_FILE = "DogEar/DogEar-Info.plist";
 				IPHONEOS_DEPLOYMENT_TARGET = 6.0;
+				OTHER_LDFLAGS = "-lsqlite3.0";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				VALID_ARCHS = armv7;
 				WRAPPER_EXTENSION = app;
@@ -728,10 +751,15 @@
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = YES;
 				ARCHS = armv7;
+				FRAMEWORK_SEARCH_PATHS = (
+					"$(inherited)",
+					"\"$(SRCROOT)\"",
+				);
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "DogEar/DogEar-Prefix.pch";
 				INFOPLIST_FILE = "DogEar/DogEar-Info.plist";
 				IPHONEOS_DEPLOYMENT_TARGET = 6.0;
+				OTHER_LDFLAGS = "-lsqlite3.0";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				VALID_ARCHS = armv7;
 				WRAPPER_EXTENSION = app;

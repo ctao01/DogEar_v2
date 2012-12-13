@@ -14,5 +14,8 @@
 
     #import "DogEarObject.h"
 
+    #import "FBSession+DGAdditions.h"
+
     #import "NSString+DGStyle.h"
+    #import "UIImage+DGStyle.h"
 #endif

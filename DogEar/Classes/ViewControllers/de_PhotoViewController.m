@@ -240,10 +240,10 @@ int currentAngle = 0;
 - (void) storeTheImage
 {
     
-    CGSize size = imageView.frame.size;
+//    CGSize size = imageView.frame.size;
     if (isAutoEnhance) self.photo = [self.photo autoEnhance];
     
-    de_DetailViewController * vc = [[de_DetailViewController alloc]initWithStyle:UITableViewStyleGrouped andImage:[self.photo scaleToFitSize:size]];
+    de_DetailViewController * vc = [[de_DetailViewController alloc]initWithStyle:UITableViewStyleGrouped andImage:self.photo];
 //    [vc setAction:DogEarActionEditing];
     vc.existingDogEar = nil;
     [self.navigationController pushViewController:vc animated:YES];
@@ -610,8 +610,23 @@ int currentAngle = 0;
     
     UIAlertView * alertView = [[UIAlertView alloc]initWithTitle:@"Dog Ear" message:@"Are you sure delete this dog ear" delegate:self cancelButtonTitle:@"Cancel" otherButtonTitles:@"Move To Trash", nil];
     [alertView show];
+}
+
+#pragma mark - 
+
+- (void) publishDogEar
+{
+    NSMutableDictionary * params = [[NSMutableDictionary alloc]init];
+    UIImage * pngImg = [UIImage imageWithData:[NSData dataWithContentsOfFile:self.existingDogEar.imagePath]];
     
+    [params setObject:self.existingDogEar.title forKey:@"message"];
+    [params setObject:UIImagePNGRepresentation(pngImg) forKey:@"picture"];
     
+    [FBRequestConnection startWithGraphPath:@"me/photos" parameters:params HTTPMethod:@"POST"
+                          completionHandler:^(FBRequestConnection *connection, id result, NSError *error){
+        if (error)  NSLog(@"error");
+        else NSLog(@"successful!!");
+    }];
 }
 
 #pragma mark - NSuserDefaults  Method
@@ -680,7 +695,16 @@ int currentAngle = 0;
     switch (buttonIndex) {
         case 0: //Facebook
         {
-            
+            if (FBSession.activeSession.isOpen) {
+                [self publishDogEar];
+            } else {
+                [FBSession openActiveSessionWithAllowLoginUI:YES success:^(FBSession *session, FBSessionState status, NSError *error) {
+                    [self publishDogEar];
+
+                } failure:^(FBSession *session, FBSessionState status, NSError *error) {
+                    NSLog(@"Facebook connect Error.");
+                }];
+            }
         }
             break;
         case 1: // Twitter
