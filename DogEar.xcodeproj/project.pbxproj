@@ -10,6 +10,7 @@
 		3D1A665116724D0E00699B30 /* de_MainNavigationController.m in Sources */ = {isa = PBXBuildFile; fileRef = 3D1A665016724D0E00699B30 /* de_MainNavigationController.m */; };
 		3D1A665716726C1B00699B30 /* de_NavigationBar.m in Sources */ = {isa = PBXBuildFile; fileRef = 3D1A665616726C1B00699B30 /* de_NavigationBar.m */; };
 		3D1A666E1672EED200699B30 /* CropView.m in Sources */ = {isa = PBXBuildFile; fileRef = 3D1A666D1672EED200699B30 /* CropView.m */; };
+		3D28E02F167AEB3F0086B331 /* screenshot.png in Resources */ = {isa = PBXBuildFile; fileRef = 3D28E02E167AEB3F0086B331 /* screenshot.png */; };
 		3D3EC7801677C33E0074945F /* cropPoint.png in Resources */ = {isa = PBXBuildFile; fileRef = 3D3EC77F1677C33E0074945F /* cropPoint.png */; };
 		3DD76485166C5E7D00C7CA9B /* de_AccountSettingViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 3DD76484166C5E7D00C7CA9B /* de_AccountSettingViewController.m */; };
 		3DD76487166C609E00C7CA9B /* Accounts.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 3DD76486166C609E00C7CA9B /* Accounts.framework */; };
@@ -92,6 +93,7 @@
 		3D1A665616726C1B00699B30 /* de_NavigationBar.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = de_NavigationBar.m; path = Classes/Views/de_NavigationBar.m; sourceTree = "<group>"; };
 		3D1A666C1672EED200699B30 /* CropView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = CropView.h; path = Classes/Views/CropView.h; sourceTree = "<group>"; };
 		3D1A666D1672EED200699B30 /* CropView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = CropView.m; path = Classes/Views/CropView.m; sourceTree = "<group>"; };
+		3D28E02E167AEB3F0086B331 /* screenshot.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = screenshot.png; sourceTree = "<group>"; };
 		3D3EC77F1677C33E0074945F /* cropPoint.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = cropPoint.png; sourceTree = "<group>"; };
 		3DD76483166C5E7D00C7CA9B /* de_AccountSettingViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = de_AccountSettingViewController.h; path = Classes/ViewControllers/de_AccountSettingViewController.h; sourceTree = "<group>"; };
 		3DD76484166C5E7D00C7CA9B /* de_AccountSettingViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = de_AccountSettingViewController.m; path = Classes/ViewControllers/de_AccountSettingViewController.m; sourceTree = "<group>"; };
@@ -344,6 +346,7 @@
 		7E4252B716645F4400741A41 /* Assets */ = {
 			isa = PBXGroup;
 			children = (
+				3D28E02E167AEB3F0086B331 /* screenshot.png */,
 				3D3EC77F1677C33E0074945F /* cropPoint.png */,
 				7ECD4450166E8B0200B3A160 /* dogear-default.png */,
 				7ECD4451166E8B0200B3A160 /* dogear-default@2x.png */,
@@ -614,6 +617,7 @@
 				7E84F50316713BD6004A13D2 /* icon.png in Resources */,
 				3D3EC7801677C33E0074945F /* cropPoint.png in Resources */,
 				7E4CA5BE167A6922003F0013 /* FacebookSDKResources.bundle in Resources */,
+				3D28E02F167AEB3F0086B331 /* screenshot.png in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
