@@ -713,13 +713,11 @@ int currentAngle = 0;
 
             if (DEVICE_OS < 6.0)
             {
-//                [[twitter tweetTWComposerSheet] addImage:self.photo];
                 if ([[NSUserDefaults standardUserDefaults] objectForKey:@"Twitter_Account"])[self presentViewController:[twitter tweetTWComposerSheetWithSharedImage:self.photo] animated:YES completion:nil];
                 
             }
             else
             {
-//                [[twitter tweetSLComposerSheet] addImage:self.photo];
                 if ([[NSUserDefaults standardUserDefaults] objectForKey:@"Twitter_Account"]) [self presentViewController:[twitter tweetSLComposerSheetWithSharedImage:self.photo] animated:YES completion:nil];
                 else
                 {
@@ -770,7 +768,7 @@ int currentAngle = 0;
 {
     if (buttonIndex != alertView.cancelButtonIndex)
     {
-        if ([alertView.title isEqualToString:@""])
+        if ([alertView.title isEqualToString:@"Twitter Authorization"])
             [self.tabBarController setSelectedIndex:2];
         else if ([alertView.title isEqualToString:@"Dog Ear"])
         {

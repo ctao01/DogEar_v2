@@ -100,7 +100,6 @@
                         {
                             ACAccount * twitterAccount = [accounts lastObject];
                             [[NSUserDefaults standardUserDefaults]setObject:twitterAccount.identifier forKey:@"Twitter_Account"];
-                            [[NSUserDefaults standardUserDefaults]setObject:twitterAccount.username forKey:@"Twitter_Username"];
                             
                             [[NSUserDefaults standardUserDefaults]synchronize];
                             [button setOn:NO animated:YES];
@@ -117,7 +116,7 @@
                     }
                     else
                     {
-                        UIAlertView * alertView = [[UIAlertView alloc]initWithTitle:@"Twitter Authorization" message:@"Please log into Twitter Account in the Settings please, then try again." delegate:self cancelButtonTitle:@"OK" otherButtonTitles: nil];
+                        UIAlertView * alertView = [[UIAlertView alloc]initWithTitle:@"Twitter Permission" message:@"Dog Ear doesn't have permission to connect user's Twitter account." delegate:self cancelButtonTitle:@"OK" otherButtonTitles: nil];
                         [alertView show];
                         [button setOn:YES animated:YES];
 
@@ -188,8 +187,6 @@
     else if (indexPath.row == 1)
     {
         cell.textLabel.text = @"Twitter";
-        cell.detailTextLabel.text = [[NSUserDefaults standardUserDefaults]objectForKey:@"Twitter_Account"] ? [[NSUserDefaults standardUserDefaults]objectForKey:@"Twitter_Username"]:nil;
-
         UISwitch * toggle = (UISwitch*)cell.accessoryView;
         toggle.on = [[NSUserDefaults standardUserDefaults]objectForKey:@"Twitter_Account"]?YES:NO;
         toggle.tag = indexPath.row;

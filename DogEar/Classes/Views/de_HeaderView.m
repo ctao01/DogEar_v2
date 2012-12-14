@@ -44,14 +44,16 @@
         imageView.layer.shadowOffset =CGSizeMake(5.0f, 3.0f);
         imageView.layer.shadowColor = [[UIColor blackColor]CGColor];
         
-        txtField = [[UITextField alloc]initWithFrame:CGRectMake(120.0f, 25.0f, 180.0f, 30.0f)];
-        txtField.font = [UIFont fontWithName:@"HelveticaNeue-Bold" size:14];
+        txtField = [[UITextField alloc]initWithFrame:CGRectMake(120.0f, 25.0f, 180.0f, 40.0f)];
+        txtField.center = CGPointMake(txtField.center.x, imageView.center.y);
+        txtField.font = [UIFont fontWithName:@"HelveticaNeue-Bold" size:18];
+        txtField.contentVerticalAlignment= UIControlContentVerticalAlignmentCenter;
         txtField.delegate = self;
         txtField.returnKeyType = UIReturnKeyNext;
         txtField.backgroundColor = [UIColor whiteColor];
         txtField.layer.borderColor = [[UIColor grayColor] CGColor];
         txtField.layer.borderWidth = 1.0f;
-        txtField.layer.cornerRadius = 2.0f;
+        txtField.layer.cornerRadius = 6.0f;
         txtField.clipsToBounds = YES;
 
         
@@ -61,7 +63,7 @@
         
         label = [[UILabel alloc]initWithFrame:txtField.frame];
         label.frame = CGRectOffset(label.frame, 0.0f, 55.0f);
-        label.font = [UIFont fontWithName:@"HelveticaNeue" size:11];
+        label.font = [UIFont fontWithName:@"HelveticaNeue" size:12];
         label.textColor = [UIColor darkGrayColor];
         label.backgroundColor = [UIColor clearColor];
         label.textAlignment = NSTextAlignmentRight;
