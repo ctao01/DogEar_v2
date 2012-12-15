@@ -13,7 +13,7 @@
 		3D28E02F167AEB3F0086B331 /* screenshot.png in Resources */ = {isa = PBXBuildFile; fileRef = 3D28E02E167AEB3F0086B331 /* screenshot.png */; };
 		3D3EC7801677C33E0074945F /* cropPoint.png in Resources */ = {isa = PBXBuildFile; fileRef = 3D3EC77F1677C33E0074945F /* cropPoint.png */; };
 		3DD76485166C5E7D00C7CA9B /* de_AccountSettingViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 3DD76484166C5E7D00C7CA9B /* de_AccountSettingViewController.m */; };
-		3DD76487166C609E00C7CA9B /* Accounts.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 3DD76486166C609E00C7CA9B /* Accounts.framework */; };
+		3DD76487166C609E00C7CA9B /* Accounts.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 3DD76486166C609E00C7CA9B /* Accounts.framework */; settings = {ATTRIBUTES = (Weak, ); }; };
 		3DD7648C166D032900C7CA9B /* Twitter.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 3DD7648B166D032900C7CA9B /* Twitter.framework */; settings = {ATTRIBUTES = (Weak, ); }; };
 		3DD764D8166D365E00C7CA9B /* TwitterManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 3DD764D7166D365E00C7CA9B /* TwitterManager.m */; };
 		3DD764DA166D4FE500C7CA9B /* MessageUI.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 3DD764D9166D4FE500C7CA9B /* MessageUI.framework */; };
@@ -742,7 +742,7 @@
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "DogEar/DogEar-Prefix.pch";
 				INFOPLIST_FILE = "DogEar/DogEar-Info.plist";
-				IPHONEOS_DEPLOYMENT_TARGET = 6.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 5.1;
 				OTHER_LDFLAGS = "-lsqlite3.0";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				VALID_ARCHS = armv7;
@@ -762,7 +762,7 @@
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "DogEar/DogEar-Prefix.pch";
 				INFOPLIST_FILE = "DogEar/DogEar-Info.plist";
-				IPHONEOS_DEPLOYMENT_TARGET = 6.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 5.1;
 				OTHER_LDFLAGS = "-lsqlite3.0";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				VALID_ARCHS = armv7;
