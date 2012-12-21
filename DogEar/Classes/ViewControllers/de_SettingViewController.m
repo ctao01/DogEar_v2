@@ -151,9 +151,13 @@
     {
         UIViewController * vc = [[UIViewController alloc]init];
         [self.navigationController pushViewController:vc animated:YES];
-        UIImageView *backgroundImage = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"dogear-bg-instructions"]];
-        backgroundImage.frame = CGRectOffset(backgroundImage.frame, 0.0f, -20.0f);
-        backgroundImage.contentMode = UIViewContentModeScaleAspectFill;
+        
+        float height = [self.tabBarController.view bounds].size.height;
+        float width = [self.tabBarController.view bounds].size.width;
+        
+        CGRect bgFrame = CGRectMake(0.0f, 0.0f, width, height - 20.0f - 44.0f - 49.0f);        
+        UIImageView *backgroundImage = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"dogear-bg-instructions-fix"]];
+        backgroundImage.frame = bgFrame;
         [vc.view addSubview:backgroundImage];
         [vc.navigationItem setTitle:cell.textLabel.text];
     }

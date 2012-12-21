@@ -68,9 +68,13 @@
     [super viewWillAppear:animated];
      self.navigationItem.title = @"Browse Dog Ears";
     
-    UIImageView *backgroundImage = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"dogear-bg-instructions"]];
+    float height = [self.tabBarController.view bounds].size.height;
+    float width = [self.tabBarController.view bounds].size.width;
+    CGRect bgFrame = CGRectMake(0.0f, 0.0f, width, height - 20.0f - 44.0f - 49.0f);
+    
+    UIImageView *backgroundImage = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"dogear-bg-instructions-fix"]];
     backgroundImage.tag = 999;
-    backgroundImage.contentMode = UIViewContentModeScaleAspectFit;
+    backgroundImage.frame = bgFrame;
     
     if ([[NSUserDefaults standardUserDefaults] boolForKey:@"HasLaunchedOnce"])
     {
