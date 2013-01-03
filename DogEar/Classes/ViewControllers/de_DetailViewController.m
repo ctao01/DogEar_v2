@@ -75,8 +75,10 @@
     UIImageView * bgImage = [[UIImageView alloc]initWithImage:[UIImage imageNamed:@"dogear-bg-master"]];
     self.tableView.backgroundView = bgImage;
         
-    headerView = [[de_HeaderView alloc]initWithFrame:CGRectMake(0.0f, 0.0f, 320.0f, 200.0f)];
-    headerView.center = CGPointMake(self.view.center.x, headerView.center.y);
+//    headerView = [[de_HeaderView alloc]initWithFrame:CGRectMake(0.0f, 0.0f, 320.0f, 200.0f)];
+//    headerView.center = CGPointMake(self.view.center.x, headerView.center.y);
+    headerView = [[de_HeaderView alloc]initWithFrame:CGRectMake(0.0f, 0.0f, self.view.frame.size.width, 120.0f)];
+
 //    headerView.vcParent = self;
     if (self.existingDogEar == nil)
     {
@@ -465,8 +467,9 @@
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
 {
     // Return the number of rows in the section.
-    if (section == 0) return 1;
-    else return 4;
+//    if (section == 0) return 1;
+//    else return 4;
+    return 4;
 }
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
@@ -478,13 +481,13 @@
     if (cell == nil) cell = [[UITableViewCell alloc]initWithStyle:UITableViewCellStyleValue1 reuseIdentifier:CellIdentifier];
     // Configure the cell...
    
-    if (indexPath.section == 0)
-    {
-        cell.textLabel.text = @"Note";
-        cell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
-    }
-    else if (indexPath.section == 1)
-   {
+//    if (indexPath.section == 0)
+//    {
+//        cell.textLabel.text = @"Note";
+//        cell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
+//    }
+//    else if (indexPath.section == 1)
+//   {
        switch (indexPath.row) {
            case 0:
                cell.textLabel.text = @"Category";
@@ -518,7 +521,7 @@
            default:
                break;
        }
-   }
+//   }
 
     
     return cell;
@@ -529,16 +532,16 @@
 {
     NSArray * array = [[NSUserDefaults standardUserDefaults]objectForKey:@"BKCategory"];
     UITableViewCell * cell = [self.tableView cellForRowAtIndexPath:indexPath];
-    if (indexPath.section == 0)
-    {
-        UIViewController * vcNote = [[UIViewController alloc]init];
-        [self.navigationController pushViewController:vcNote animated:YES];
-        UITextView * textView = [[UITextView alloc]initWithFrame:vcNote.view.frame];
-        textView.text = self.dogEar.note ? self.dogEar.note : @"";
-        [vcNote.view addSubview:textView];
-    }
-    else if (indexPath.section == 1)
-    {
+//    if (indexPath.section == 0)
+//    {
+//        UIViewController * vcNote = [[UIViewController alloc]init];
+//        [self.navigationController pushViewController:vcNote animated:YES];
+//        UITextView * textView = [[UITextView alloc]initWithFrame:vcNote.view.frame];
+//        textView.text = self.dogEar.note ? self.dogEar.note : @"";
+//        [vcNote.view addSubview:textView];
+//    }
+//    else if (indexPath.section == 1)
+//    {
         if (indexPath.row == 0)
         {
             de_CategoryListViewController * tv = [[de_CategoryListViewController alloc]initWithStyle:UITableViewStylePlain];
@@ -576,7 +579,7 @@
             printController.printingItem = pdfData;
             [printController presentAnimated:YES completionHandler:completionHandler];
         }
-    }
+//    }
 }
 
 @end

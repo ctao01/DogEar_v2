@@ -7,7 +7,6 @@
 //
 
 #import <UIKit/UIKit.h>
-#import <QuartzCore/QuartzCore.h>
 
 @interface de_HeaderView : UIView < UITextFieldDelegate , UITextViewDelegate>
 

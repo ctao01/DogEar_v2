@@ -9,13 +9,16 @@
 #import "de_HeaderView.h"
 #import "UIImage+DGStyle.h"
 #import "de_DetailViewController.h"
+#import <QuartzCore/QuartzCore.h>
+
+#define RADIUS 4.0f
 
 @interface de_HeaderView()
 {
     UIImageView * imageView;
-    UITextField * txtField;
-    UITextView * txtView;
-    UILabel * label;
+//    UITextField * txtField;
+//    UITextView * txtView;
+//    UILabel * label;
 }
 
 @end
@@ -33,60 +36,148 @@
 {
     self = [super initWithFrame:frame];
     if (self) {
-        imageView = [[UIImageView alloc]initWithFrame:CGRectMake(0.0f, 0.0f, 80.0f, 80.0f)];
-        imageView.backgroundColor = [UIColor blackColor];
-        imageView.frame = CGRectOffset(imageView.frame, 15.0f, 20.0f);
-        imageView.contentMode = UIViewContentModeScaleAspectFill;
-        imageView.clipsToBounds = YES;
-        imageView.layer.borderColor = [[UIColor whiteColor]CGColor];
-        imageView.layer.borderWidth = 2.0f;
-        imageView.layer.cornerRadius = 6.0f;
-        imageView.layer.shadowOffset =CGSizeMake(5.0f, 3.0f);
-        imageView.layer.shadowColor = [[UIColor blackColor]CGColor];
+//        imageView = [[UIImageView alloc]initWithFrame:CGRectMake(0.0f, 0.0f, 80.0f, 80.0f)];
+//        imageView.backgroundColor = [UIColor blackColor];
+//        imageView.frame = CGRectOffset(imageView.frame, 15.0f, 20.0f);
+//        imageView.contentMode = UIViewContentModeScaleAspectFill;
+//        imageView.clipsToBounds = YES;
+//        imageView.layer.borderColor = [[UIColor whiteColor]CGColor];
+//        imageView.layer.borderWidth = 2.0f;
+//        imageView.layer.cornerRadius = 6.0f;
+//        imageView.layer.shadowOffset =CGSizeMake(5.0f, 3.0f);
+//        imageView.layer.shadowColor = [[UIColor blackColor]CGColor];
+//
+//        txtField = [[UITextField alloc]initWithFrame:CGRectMake(120.0f, 25.0f, 180.0f, 40.0f)];
+//        txtField.center = CGPointMake(txtField.center.x, imageView.center.y);
+//        txtField.font = [UIFont fontWithName:@"HelveticaNeue-Bold" size:18];
+//        txtField.contentVerticalAlignment= UIControlContentVerticalAlignmentCenter;
+//        txtField.delegate = self;
+//        txtField.returnKeyType = UIReturnKeyNext;
+//        txtField.backgroundColor = [UIColor whiteColor];
+//        txtField.layer.borderColor = [[UIColor grayColor] CGColor];
+//        txtField.layer.borderWidth = 1.0f;
+//        txtField.layer.cornerRadius = 6.0f;
+//        txtField.clipsToBounds = YES;
+//
+//        
+//        
+//        self.titleField = [[UITextField alloc]init];
+//        self.titleField = txtField;
+//        
+//        label = [[UILabel alloc]initWithFrame:txtField.frame];
+//        label.frame = CGRectOffset(label.frame, 0.0f, 55.0f);
+//        label.font = [UIFont fontWithName:@"HelveticaNeue" size:12];
+//        label.textColor = [UIColor darkGrayColor];
+//        label.backgroundColor = [UIColor clearColor];
+//        label.textAlignment = NSTextAlignmentRight;
+//        
+//        txtView = [[UITextView alloc] initWithFrame:CGRectMake(10.0f, 120.0f, 295.0f, 60.0f)];
+//        txtView.font = [UIFont fontWithName:@"HelveticaNeue" size:14];
+//        txtView.delegate = self;
+//        txtView.returnKeyType = UIReturnKeyDone;
+//        txtView.backgroundColor = [UIColor whiteColor];
+//        txtView.layer.borderColor = [[UIColor grayColor] CGColor];
+//        txtView.layer.borderWidth = 1.0f;
+//        txtView.layer.cornerRadius = 5.0f;
+//        txtView.clipsToBounds = YES;
+//        
+//        self.notesField = [[UITextView alloc]init];
+//        self.notesField = txtView;
+//        
+//        [self addSubview:imageView];
+//        [self addSubview:self.titleField];
+//        [self addSubview:self.notesField];
+//        [self addSubview:label];
         
-        txtField = [[UITextField alloc]initWithFrame:CGRectMake(120.0f, 25.0f, 180.0f, 40.0f)];
-        txtField.center = CGPointMake(txtField.center.x, imageView.center.y);
-        txtField.font = [UIFont fontWithName:@"HelveticaNeue-Bold" size:18];
-        txtField.contentVerticalAlignment= UIControlContentVerticalAlignmentCenter;
-        txtField.delegate = self;
-        txtField.returnKeyType = UIReturnKeyNext;
-        txtField.backgroundColor = [UIColor whiteColor];
-        txtField.layer.borderColor = [[UIColor grayColor] CGColor];
-        txtField.layer.borderWidth = 1.0f;
-        txtField.layer.cornerRadius = 6.0f;
-        txtField.clipsToBounds = YES;
+        self.backgroundColor = [UIColor clearColor];
+        
+        CGRect rect1 = CGRectMake(100.0f, 15.0f, 210.0f, 30.0f);
+        CGRect tfFrame = UIEdgeInsetsInsetRect(rect1, UIEdgeInsetsMake(1.0f, 7.0f ,1.0f , 5.0f));
+        
+        UITextField * tf = [[UITextField alloc]initWithFrame:tfFrame];
+        [tf setBackgroundColor:[UIColor clearColor]];
+        [tf setContentVerticalAlignment:UIControlContentVerticalAlignmentCenter];
+        [tf setFont:[UIFont fontWithName:@"HelveticaNeue" size:14]];
+        self.titleField = tf;
+        
+        CGRect rect2 = CGRectMake(100.0f, 45.0f, 210.0f, 60.0f);
+        CGRect tvFrame = UIEdgeInsetsInsetRect(rect2, UIEdgeInsetsMake(1.0f, 1.0f , 1.0f , 5.0f));
+        UITextView * tv = [[UITextView alloc]initWithFrame:tvFrame];
+        [tv setBackgroundColor:[UIColor clearColor]];
+        self.notesField = tv;
+        
+        CGRect rect3 = CGRectMake(10.0f, 15.0f, 90.0f, 90.0f);
+        CGRect innerRect = UIEdgeInsetsInsetRect(rect3, UIEdgeInsetsMake(10.0f, 10.0f, 10.0f, 10.0f));
+        imageView = [[UIImageView alloc]initWithFrame:innerRect];
+        imageView.clipsToBounds = YES;
+        imageView.contentMode = UIViewContentModeScaleAspectFill;
 
         
-        
-        self.titleField = [[UITextField alloc]init];
-        self.titleField = txtField;
-        
-        label = [[UILabel alloc]initWithFrame:txtField.frame];
-        label.frame = CGRectOffset(label.frame, 0.0f, 55.0f);
-        label.font = [UIFont fontWithName:@"HelveticaNeue" size:12];
-        label.textColor = [UIColor darkGrayColor];
-        label.backgroundColor = [UIColor clearColor];
-        label.textAlignment = NSTextAlignmentRight;
-        
-        txtView = [[UITextView alloc] initWithFrame:CGRectMake(10.0f, 120.0f, 295.0f, 60.0f)];
-        txtView.font = [UIFont fontWithName:@"HelveticaNeue" size:14];
-        txtView.delegate = self;
-        txtView.returnKeyType = UIReturnKeyDone;
-        txtView.backgroundColor = [UIColor whiteColor];
-        txtView.layer.borderColor = [[UIColor grayColor] CGColor];
-        txtView.layer.borderWidth = 1.0f;
-        txtView.layer.cornerRadius = 5.0f;
-        txtView.clipsToBounds = YES;
-        
-        self.notesField = [[UITextView alloc]init];
-        self.notesField = txtView;
-        
-        [self addSubview:imageView];
         [self addSubview:self.titleField];
         [self addSubview:self.notesField];
-        [self addSubview:label];
+        [self addSubview:imageView];
+        
     }
     return self;
+}
+
+#pragma mark - Draw Rect Functions
+
+- (void) drawRect:(CGRect)rect
+{
+    [[UIColor lightGrayColor] setStroke];
+    [[UIColor whiteColor] setFill];
+    
+    // Drawing ImageView Rect
+    [self drawThumbViewWithRect:CGRectMake(10.0f, 15.0f, 90.0f, 90.0f)];
+    [self drawTextFieldWithRect:CGRectMake(100.0f, 15.0f, 210.0f, 30.0f)];
+    [self drawTextViewWithRect:CGRectMake(100.0f, 45.0f, 210.0f, 60.0f)];
+    
+    self.layer.masksToBounds = NO;
+    self.layer.shadowColor = [[UIColor blackColor]CGColor];
+    self.layer.shadowOffset = CGSizeMake(3.0f, 5.0f);
+    self.layer.shadowOpacity = 0.7;
+}
+
+- (void) drawThumbViewWithRect:(CGRect)rect
+{
+    UIBezierPath * pathThumbImg = [UIBezierPath bezierPathWithRoundedRect:rect
+                                                        byRoundingCorners:UIRectCornerBottomLeft|UIRectCornerTopLeft
+                                                              cornerRadii:CGSizeMake(RADIUS, RADIUS)];
+    [pathThumbImg setLineWidth:2.0f];
+    [pathThumbImg stroke];
+    [pathThumbImg fill];
+    
+    
+    CGRect innerRect = UIEdgeInsetsInsetRect(rect, UIEdgeInsetsMake(10.0f, 10.0f, 10.0f, 10.0f));
+    UIBezierPath * dashedRect = [UIBezierPath bezierPathWithRoundedRect:innerRect cornerRadius:RADIUS];
+    
+    CGFloat dashPattern[2] = { 5.0f, 4.0f };
+    [dashedRect setLineDash:dashPattern count:2 phase:0];
+    [dashedRect setLineWidth:2.0f];
+    [dashedRect stroke];
+}
+
+- (void) drawTextFieldWithRect:(CGRect)rect
+{
+    UIBezierPath * pathThumbImg = [UIBezierPath bezierPathWithRoundedRect:rect
+                                                        byRoundingCorners:UIRectCornerTopRight
+                                                              cornerRadii:CGSizeMake(RADIUS, RADIUS)];
+    [pathThumbImg setLineWidth:2.0f];
+    [pathThumbImg stroke];
+    [pathThumbImg fill];
+    
+}
+
+- (void) drawTextViewWithRect:(CGRect)rect
+{
+    UIBezierPath * pathThumbImg = [UIBezierPath bezierPathWithRoundedRect:rect
+                                                        byRoundingCorners:UIRectCornerBottomRight
+                                                              cornerRadii:CGSizeMake(RADIUS, RADIUS)];
+    [pathThumbImg setLineWidth:2.0f];
+    [pathThumbImg stroke];
+    [pathThumbImg fill];
+    
 }
 
 - (void) layoutSubviews
@@ -96,7 +187,7 @@
     if (self.dogEar == nil)
     {
         [imageView setImage:[self.thumbImage scaleToFitSize:imageView.frame.size]];
-        label.text = [NSString mediumStyleDateAndShortStyleTimeWithDate:[NSDate date]];
+//        label.text = [NSString mediumStyleDateAndShortStyleTimeWithDate:[NSDate date]];
         self.titleField.placeholder = @"Title";
         self.titleField.text = @"";
        
@@ -107,7 +198,7 @@
     {
         NSData *pngData = [NSData dataWithContentsOfFile:self.dogEar.imagePath];
         [imageView setImage:[[UIImage imageWithData:pngData] scaleToFitSize:imageView.frame.size]];
-        label.text = [NSString mediumStyleDateAndShortStyleTimeWithDate:self.dogEar.insertedDate];
+//        label.text = [NSString mediumStyleDateAndShortStyleTimeWithDate:self.dogEar.insertedDate];
         self.titleField.placeholder = @"";
         self.titleField.text = self.dogEar.title;
         
@@ -140,7 +231,6 @@
 
 - (BOOL)textFieldShouldReturn:(UITextField *)textField
 {
-    [txtView becomeFirstResponder];
     return YES;
 }
 
