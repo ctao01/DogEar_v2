@@ -164,7 +164,7 @@
         
         de_MainNavigationController * nc = (de_MainNavigationController*)[self.viewControllers objectAtIndex:1];
 //        de_PhotoViewController * vc = [[de_PhotoViewController alloc]initWithImage:originImage toolBarType:BKToolBarTypeEditing];
-        de_PhotoViewController * vc = [[de_PhotoViewController alloc]initWithImage:[UIImage rotateImage:originImage] andExistingDogEar:nil];
+        de_PhotoViewController * vc = [[de_PhotoViewController alloc]initWithImage:originImage andExistingDogEar:nil];
         [nc pushViewController:vc animated:YES];
         
     }];

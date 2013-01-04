@@ -27,15 +27,12 @@
     
     if (notification)
     {
-        UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Dog Ear Reminder"
-                                                        message:notification.alertBody
-                                                       delegate:self
-                                              cancelButtonTitle:@"Cancel"
-                                              otherButtonTitles:@"Check it",nil];
+        self.localNotification = notification;
         [application cancelLocalNotification:notification];
-        [alert show];
+        notification.applicationIconBadgeNumber = 0;
+        application.applicationIconBadgeNumber = 0;
+        [NSTimer scheduledTimerWithTimeInterval:5 target:self selector:@selector(showAlert:) userInfo:nil repeats:NO];
     }
-    application.applicationIconBadgeNumber = 0;
     self.bkMainNav = [[UINavigationController alloc]initWithRootViewController:self.bkSplashScreenVC];
     self.window.rootViewController = self.bkMainNav;
     
@@ -46,6 +43,16 @@
     }
     
     return YES;
+}
+
+- (void) showAlert:(NSTimer*) timer
+{
+    UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"DogEar Reminder"
+                                                    message:self.localNotification.alertBody
+                                                   delegate:self
+                                          cancelButtonTitle:@"Cancel"
+                                          otherButtonTitles:@"Check it",nil];
+    [alert show];
 }
 
 - (void)applicationWillResignActive:(UIApplication *)application
@@ -85,15 +92,18 @@
 {
     NSLog(@"didReceiveLocalNotification");
 //    [self.bkSplashScreenVC showReminderWithLocalNotification:notification];
+    notification.applicationIconBadgeNumber = 0;
+    application.applicationIconBadgeNumber = 0;
+
+    [application cancelLocalNotification:notification];
     self.localNotification = notification;
-    UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Dog Ear Reminder"
+    UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"DogEar Reminder"
                                                     message:notification.alertBody
                                                    delegate:self
                                           cancelButtonTitle:@"Cancel"
                                           otherButtonTitles:@"Check it",nil];
     [alert show];
-    application.applicationIconBadgeNumber = notification.applicationIconBadgeNumber - 1;
-    [application cancelLocalNotification:notification];
+    
 }
 
 #pragma mark - 

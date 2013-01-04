@@ -13,6 +13,7 @@
 @interface UIImage (DGStyle)
 
 + (UIImage *)rotateImage:(UIImage *)aImage;
+- (UIImage *)imageRotatedByDegrees:(CGFloat)degrees;
 
 // Image Enhance
 

@@ -74,12 +74,12 @@ static MessageManager * sharedManager = nil;
 - (void) presentShareImageFromDogEarObject:(DogEarObject*)sharedObject viaMailComposerFromParent:(UIViewController *)vcParent
 {
     NSString *  bodyString = [NSString stringWithFormat:@"%@, insert Date:%@",[sharedObject title],[sharedObject insertedDate]];
-    [self presentMailComposerWithSubject:[NSString stringWithFormat:@"Dog Ear :%@", sharedObject.title] withBody:bodyString withAttachment:[NSData dataWithContentsOfFile:sharedObject.imagePath] withAttachmentFileName:sharedObject.title fromParentViewController:vcParent];
+    [self presentMailComposerWithSubject:[NSString stringWithFormat:@"DogEar :%@", sharedObject.title] withBody:bodyString withAttachment:[NSData dataWithContentsOfFile:sharedObject.imagePath] withAttachmentFileName:[NSString stringWithFormat:@"%@.png",sharedObject.title] fromParentViewController:vcParent];
 }
 
 - (void) presentShareImageFromDogEar:(DogEarObject*)sharedObject viaMessageComposerFromParentent:(UIViewController*)vcParent
 {
-    NSString *  bodyString = [NSString stringWithFormat:@"Dog Ear Kindly remind %@",sharedObject.title];
+    NSString *  bodyString = [NSString stringWithFormat:@"DogEar Kindly remind %@",sharedObject.title];
     [self presentMessageComposerWithBody:bodyString fromParentViewController:vcParent];
 
 }

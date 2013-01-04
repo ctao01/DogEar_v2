@@ -43,6 +43,8 @@
     collections = [[NSMutableArray alloc]initWithArray:[[NSUserDefaults standardUserDefaults]objectForKey:@"BKCategory"]];
 
     self.navigationItem.title = @"Select Category";
+    self.tableView.contentInset = UIEdgeInsetsMake(0.0f, 0.0f, 49.0f, 0.0f);
+    self.tableView.scrollIndicatorInsets = self.tableView.contentInset;
 }
 
 //JT- TODO: Fix up pre-select

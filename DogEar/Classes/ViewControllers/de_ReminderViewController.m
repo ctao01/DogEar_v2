@@ -33,6 +33,7 @@
     if (self) {
         // Custom initialization
         self.tableView.scrollEnabled = NO;
+        isExpandedTable = NO;
 
     }
     return self;
@@ -76,7 +77,7 @@
 {
     [super viewDidAppear:YES];
     de_DetailViewController * vc = (de_DetailViewController*)[self.navigationController.viewControllers objectAtIndex:[self.navigationController.viewControllers count]-2];
-    if (vc.dogEar.reminderDate != NULL) isExpandedTable = YES;
+    if (vc.dogEar.reminderDate != NULL || isExpandedTable == YES) isExpandedTable = YES;
     else isExpandedTable = NO;
     NSLog(@"isExpandedTable:%@",isExpandedTable? @"YES":@"NO");
     [self.tableView reloadData];
@@ -112,6 +113,21 @@
     [self.tableView reloadData];
 }
 
+- (void) cancelExistingNotificationWithObject:(DogEarObject*)object
+{
+    NSArray *localNotifications = [[UIApplication sharedApplication] scheduledLocalNotifications];
+   for (UILocalNotification *notification in localNotifications)
+   {
+       NSDictionary * dict = notification.userInfo;
+       if (dict)
+       {
+           NSDate * insertedDate = [dict objectForKey:@"DogEarObjectInsertedDate"];
+           if ([insertedDate isEqualToDate:object.insertedDate])
+               [[UIApplication sharedApplication] cancelLocalNotification:notification];
+       }
+   }
+}
+
 - (void)changeDateReminder:(id)sender
 {
 //    UIDatePicker * datePicker = (UIDatePicker*)sender;
@@ -129,6 +145,8 @@
     de_DetailViewController * vc = (de_DetailViewController*)[self.navigationController.viewControllers objectAtIndex:[self.navigationController.viewControllers count]-2];
     if (isExpandedTable == YES)
     {
+        [self cancelExistingNotificationWithObject:vc.dogEar];
+        
         [vc.dogEar setReminderDate:picker.date];
         [vc.dogEar setRepeatingReminder:[NSNumber numberWithInteger:self.repeatedTimes]];
         
@@ -147,7 +165,8 @@
             
             //JT-Note: Repeating Notification
             NSInteger repeatingType = self.repeatedTimes;
-            if (repeatingType == 1) reminder.repeatInterval = NSHourCalendarUnit;
+            if (repeatingType == 0 ) reminder.repeatInterval = 0;
+            else if (repeatingType == 1) reminder.repeatInterval = NSHourCalendarUnit;
             else if (repeatingType == 2) reminder.repeatInterval = NSDayCalendarUnit;
             else if (repeatingType == 3) reminder.repeatInterval = NSWeekCalendarUnit;
             else if (repeatingType == 4) reminder.repeatInterval = NSMonthCalendarUnit;

@@ -67,7 +67,7 @@
 - (void) switchTurnOnOff:(id)sender
 {
     UISwitch * toggle = (UISwitch*)sender;
-    
+    NSLog(@"toggle.on=%@",toggle.on? @"YES":@"NO");
     if (toggle.on)
     {
         [[NSUserDefaults standardUserDefaults] setBool:YES forKey:@"DogEar_PostNotification"];

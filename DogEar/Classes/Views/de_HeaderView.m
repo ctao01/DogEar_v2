@@ -98,12 +98,14 @@
         [tf setBackgroundColor:[UIColor clearColor]];
         [tf setContentVerticalAlignment:UIControlContentVerticalAlignmentCenter];
         [tf setFont:[UIFont fontWithName:@"HelveticaNeue" size:14]];
+        [tf setDelegate:self];
         self.titleField = tf;
         
         CGRect rect2 = CGRectMake(100.0f, 45.0f, 210.0f, 60.0f);
         CGRect tvFrame = UIEdgeInsetsInsetRect(rect2, UIEdgeInsetsMake(1.0f, 1.0f , 1.0f , 5.0f));
         UITextView * tv = [[UITextView alloc]initWithFrame:tvFrame];
         [tv setBackgroundColor:[UIColor clearColor]];
+        [tv setDelegate:self];
         self.notesField = tv;
         
         CGRect rect3 = CGRectMake(10.0f, 15.0f, 90.0f, 90.0f);
@@ -231,6 +233,8 @@
 
 - (BOOL)textFieldShouldReturn:(UITextField *)textField
 {
+    [textField resignFirstResponder];
+
     return YES;
 }
 

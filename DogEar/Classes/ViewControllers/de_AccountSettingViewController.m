@@ -116,7 +116,7 @@
                     }
                     else
                     {
-                        UIAlertView * alertView = [[UIAlertView alloc]initWithTitle:@"Twitter Permission" message:@"Dog Ear doesn't have permission to connect user's Twitter account." delegate:self cancelButtonTitle:@"OK" otherButtonTitles: nil];
+                        UIAlertView * alertView = [[UIAlertView alloc]initWithTitle:@"Twitter Permission" message:@"DogEar doesn't have permission to connect user's Twitter account." delegate:self cancelButtonTitle:@"OK" otherButtonTitles: nil];
                         [alertView show];
                         [button setOn:YES animated:YES];
 

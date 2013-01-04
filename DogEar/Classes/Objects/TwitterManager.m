@@ -70,7 +70,7 @@ static TwitterManager * sharedManager = nil;
                     output = @"ACtionCancelled";
                     break;
                 case SLComposeViewControllerResultDone:
-                    output = @"Post Successfull";
+                    output = @"Post Successfully";
                     break;
                 default:
                     break;
@@ -92,7 +92,9 @@ static TwitterManager * sharedManager = nil;
     {
         tweetTWComposerSheet = [[TWTweetComposeViewController alloc] init];
         [tweetTWComposerSheet addImage:image];
-        [tweetTWComposerSheet setInitialText:@"Dog Ear"];
+        [tweetTWComposerSheet setInitialText:@"DogEar"];
+        UIAlertView * alertView = [[UIAlertView alloc]initWithTitle:@"DogEar" message:@"Post Successfully" delegate:nil cancelButtonTitle:@"Ok" otherButtonTitles:nil];
+        [alertView show];
     }
     else
         NSLog(@"can't send tweet");

@@ -21,6 +21,9 @@
 		3DD764D8166D365E00C7CA9B /* TwitterManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 3DD764D7166D365E00C7CA9B /* TwitterManager.m */; };
 		3DD764DA166D4FE500C7CA9B /* MessageUI.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 3DD764D9166D4FE500C7CA9B /* MessageUI.framework */; };
 		3DD764DD166D50F500C7CA9B /* MessageManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 3DD764DC166D50F500C7CA9B /* MessageManager.m */; };
+		3DDF1D4316960D65005B378C /* NLCropViewLayer.m in Sources */ = {isa = PBXBuildFile; fileRef = 3DDF1D4016960D03005B378C /* NLCropViewLayer.m */; };
+		3DDF1D4416960D65005B378C /* NLImageCropperView.m in Sources */ = {isa = PBXBuildFile; fileRef = 3DDF1D4216960D03005B378C /* NLImageCropperView.m */; };
+		3DDF1D4616960DDB005B378C /* corner.png in Resources */ = {isa = PBXBuildFile; fileRef = 3DDF1D4516960DDB005B378C /* corner.png */; };
 		7E2CB6851665AE6200A5B40D /* EditableTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 7E2CB6841665AE6200A5B40D /* EditableTableViewCell.m */; };
 		7E2CB68A1665AEA700A5B40D /* DogEarObject.m in Sources */ = {isa = PBXBuildFile; fileRef = 7E2CB6891665AEA700A5B40D /* DogEarObject.m */; };
 		7E2CB68D1665B48100A5B40D /* de_PhotoViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 7E2CB68C1665B48000A5B40D /* de_PhotoViewController.m */; };
@@ -111,6 +114,11 @@
 		3DD764D9166D4FE500C7CA9B /* MessageUI.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = MessageUI.framework; path = System/Library/Frameworks/MessageUI.framework; sourceTree = SDKROOT; };
 		3DD764DB166D50F500C7CA9B /* MessageManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = MessageManager.h; path = Classes/Objects/MessageManager.h; sourceTree = "<group>"; };
 		3DD764DC166D50F500C7CA9B /* MessageManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = MessageManager.m; path = Classes/Objects/MessageManager.m; sourceTree = "<group>"; };
+		3DDF1D3F16960D03005B378C /* NLCropViewLayer.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = NLCropViewLayer.h; sourceTree = "<group>"; };
+		3DDF1D4016960D03005B378C /* NLCropViewLayer.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = NLCropViewLayer.m; sourceTree = "<group>"; };
+		3DDF1D4116960D03005B378C /* NLImageCropperView.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = NLImageCropperView.h; sourceTree = "<group>"; };
+		3DDF1D4216960D03005B378C /* NLImageCropperView.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = NLImageCropperView.m; sourceTree = "<group>"; };
+		3DDF1D4516960DDB005B378C /* corner.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = corner.png; sourceTree = "<group>"; };
 		7E2CB6831665AE6200A5B40D /* EditableTableViewCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = EditableTableViewCell.h; path = Classes/Cells/EditableTableViewCell.h; sourceTree = "<group>"; };
 		7E2CB6841665AE6200A5B40D /* EditableTableViewCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = EditableTableViewCell.m; path = Classes/Cells/EditableTableViewCell.m; sourceTree = "<group>"; };
 		7E2CB6881665AEA700A5B40D /* DogEarObject.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = DogEarObject.h; path = Classes/Objects/DogEarObject.h; sourceTree = "<group>"; };
@@ -237,6 +245,19 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		3DDF1D3D16960CEE005B378C /* CropView */ = {
+			isa = PBXGroup;
+			children = (
+				3DDF1D3F16960D03005B378C /* NLCropViewLayer.h */,
+				3DDF1D4016960D03005B378C /* NLCropViewLayer.m */,
+				3DDF1D4116960D03005B378C /* NLImageCropperView.h */,
+				3DDF1D4216960D03005B378C /* NLImageCropperView.m */,
+				3D1A666C1672EED200699B30 /* CropView.h */,
+				3D1A666D1672EED200699B30 /* CropView.m */,
+			);
+			name = CropView;
+			sourceTree = "<group>";
+		};
 		7E2CB6871665AE7200A5B40D /* Objects */ = {
 			isa = PBXGroup;
 			children = (
@@ -352,6 +373,7 @@
 		7E4252B716645F4400741A41 /* Assets */ = {
 			isa = PBXGroup;
 			children = (
+				3DDF1D4516960DDB005B378C /* corner.png */,
 				3D28E02E167AEB3F0086B331 /* screenshot.png */,
 				3D3EC77F1677C33E0074945F /* cropPoint.png */,
 				7ECD4450166E8B0200B3A160 /* dogear-default.png */,
@@ -426,8 +448,7 @@
 		7E4252E216645F7E00741A41 /* Views */ = {
 			isa = PBXGroup;
 			children = (
-				3D1A666C1672EED200699B30 /* CropView.h */,
-				3D1A666D1672EED200699B30 /* CropView.m */,
+				3DDF1D3D16960CEE005B378C /* CropView */,
 				7E2CB6931665D2FB00A5B40D /* de_DetailHeaderView.h */,
 				7E2CB6941665D2FB00A5B40D /* de_DetailHeaderView.m */,
 				3D1A66531672671E00699B30 /* de_NavigationBar.h */,
@@ -630,6 +651,7 @@
 				3D81651E1683D38C001159FF /* dogear-bg-instructions-fix-568h@2x.png in Resources */,
 				3D81651F1683D38C001159FF /* dogear-bg-instructions-fix.png in Resources */,
 				3D8165201683D38C001159FF /* dogear-bg-instructions-fix@2x.png in Resources */,
+				3DDF1D4616960DDB005B378C /* corner.png in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -640,6 +662,8 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				3DDF1D4316960D65005B378C /* NLCropViewLayer.m in Sources */,
+				3DDF1D4416960D65005B378C /* NLImageCropperView.m in Sources */,
 				7E4252EF16646C9500741A41 /* de_SettingViewController.m in Sources */,
 				7E4252A616645DF400741A41 /* main.m in Sources */,
 				7E4252AA16645DF400741A41 /* AppDelegate.m in Sources */,

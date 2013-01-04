@@ -17,8 +17,9 @@
 #import "TwitterManager.h"
 #import "MessageManager.h"
 
-#import "UIImage+DGStyle.h"
-#import "CropView.h"
+//#import "UIImage+DGStyle.h"
+//#import "CropView.h"
+#import "NLImageCropperView.h"
 
 #define IPHONE_NAVIGATION_BAR_HEIGHT 44
 #define IPHONE_TOOL_BAR_HEIGHT 45
@@ -50,7 +51,8 @@ int currentAngle = 0;
     // Image Crop
 
     UIView *overlayView;
-    CropView * cropView;
+//    CropView * cropView;
+    NLImageCropperView * cropView;
     
     CGFloat cropTL_y; //top Left
     CGFloat cropTR_x; //top Right
@@ -99,7 +101,7 @@ int currentAngle = 0;
     if (self)
     {
         self.existingDogEar = object;
-        self.photo = image;
+        self.photo = [UIImage rotateImage:image];
         self.view.backgroundColor = [UIColor blackColor];
     }
     return self;
@@ -119,6 +121,7 @@ int currentAngle = 0;
 	scrollView.backgroundColor = [UIColor blackColor];
 	scrollView.delegate = self;
 	imageView = [[UIImageView alloc] initWithImage:self.photo];
+    imageView.contentMode = UIViewContentModeScaleAspectFit;
 	[scrollView addSubview:imageView];
 	scrollView.minimumZoomScale = scrollView.frame.size.width / imageView.frame.size.width;
 	scrollView.maximumZoomScale = 2.0;
@@ -262,8 +265,8 @@ int currentAngle = 0;
 
 - (void) backToList
 {
-    if ([self.navigationController.viewControllers count]>3)
-    {
+//    if ([self.navigationController.viewControllers count]>3)
+//    {
         de_ListTableViewController * vc = (de_ListTableViewController*)[self.navigationController.viewControllers objectAtIndex:[self.navigationController.viewControllers count]-2];
         de_ListTableViewController * previousVc = [self.navigationController.viewControllers objectAtIndex:[self.navigationController.viewControllers count]-3];
         NSArray * array = [[NSUserDefaults standardUserDefaults]objectForKey:@"BKFlaggedItems"];
@@ -272,8 +275,8 @@ int currentAngle = 0;
         else if ([previousVc isKindOfClass:[de_FlaggedListViewController class]])
             vc.navigationItem.title = [array objectAtIndex:[self.existingDogEar.flagged integerValue]];
         [self.navigationController popToViewController:vc animated:YES];
-    }
-    else [self.navigationController popToRootViewControllerAnimated:YES];
+//    }
+//    else [self.navigationController popToRootViewControllerAnimated:YES];
 }
 
 
@@ -287,15 +290,15 @@ int currentAngle = 0;
 	[scrollView setTransform:rotate];
     NSLog(@"%i",currentAngle);
 
-    UIImage * newImage ;
-    if (currentAngle == -90)
-        newImage = [[UIImage alloc] initWithCGImage:self.photo.CGImage scale:1 orientation:UIImageOrientationLeft];
-    else if (currentAngle == -180)
-        newImage = [[UIImage alloc] initWithCGImage:self.photo.CGImage scale:1 orientation:UIImageOrientationDown];
-    else if (currentAngle == -270)
-        newImage = [[UIImage alloc] initWithCGImage:self.photo.CGImage scale:1 orientation:UIImageOrientationRight];
-    else
-        newImage = [[UIImage alloc] initWithCGImage:self.photo.CGImage scale:1 orientation:UIImageOrientationUp];
+    UIImage * newImage = [self.photo imageRotatedByDegrees:currentAngle];
+//    if (currentAngle == -90)
+//        newImage = [[UIImage alloc] initWithCGImage:self.photo.CGImage scale:1 orientation:UIImageOrientationLeft];
+//    else if (currentAngle == -180)
+//        newImage = [[UIImage alloc] initWithCGImage:self.photo.CGImage scale:1 orientation:UIImageOrientationDown];
+//    else if (currentAngle == -270)
+//        newImage = [[UIImage alloc] initWithCGImage:self.photo.CGImage scale:1 orientation:UIImageOrientationRight];
+//    else
+//        newImage = [[UIImage alloc] initWithCGImage:self.photo.CGImage scale:1 orientation:UIImageOrientationUp];
     self.photo = newImage;
 }
 
@@ -321,31 +324,36 @@ int currentAngle = 0;
 /******************************************************************************************/
 - (void) cropPhoto
 {
-    CGRect cropFrame = CGRectMake(40.0f, 40.0f, 240, 320.0f);
-    cropTL_y = cropFrame.origin.y;
-    cropTR_x = cropFrame.origin.x + cropFrame.size.width;
-    cropBR_y = cropFrame.origin.y + cropFrame.size.height;
-    cropBL_x = cropFrame.origin.x;
+//    CGRect cropFrame = CGRectMake(40.0f, 40.0f, 240, 320.0f);
+//    cropTL_y = cropFrame.origin.y;
+//    cropTR_x = cropFrame.origin.x + cropFrame.size.width;
+//    cropBR_y = cropFrame.origin.y + cropFrame.size.height;
+//    cropBL_x = cropFrame.origin.x;
+//    
+//    cropView = [[CropView alloc]initWithOuterFrame:self.view.frame andInnerFrame:cropFrame];
+//    [self.view addSubview:cropView];
+//    [cropView setNeedsDisplay];
+//    
+//    UIImage * cropPointImg = [UIImage imageNamed:@"cropPoint.png"];
+//	ivleftUp = [[UIImageView alloc]initWithImage:cropPointImg];
+//	ivRightUp = [[UIImageView alloc]initWithImage:cropPointImg];
+//	ivleftDown = [[UIImageView alloc]initWithImage:cropPointImg];
+//	ivRightDown = [[UIImageView alloc]initWithImage:cropPointImg];
+//	
+//	ivleftUp.center = CGPointMake(cropBL_x, cropTL_y);
+//	ivleftDown.center = CGPointMake(cropBL_x, cropBR_y);;
+//	ivRightUp.center = CGPointMake(cropTR_x, cropTL_y);
+//	ivRightDown.center = CGPointMake(cropTR_x, cropBR_y);;
+//	
+//	[cropView addSubview:ivleftUp];
+//	[cropView addSubview:ivleftDown];
+//	[cropView addSubview:ivRightUp];
+//	[cropView addSubview:ivRightDown];
     
-    cropView = [[CropView alloc]initWithOuterFrame:self.view.frame andInnerFrame:cropFrame];
+    cropView = [[NLImageCropperView alloc]initWithFrame:self.view.frame];
     [self.view addSubview:cropView];
-    [cropView setNeedsDisplay];
-    
-    UIImage * cropPointImg = [UIImage imageNamed:@"cropPoint.png"];
-	ivleftUp = [[UIImageView alloc]initWithImage:cropPointImg];
-	ivRightUp = [[UIImageView alloc]initWithImage:cropPointImg];
-	ivleftDown = [[UIImageView alloc]initWithImage:cropPointImg];
-	ivRightDown = [[UIImageView alloc]initWithImage:cropPointImg];
-	
-	ivleftUp.center = CGPointMake(cropBL_x, cropTL_y);
-	ivleftDown.center = CGPointMake(cropBL_x, cropBR_y);;
-	ivRightUp.center = CGPointMake(cropTR_x, cropTL_y);
-	ivRightDown.center = CGPointMake(cropTR_x, cropBR_y);;
-	
-	[cropView addSubview:ivleftUp];
-	[cropView addSubview:ivleftDown];
-	[cropView addSubview:ivRightUp];
-	[cropView addSubview:ivRightDown];
+    [cropView setImage:self.photo];
+    [cropView setCropRegionRect:CGRectMake(10, 50, 450, 680)];
     
     UIBarButtonItem * cancelButton = [[UIBarButtonItem alloc]initWithBarButtonSystemItem:UIBarButtonSystemItemCancel target:self action:@selector(cancelCrop)];
     self.navigationItem.leftBarButtonItem = cancelButton;
@@ -356,10 +364,12 @@ int currentAngle = 0;
 
 - (void) doneCrop
 {
-    CGRect rect = CGRectMake(cropBL_x, cropTL_y, cropTR_x - cropBL_x, cropBR_y - cropTL_y);
-    CGSize imageViewSize = imageView.frame.size;
-    UIImage * image = [[UIImage alloc]imageByCropping:[self.photo scaleToFitSize:imageViewSize] toRect:rect];
-    imageView.image = image;
+//    CGRect rect = CGRectMake(cropBL_x, cropTL_y, cropTR_x - cropBL_x, cropBR_y - cropTL_y);
+//    CGSize imageViewSize = imageView.frame.size;
+    UIImage * image = [cropView getCroppedImage];
+//    UIImage * image = [[UIImage alloc]imageByCropping:[self.photo scaleToFitSize:imageViewSize] toRect:rect];
+    imageView.image = [image imageRotatedByDegrees:-currentAngle];
+    self.photo = image;
     [imageView setNeedsDisplay];
 
     self.navigationItem.rightBarButtonItem = [[UIBarButtonItem alloc]initWithTitle:@"Save" style:UIBarButtonItemStyleDone target:self action:@selector(storeTheImage)];
@@ -393,215 +403,215 @@ int currentAngle = 0;
 //}
 
 
-- (void)ControlCropView:(NSSet *)touches {
-	
-    
-    CGPoint movedPoint = [[touches anyObject] locationInView:self.view];
-	    
-    if ((fabs(movedPoint.x - cropBL_x)<=ktapDiff)&&(fabs(movedPoint.y -cropTL_y)<= ktapDiff))
-        //    if ((abs(movedPoint.x - cropBL_x)<ktapDiff) && ((cropTL_y -movedPoint.y <= ktapDiff)||(cropTL_y -movedPoint.y <= ktapDiff)))
-    {
-        NSLog(@"Touched upper left corner");
-        isTappedOnUpperLeftCorner = TRUE;
-    }
-    else if((fabs(movedPoint.x - cropTR_x)<=ktapDiff)&&(fabs(movedPoint.y -cropTL_y)<= ktapDiff))
-        //    else if(((movedPoint.x - cropTR_x <= ktapDiff)||(cropTR_x - movedPoint.x <= ktapDiff)) && ((cropTL_y -movedPoint.y <= ktapDiff)||(cropTL_y -movedPoint.y <= ktapDiff)))
-    {
-        NSLog(@"Touched upper Right corner");
-        isTappedOnUpperRightCorner = TRUE;
-    }
-    else if((fabs(movedPoint.x - cropTR_x)<=ktapDiff)&&(fabs(movedPoint.y -cropBR_y)<= ktapDiff))
-        
-        //    else if (((movedPoint.x - cropTR_x <= ktapDiff)||(cropTR_x -movedPoint.x <= ktapDiff)) && ((cropBR_y -movedPoint.y <= ktapDiff)||(cropBR_y -movedPoint.y <= ktapDiff)))
-        
-    {
-        NSLog(@"Touched lower Right corner");
-        isTappedOnLowerRightCorner = TRUE;
-
-    }
-    else if((fabs(movedPoint.x - cropBL_x)<=ktapDiff)&&(fabs(movedPoint.y -cropBR_y)<= ktapDiff))
-        
-        //    else if (((movedPoint.x - cropBL_x <= ktapDiff)||(cropBL_x -movedPoint.x <= ktapDiff)) && ((cropBR_y -movedPoint.y <= ktapDiff)||(cropBR_y -movedPoint.y <= ktapDiff)))
-    {
-        NSLog(@"Touched lower left corner");
-        isTappedOnLowerLeftCorner = TRUE;
-    }
-}
-
--(void) updateCropPoints
-{
-	ivleftUp.center = CGPointMake(cropBL_x, cropTL_y);
-	ivleftDown.center = CGPointMake(cropBL_x, cropBR_y);;
-	ivRightUp.center = CGPointMake(cropTR_x, cropTL_y);
-	ivRightDown.center = CGPointMake(cropTR_x, cropBR_y);;
-}
-
-#pragma mark -
-#pragma mark UITOUCHES Stuff
-
-- (void)touchesBegan:(NSSet *)touches withEvent:(UIEvent *)event {
-	[self ControlCropView:touches];
-}
-- (void)touchesCancelled:(NSSet *)touches withEvent:(UIEvent *)event{
-	isTappedOnLowerLeftCorner = FALSE;
-	isTappedOnLowerRightCorner = FALSE;
-	isTappedOnUpperLeftCorner = FALSE;
-	isTappedOnUpperRightCorner = FALSE;
-}
-- (void)touchesEnded:(NSSet *)touches withEvent:(UIEvent *)event {
-    //    messageLabel.text = @"Touches Stopped.";
-	isTappedOnLowerLeftCorner = FALSE;
-	isTappedOnLowerRightCorner = FALSE;
-	isTappedOnUpperLeftCorner = FALSE;
-	isTappedOnUpperRightCorner = FALSE;
-}
-
-- (void)touchesMoved:(NSSet *)touches withEvent:(UIEvent *)event
-{
-    CGPoint movedPoint = [[touches anyObject] locationInView:self.view];
-    
-    CGRect viewFrame = imageView.frame;
-    
-    if ((movedPoint.x <= 10 && movedPoint.x >= 310))
-		return;
-	if ((movedPoint.y <= 10  && movedPoint.y >= viewFrame.size.height - 10)) {
-		return;
-	}
-    
-    
-    if (isTappedOnUpperLeftCorner)
-    {
-        if (movedPoint.x >= cropView.frame.origin.x + cropView.frame.size.width) return;
-        if (movedPoint.y >= cropView.frame.origin.y + cropView.frame.size.height) return;
-        
-        // TODO: move left
-        
-        if ((cropBL_x - movedPoint.x) >= kWidthDifference)
-        {
-            if ((cropTL_y - movedPoint.y)>=kHeightDifference) // move up
-                cropTL_y = movedPoint.y;
-            else if ((movedPoint.y -cropTL_y)>= kHeightDifference) // move down
-                cropTL_y = movedPoint.y;
-            else return;
-            
-            cropBL_x = movedPoint.x;
-            
-        }
-        // TODO: move right
-        else if ((movedPoint.x -cropBL_x) >= kWidthDifference)
-        {
-            if ((cropTL_y - movedPoint.y)>=kHeightDifference) // move up
-                cropTL_y = movedPoint.y;
-            else if ((movedPoint.y -cropTL_y)>= kHeightDifference) // move down
-                cropTL_y = movedPoint.y;
-            else return;
-            
-            cropBL_x = movedPoint.x;
-        }
-        else return;
-    }
-    
-    else if (isTappedOnUpperRightCorner)
-    {
-        if (movedPoint.x <= cropView.frame.origin.x) return;
-        if (movedPoint.y >= cropView.frame.origin.y + cropView.frame.size.height) return;
-        
-        if ((cropTR_x - movedPoint.x) >= kWidthDifference)
-        {
-            if ((cropTL_y - movedPoint.y)>=kHeightDifference) // move up
-                cropTL_y = movedPoint.y;
-            else if ((movedPoint.y -cropTL_y)>= kHeightDifference) // move down
-                cropTL_y = movedPoint.y;
-            else return;
-            
-            cropTR_x = movedPoint.x;
-            
-        }
-        // TODO: move right
-        else if ((movedPoint.x -cropTR_x) >= kWidthDifference)
-        {
-            if ((cropTL_y - movedPoint.y)>=kHeightDifference) // move up
-                cropTL_y = movedPoint.y;
-            else if ((movedPoint.y -cropTL_y)>= kHeightDifference) // move down
-                cropTL_y = movedPoint.y;
-            else return;
-            
-            cropTR_x = movedPoint.x;
-        }
-        else return;
-    }
-    
-     else if (isTappedOnLowerRightCorner)
-     {
-         if (movedPoint.x <= cropView.frame.origin.x) return;
-         if (movedPoint.y <=cropView.frame.origin.y) return;
-         
-         if ((cropTR_x - movedPoint.x) >= kWidthDifference)
-         {
-             if ((cropBR_y - movedPoint.y)>=kHeightDifference) // move up
-             cropBR_y = movedPoint.y;
-             else if ((movedPoint.y -cropBR_y)>= kHeightDifference) // move down
-             cropBR_y = movedPoint.y;
-             else return;
-             
-             cropTR_x = movedPoint.x;
-             
-             }
-             // TODO: move right
-             else if ((movedPoint.x -cropTR_x) >= kWidthDifference)
-             {
-             if ((cropBR_y - movedPoint.y)>=kHeightDifference) // move up
-             cropBR_y = movedPoint.y;
-             else if ((movedPoint.y -cropBR_y)>= kHeightDifference) // move down
-             cropBR_y = movedPoint.y;
-             else return;
-             
-             cropTR_x = movedPoint.x;
-             }
-         else return;
-     }
-     
-     else if (isTappedOnLowerLeftCorner)
-     {
-         if (movedPoint.x >= cropView.frame.origin.x + cropView.frame.size.width) return;
-         if (movedPoint.y <=cropView.frame.origin.y) return;
-
-         
-         if ((cropBL_x - movedPoint.x) >= kWidthDifference)
-         {
-             if ((cropBR_y - movedPoint.y)>=kHeightDifference) // move up
-             cropBR_y = movedPoint.y;
-             else if ((movedPoint.y -cropBR_y)>= kHeightDifference) // move down
-             cropBR_y = movedPoint.y;
-             else return;
-             
-             cropBL_x = movedPoint.x;
-         
-         }
-         // TODO: move right
-         else if ((movedPoint.x -cropBL_x) >= kWidthDifference)
-         {
-             if ((cropBR_y - movedPoint.y)>=kHeightDifference) // move up
-             cropBR_y = movedPoint.y;
-             else if ((movedPoint.y -cropBR_y)>= kHeightDifference) // move down
-             cropBR_y = movedPoint.y;
-             else return;
-             
-             cropBL_x = movedPoint.x;
-         }
-         else return;
-     }
-    cropView.cropFrame = CGRectMake(cropBL_x, cropTL_y, cropTR_x - cropBL_x, cropBR_y - cropTL_y);
-    [self updateCropPoints];
-    [cropView setNeedsDisplay];
-    
-}
+//- (void)ControlCropView:(NSSet *)touches {
+//	
+//    
+//    CGPoint movedPoint = [[touches anyObject] locationInView:self.view];
+//	    
+//    if ((fabs(movedPoint.x - cropBL_x)<=ktapDiff)&&(fabs(movedPoint.y -cropTL_y)<= ktapDiff))
+//        //    if ((abs(movedPoint.x - cropBL_x)<ktapDiff) && ((cropTL_y -movedPoint.y <= ktapDiff)||(cropTL_y -movedPoint.y <= ktapDiff)))
+//    {
+//        NSLog(@"Touched upper left corner");
+//        isTappedOnUpperLeftCorner = TRUE;
+//    }
+//    else if((fabs(movedPoint.x - cropTR_x)<=ktapDiff)&&(fabs(movedPoint.y -cropTL_y)<= ktapDiff))
+//        //    else if(((movedPoint.x - cropTR_x <= ktapDiff)||(cropTR_x - movedPoint.x <= ktapDiff)) && ((cropTL_y -movedPoint.y <= ktapDiff)||(cropTL_y -movedPoint.y <= ktapDiff)))
+//    {
+//        NSLog(@"Touched upper Right corner");
+//        isTappedOnUpperRightCorner = TRUE;
+//    }
+//    else if((fabs(movedPoint.x - cropTR_x)<=ktapDiff)&&(fabs(movedPoint.y -cropBR_y)<= ktapDiff))
+//        
+//        //    else if (((movedPoint.x - cropTR_x <= ktapDiff)||(cropTR_x -movedPoint.x <= ktapDiff)) && ((cropBR_y -movedPoint.y <= ktapDiff)||(cropBR_y -movedPoint.y <= ktapDiff)))
+//        
+//    {
+//        NSLog(@"Touched lower Right corner");
+//        isTappedOnLowerRightCorner = TRUE;
+//
+//    }
+//    else if((fabs(movedPoint.x - cropBL_x)<=ktapDiff)&&(fabs(movedPoint.y -cropBR_y)<= ktapDiff))
+//        
+//        //    else if (((movedPoint.x - cropBL_x <= ktapDiff)||(cropBL_x -movedPoint.x <= ktapDiff)) && ((cropBR_y -movedPoint.y <= ktapDiff)||(cropBR_y -movedPoint.y <= ktapDiff)))
+//    {
+//        NSLog(@"Touched lower left corner");
+//        isTappedOnLowerLeftCorner = TRUE;
+//    }
+//}
+//
+//-(void) updateCropPoints
+//{
+//	ivleftUp.center = CGPointMake(cropBL_x, cropTL_y);
+//	ivleftDown.center = CGPointMake(cropBL_x, cropBR_y);;
+//	ivRightUp.center = CGPointMake(cropTR_x, cropTL_y);
+//	ivRightDown.center = CGPointMake(cropTR_x, cropBR_y);;
+//}
+//
+//#pragma mark -
+//#pragma mark UITOUCHES Stuff
+//
+//- (void)touchesBegan:(NSSet *)touches withEvent:(UIEvent *)event {
+//	[self ControlCropView:touches];
+//}
+//- (void)touchesCancelled:(NSSet *)touches withEvent:(UIEvent *)event{
+//	isTappedOnLowerLeftCorner = FALSE;
+//	isTappedOnLowerRightCorner = FALSE;
+//	isTappedOnUpperLeftCorner = FALSE;
+//	isTappedOnUpperRightCorner = FALSE;
+//}
+//- (void)touchesEnded:(NSSet *)touches withEvent:(UIEvent *)event {
+//    //    messageLabel.text = @"Touches Stopped.";
+//	isTappedOnLowerLeftCorner = FALSE;
+//	isTappedOnLowerRightCorner = FALSE;
+//	isTappedOnUpperLeftCorner = FALSE;
+//	isTappedOnUpperRightCorner = FALSE;
+//}
+//
+//- (void)touchesMoved:(NSSet *)touches withEvent:(UIEvent *)event
+//{
+//    CGPoint movedPoint = [[touches anyObject] locationInView:self.view];
+//    
+//    CGRect viewFrame = imageView.frame;
+//    
+//    if ((movedPoint.x <= 10 && movedPoint.x >= 310))
+//		return;
+//	if ((movedPoint.y <= 10  && movedPoint.y >= viewFrame.size.height - 10)) {
+//		return;
+//	}
+//    
+//    
+//    if (isTappedOnUpperLeftCorner)
+//    {
+//        if (movedPoint.x >= cropView.frame.origin.x + cropView.frame.size.width) return;
+//        if (movedPoint.y >= cropView.frame.origin.y + cropView.frame.size.height) return;
+//        
+//        // TODO: move left
+//        
+//        if ((cropBL_x - movedPoint.x) >= kWidthDifference)
+//        {
+//            if ((cropTL_y - movedPoint.y)>=kHeightDifference) // move up
+//                cropTL_y = movedPoint.y;
+//            else if ((movedPoint.y -cropTL_y)>= kHeightDifference) // move down
+//                cropTL_y = movedPoint.y;
+//            else return;
+//            
+//            cropBL_x = movedPoint.x;
+//            
+//        }
+//        // TODO: move right
+//        else if ((movedPoint.x -cropBL_x) >= kWidthDifference)
+//        {
+//            if ((cropTL_y - movedPoint.y)>=kHeightDifference) // move up
+//                cropTL_y = movedPoint.y;
+//            else if ((movedPoint.y -cropTL_y)>= kHeightDifference) // move down
+//                cropTL_y = movedPoint.y;
+//            else return;
+//            
+//            cropBL_x = movedPoint.x;
+//        }
+//        else return;
+//    }
+//    
+//    else if (isTappedOnUpperRightCorner)
+//    {
+//        if (movedPoint.x <= cropView.frame.origin.x) return;
+//        if (movedPoint.y >= cropView.frame.origin.y + cropView.frame.size.height) return;
+//        
+//        if ((cropTR_x - movedPoint.x) >= kWidthDifference)
+//        {
+//            if ((cropTL_y - movedPoint.y)>=kHeightDifference) // move up
+//                cropTL_y = movedPoint.y;
+//            else if ((movedPoint.y -cropTL_y)>= kHeightDifference) // move down
+//                cropTL_y = movedPoint.y;
+//            else return;
+//            
+//            cropTR_x = movedPoint.x;
+//            
+//        }
+//        // TODO: move right
+//        else if ((movedPoint.x -cropTR_x) >= kWidthDifference)
+//        {
+//            if ((cropTL_y - movedPoint.y)>=kHeightDifference) // move up
+//                cropTL_y = movedPoint.y;
+//            else if ((movedPoint.y -cropTL_y)>= kHeightDifference) // move down
+//                cropTL_y = movedPoint.y;
+//            else return;
+//            
+//            cropTR_x = movedPoint.x;
+//        }
+//        else return;
+//    }
+//    
+//     else if (isTappedOnLowerRightCorner)
+//     {
+//         if (movedPoint.x <= cropView.frame.origin.x) return;
+//         if (movedPoint.y <=cropView.frame.origin.y) return;
+//         
+//         if ((cropTR_x - movedPoint.x) >= kWidthDifference)
+//         {
+//             if ((cropBR_y - movedPoint.y)>=kHeightDifference) // move up
+//             cropBR_y = movedPoint.y;
+//             else if ((movedPoint.y -cropBR_y)>= kHeightDifference) // move down
+//             cropBR_y = movedPoint.y;
+//             else return;
+//             
+//             cropTR_x = movedPoint.x;
+//             
+//             }
+//             // TODO: move right
+//             else if ((movedPoint.x -cropTR_x) >= kWidthDifference)
+//             {
+//             if ((cropBR_y - movedPoint.y)>=kHeightDifference) // move up
+//             cropBR_y = movedPoint.y;
+//             else if ((movedPoint.y -cropBR_y)>= kHeightDifference) // move down
+//             cropBR_y = movedPoint.y;
+//             else return;
+//             
+//             cropTR_x = movedPoint.x;
+//             }
+//         else return;
+//     }
+//     
+//     else if (isTappedOnLowerLeftCorner)
+//     {
+//         if (movedPoint.x >= cropView.frame.origin.x + cropView.frame.size.width) return;
+//         if (movedPoint.y <=cropView.frame.origin.y) return;
+//
+//         
+//         if ((cropBL_x - movedPoint.x) >= kWidthDifference)
+//         {
+//             if ((cropBR_y - movedPoint.y)>=kHeightDifference) // move up
+//             cropBR_y = movedPoint.y;
+//             else if ((movedPoint.y -cropBR_y)>= kHeightDifference) // move down
+//             cropBR_y = movedPoint.y;
+//             else return;
+//             
+//             cropBL_x = movedPoint.x;
+//         
+//         }
+//         // TODO: move right
+//         else if ((movedPoint.x -cropBL_x) >= kWidthDifference)
+//         {
+//             if ((cropBR_y - movedPoint.y)>=kHeightDifference) // move up
+//             cropBR_y = movedPoint.y;
+//             else if ((movedPoint.y -cropBR_y)>= kHeightDifference) // move down
+//             cropBR_y = movedPoint.y;
+//             else return;
+//             
+//             cropBL_x = movedPoint.x;
+//         }
+//         else return;
+//     }
+//    cropView.cropFrame = CGRectMake(cropBL_x, cropTL_y, cropTR_x - cropBL_x, cropBR_y - cropTL_y);
+//    [self updateCropPoints];
+//    [cropView setNeedsDisplay];
+//    
+//}
 /******************************************************************************************/
 
 
 - (void) shareThePhoto
 {
-    UIActionSheet * actionSheet = [[UIActionSheet alloc]initWithTitle:@"Share" delegate:self cancelButtonTitle:@"Cancel" destructiveButtonTitle:nil otherButtonTitles:@"Facebook",@"Twitter",@"Email",@"Message",@"Print", nil];
+    UIActionSheet * actionSheet = [[UIActionSheet alloc]initWithTitle:@"Share" delegate:self cancelButtonTitle:@"Cancel" destructiveButtonTitle:nil otherButtonTitles:@"Share on Facebook",@"Share on Twitter",@"Email DogEar",@"Save To Camera Roll",@"Print", nil];
     actionSheet.delegate = self;
     [actionSheet showInView:self.view];
 }
@@ -610,7 +620,7 @@ int currentAngle = 0;
 - (void) deleteThePhoto
 {
     
-    UIAlertView * alertView = [[UIAlertView alloc]initWithTitle:@"Dog Ear" message:@"Are you sure delete this dog ear" delegate:self cancelButtonTitle:@"Cancel" otherButtonTitles:@"Move To Trash", nil];
+    UIAlertView * alertView = [[UIAlertView alloc]initWithTitle:@"DogEar" message:@"Are you sure delete this DogEar" delegate:self cancelButtonTitle:@"Cancel" otherButtonTitles:@"Move To Trash", nil];
     [alertView show];
 }
 
@@ -626,8 +636,15 @@ int currentAngle = 0;
     
     [FBRequestConnection startWithGraphPath:@"me/photos" parameters:params HTTPMethod:@"POST"
                           completionHandler:^(FBRequestConnection *connection, id result, NSError *error){
-        if (error)  NSLog(@"error");
-        else NSLog(@"successful!!");
+                              UIAlertView * alertView;
+                            if (error)
+                    //            NSLog(@"error");
+                                alertView = [[UIAlertView alloc]initWithTitle:@"DogEar" message:@"Oops, Error !" delegate:nil cancelButtonTitle:@"Ok" otherButtonTitles:nil];
+                            else
+                    //            NSLog(@"successful!!");
+                                alertView = [[UIAlertView alloc]initWithTitle:@"DogEar" message:@"Post Successfully " delegate:nil cancelButtonTitle:@"Ok" otherButtonTitles:nil];
+                              [alertView show];
+                            
     }];
 }
 
@@ -723,7 +740,7 @@ int currentAngle = 0;
                 if ([[NSUserDefaults standardUserDefaults] objectForKey:@"Twitter_Account"]) [self presentViewController:[twitter tweetSLComposerSheetWithSharedImage:self.photo] animated:YES completion:nil];
                 else
                 {
-                    UIAlertView * alertView = [[UIAlertView alloc]initWithTitle:@"Twitter Authorization" message:@"Dog Ear has been disconnected to Twitter account. Turn on connection in Settings" delegate:self cancelButtonTitle:@"OK" otherButtonTitles:@"Setting", nil];
+                    UIAlertView * alertView = [[UIAlertView alloc]initWithTitle:@"Twitter Authorization" message:@"DogEar has been disconnected to Twitter account. Turn on connection in Settings" delegate:self cancelButtonTitle:@"OK" otherButtonTitles:@"Setting", nil];
                     [alertView show];
                 }
             }
@@ -737,8 +754,10 @@ int currentAngle = 0;
             break;
         case 3: // Message
         {
-            MessageManager * composer = [MessageManager sharedComposer];
-            [composer presentShareImageFromDogEar:self.existingDogEar viaMessageComposerFromParentent:self];
+            UIAlertView * alertView = [[UIAlertView alloc]initWithTitle:@"DogEar" message:@"Save To Camera Roll Coming Soon" delegate:nil cancelButtonTitle:@"Ok" otherButtonTitles: nil];
+            [alertView show];
+//            MessageManager * composer = [MessageManager sharedComposer];
+//            [composer presentShareImageFromDogEar:self.existingDogEar viaMessageComposerFromParentent:self];
  
         }
             break;
@@ -772,7 +791,7 @@ int currentAngle = 0;
     {
         if ([alertView.title isEqualToString:@"Twitter Authorization"])
             [self.tabBarController setSelectedIndex:2];
-        else if ([alertView.title isEqualToString:@"Dog Ear"])
+        else if ([alertView.title isEqualToString:@"DogEar"])
         {
             de_ListTableViewController * vc  = (de_ListTableViewController*)[self.navigationController.viewControllers objectAtIndex:[self.navigationController.viewControllers count]-2];
             

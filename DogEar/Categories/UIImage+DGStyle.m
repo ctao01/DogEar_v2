@@ -9,92 +9,168 @@
 #import "UIImage+DGStyle.h"
 #import "NYXImagesHelper.h"
 
+#define DegreesToRadians(x) (M_PI * x / 180.0)
+
 
 @implementation UIImage (DGStyle)
 
 +(UIImage *)rotateImage:(UIImage *)aImage
+
 {
+    
     CGImageRef imgRef = aImage.CGImage;
-    UIImageOrientation orient = aImage.imageOrientation;
-    UIImageOrientation newOrient = UIImageOrientationUp;
-    switch (orient) {
-        case 3://竖拍 home键在下
-            newOrient = UIImageOrientationRight;
-            break;
-        case 2://倒拍 home键在上
-            newOrient = UIImageOrientationLeft;
-            break;
-        case 0://左拍 home键在右
-            newOrient = UIImageOrientationUp;
-            break;
-        case 1://右拍 home键在左
-            newOrient = UIImageOrientationDown;
-            break;
-        default:
-            newOrient = UIImageOrientationRight;
-            break;
-    }
     CGFloat width = CGImageGetWidth(imgRef);
     CGFloat height = CGImageGetHeight(imgRef);
-    CGFloat ratio = 0;
-    if ((width > 1024) || (height > 1024)) {
-        if (width >= height) {
-            ratio = 1024/width;
-        }
-        else {
-            ratio = 1024/height;
-        }
-        width *= ratio;
-        height *= ratio;
-    }
+    
     CGAffineTransform transform = CGAffineTransformIdentity;
     CGRect bounds = CGRectMake(0, 0, width, height);
     CGFloat scaleRatio = 1;
     CGFloat boundHeight;
-    switch(newOrient)
+    
+    UIImageOrientation orient = aImage.imageOrientation;
+    
+    switch(orient)
+    
     {
-        case UIImageOrientationUp:
+            
+        case UIImageOrientationUp: //EXIF = 1
             transform = CGAffineTransformIdentity;
+            
             break;
-        case UIImageOrientationDown:
+            
+        case UIImageOrientationUpMirrored: //EXIF = 2
+            
+            transform = CGAffineTransformMakeTranslation(width, 0.0);
+            transform = CGAffineTransformScale(transform, -1.0, 1.0);
+            
+            break;
+            
+            
+            
+        case UIImageOrientationDown: //EXIF = 3
+            
             transform = CGAffineTransformMakeTranslation(width, height);
             transform = CGAffineTransformRotate(transform, M_PI);
+            
             break;
-        case UIImageOrientationLeft:
+            
+            
+            
+        case UIImageOrientationDownMirrored: //EXIF = 4
+            
+            transform = CGAffineTransformMakeTranslation(0.0, height);
+            transform = CGAffineTransformScale(transform, 1.0, -1.0);
+            
+            break;
+            
+            
+            
+        case UIImageOrientationLeftMirrored: //EXIF = 5
+            
+            boundHeight = bounds.size.height;
+            bounds.size.height = bounds.size.width;
+            bounds.size.width = boundHeight;
+            transform = CGAffineTransformMakeTranslation(height, width);
+            transform = CGAffineTransformScale(transform, -1.0, 1.0);
+            transform = CGAffineTransformRotate(transform, 3.0 * M_PI /2.0);
+            
+            break;
+            
+            
+            
+        case UIImageOrientationLeft: //EXIF = 6
             
             boundHeight = bounds.size.height;
             bounds.size.height = bounds.size.width;
             bounds.size.width = boundHeight;
             transform = CGAffineTransformMakeTranslation(0.0, width);
-            transform = CGAffineTransformRotate(transform, 3.0 * M_PI / 2.0);
+            transform = CGAffineTransformRotate(transform, 3.0 * M_PI /2.0);
+            
             break;
-        case UIImageOrientationRight:
+            
+            
+            
+        case UIImageOrientationRightMirrored: //EXIF = 7
+            
+            boundHeight = bounds.size.height;
+            bounds.size.height = bounds.size.width;
+            bounds.size.width = boundHeight;
+            transform = CGAffineTransformMakeScale(-1.0, 1.0);
+            transform = CGAffineTransformRotate(transform, M_PI / 2.0);
+            
+            break;
+            
+            
+            
+        case UIImageOrientationRight: //EXIF = 8
+            
             boundHeight = bounds.size.height;
             bounds.size.height = bounds.size.width;
             bounds.size.width = boundHeight;
             transform = CGAffineTransformMakeTranslation(height, 0.0);
             transform = CGAffineTransformRotate(transform, M_PI / 2.0);
+            
             break;
+                        
         default:
-            [NSException raise:NSInternalInconsistencyException format:@"Invalid image orientation"];
+           break;
     }
+    
+    
+    
     UIGraphicsBeginImageContext(bounds.size);
     CGContextRef context = UIGraphicsGetCurrentContext();
-    if (newOrient == UIImageOrientationRight || newOrient == UIImageOrientationLeft) 
-    {
+    
+    
+    
+    if (orient == UIImageOrientationRight || orient == UIImageOrientationLeft) {
+        
         CGContextScaleCTM(context, -scaleRatio, scaleRatio);
         CGContextTranslateCTM(context, -height, 0);
+        
     }
-    else 
-    {
+    
+    else {
+        
         CGContextScaleCTM(context, scaleRatio, -scaleRatio);
         CGContextTranslateCTM(context, 0, -height);
+        
     }
+    
     CGContextConcatCTM(context, transform);
     CGContextDrawImage(UIGraphicsGetCurrentContext(), CGRectMake(0, 0, width, height), imgRef);
     UIImage *imageCopy = UIGraphicsGetImageFromCurrentImageContext();
     UIGraphicsEndImageContext();
+    
     return imageCopy;
+}
+
+-(UIImage *)imageRotatedByDegrees:(CGFloat)degrees
+{
+    // calculate the size of the rotated view's containing box for our drawing space
+    UIView *rotatedViewBox = [[UIView alloc] initWithFrame:CGRectMake(0,0,self.size.width, self.size.height)];
+    CGAffineTransform t = CGAffineTransformMakeRotation(DegreesToRadians(degrees));
+    rotatedViewBox.transform = t;
+    CGSize rotatedSize = rotatedViewBox.frame.size;
+    
+    // Create the bitmap context
+    UIGraphicsBeginImageContext(rotatedSize);
+    CGContextRef bitmap = UIGraphicsGetCurrentContext();
+    
+    // Move the origin to the middle of the image so we will rotate and scale around the center.
+    CGContextTranslateCTM(bitmap, rotatedSize.width/2, rotatedSize.height/2);
+    
+    //   // Rotate the image context
+    CGContextRotateCTM(bitmap, DegreesToRadians(degrees));
+    
+    // Now, draw the rotated/scaled image into the context
+    CGContextScaleCTM(bitmap, 1.0, -1.0);
+    CGContextDrawImage(bitmap, CGRectMake(-self.size.width / 2, -self.size.height / 2, self.size.width, self.size.height), [self CGImage]);
+    
+    UIImage *newImage = UIGraphicsGetImageFromCurrentImageContext();
+    UIGraphicsEndImageContext();
+    return newImage;
+    
 }
 
 -(UIImage*)autoEnhance

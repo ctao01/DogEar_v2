@@ -66,7 +66,7 @@
 - (void) viewWillAppear:(BOOL)animated
 {
     [super viewWillAppear:animated];
-     self.navigationItem.title = @"Browse Dog Ears";
+     self.navigationItem.title = @"Browse DogEars";
     
     float height = [self.tabBarController.view bounds].size.height;
     float width = [self.tabBarController.view bounds].size.width;
@@ -196,7 +196,7 @@
         cell.textLabel.text = [(DogEarObject*)[self.searchItems objectAtIndex:indexPath.row] title];
     
     else {
-        if (indexPath.section == 0) cell.textLabel.text = @"Flagged Dog Ears";
+        if (indexPath.section == 0) cell.textLabel.text = @"Flagged DogEars";
         else if (indexPath.section == 1 )
             cell.textLabel.text = [categories objectAtIndex:indexPath.row];
     }

@@ -91,7 +91,7 @@
         
         UIBarButtonItem * saveItem = [[UIBarButtonItem alloc]initWithTitle:@"Add" style:UIBarButtonItemStyleBordered target:self action:@selector(addDogEar)];
         self.navigationItem.rightBarButtonItem = saveItem;
-        self.navigationItem.title = @"Add Dog Ear";
+        self.navigationItem.title = @"Add A DogEar";
 
         
     }
@@ -109,7 +109,7 @@
         
         UIBarButtonItem * backItem = [[UIBarButtonItem alloc]initWithTitle:@"Back" style:UIBarButtonItemStylePlain target:self action:@selector(backToHome)];
         self.navigationItem.leftBarButtonItem = backItem;
-        self.navigationItem.title = @"Detail";
+        self.navigationItem.title = @"Details";
         
         //        self.tableView.userInteractionEnabled = NO;
 //        for (int c = 0; c < [self.tableView numberOfRowsInSection:0] - 1; c++) {
@@ -461,7 +461,7 @@
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView
 {
     // Return the number of sections.
-    return 2;
+    return 1;
 }
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
