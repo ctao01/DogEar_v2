@@ -54,6 +54,68 @@ static TwitterManager * sharedManager = nil;
      }];
 }
 
+- (void) connectToTwitterAccount
+{
+    ACAccountStore * accountStore = [[ACAccountStore alloc]init];
+    ACAccountType * twitterType = [accountStore accountTypeWithAccountTypeIdentifier:ACAccountTypeIdentifierTwitter];
+    if (DEVICE_OS < 6.0)
+    {
+        [accountStore requestAccessToAccountsWithType:twitterType withCompletionHandler:^(BOOL granted, NSError *error) {
+            if(granted)
+            {
+                if (!error)
+                {
+                    [[NSUserDefaults standardUserDefaults] setBool:YES forKey:@"Twitter_Account"];
+                    [[NSUserDefaults standardUserDefaults]synchronize];
+                }
+                else
+                {
+                    [[NSUserDefaults standardUserDefaults] setBool:NO forKey:@"Twitter_Account"];
+                    [[NSUserDefaults standardUserDefaults]synchronize];
+                }
+            }
+            else
+            {
+                [[NSUserDefaults standardUserDefaults] setBool:NO forKey:@"Twitter_Account"];
+                [[NSUserDefaults standardUserDefaults]synchronize];
+            }
+        }];
+    }
+    else if (DEVICE_OS >= 6.0)
+    {
+        [accountStore requestAccessToAccountsWithType:twitterType
+                                              options:nil
+                                           completion:^(BOOL granted, NSError * error)
+         {
+             NSString * message;
+             if (granted)
+             {
+                 if (!error)
+                 {
+                     [[NSUserDefaults standardUserDefaults] setBool:YES forKey:@"Twitter_Account"];
+                     [[NSUserDefaults standardUserDefaults]synchronize];
+                     message = @"Connected";
+
+                 }
+                 else
+                 {
+                     [[NSUserDefaults standardUserDefaults] setBool:NO forKey:@"Twitter_Account"];
+                     [[NSUserDefaults standardUserDefaults]synchronize];
+                     message = @"There are no Twitter accounts configured. You can add or create a Twitter account in Settings";
+                 }
+             }
+             else
+             {
+                 [[NSUserDefaults standardUserDefaults] setBool:NO forKey:@"Twitter_Account"];
+                 [[NSUserDefaults standardUserDefaults]synchronize];
+                 message = @"DogEar is not allowed to connect your Twitter account. You can change it in Settings";
+
+             }
+         }];
+    }
+    else return;
+}
+
 
 - (SLComposeViewController*) tweetSLComposerSheetWithSharedImage:(UIImage *)image
 {

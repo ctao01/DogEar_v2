@@ -732,12 +732,12 @@ int currentAngle = 0;
 
             if (DEVICE_OS < 6.0)
             {
-                if ([[NSUserDefaults standardUserDefaults] objectForKey:@"Twitter_Account"])[self presentViewController:[twitter tweetTWComposerSheetWithSharedImage:self.photo] animated:YES completion:nil];
+                if ([[NSUserDefaults standardUserDefaults] boolForKey:@"Twitter_Account"] == YES)[self presentViewController:[twitter tweetTWComposerSheetWithSharedImage:self.photo] animated:YES completion:nil];
                 
             }
             else
             {
-                if ([[NSUserDefaults standardUserDefaults] objectForKey:@"Twitter_Account"]) [self presentViewController:[twitter tweetSLComposerSheetWithSharedImage:self.photo] animated:YES completion:nil];
+                if ([[NSUserDefaults standardUserDefaults] boolForKey:@"Twitter_Account"] == YES) [self presentViewController:[twitter tweetSLComposerSheetWithSharedImage:self.photo] animated:YES completion:nil];
                 else
                 {
                     UIAlertView * alertView = [[UIAlertView alloc]initWithTitle:@"Twitter Authorization" message:@"DogEar has been disconnected to Twitter account. Turn on connection in Settings" delegate:self cancelButtonTitle:@"OK" otherButtonTitles:@"Setting", nil];
@@ -754,10 +754,11 @@ int currentAngle = 0;
             break;
         case 3: // Message
         {
-            UIAlertView * alertView = [[UIAlertView alloc]initWithTitle:@"DogEar" message:@"Save To Camera Roll Coming Soon" delegate:nil cancelButtonTitle:@"Ok" otherButtonTitles: nil];
-            [alertView show];
+//            UIAlertView * alertView = [[UIAlertView alloc]initWithTitle:@"DogEar" message:@"Save To Camera Roll Coming Soon" delegate:nil cancelButtonTitle:@"Ok" otherButtonTitles: nil];
+//            [alertView show];
 //            MessageManager * composer = [MessageManager sharedComposer];
 //            [composer presentShareImageFromDogEar:self.existingDogEar viaMessageComposerFromParentent:self];
+            UIImageWriteToSavedPhotosAlbum(self.photo, self, @selector(image:didFinishSavingWithError:contextInfo:), nil);
  
         }
             break;
@@ -819,4 +820,14 @@ int currentAngle = 0;
     }
 }
 
+- (void)image:(UIImage *)image didFinishSavingWithError:(NSError *)error contextInfo:(void *)contextInfo
+{
+    NSString * message;
+    if (error != NULL)
+        message = @"Oops, Save To Camera Roll Failed...";
+    else  // No errors
+        message = @"DogEar has been saved to camera roll";
+    UIAlertView * alertView = [[UIAlertView alloc]initWithTitle:@"DogEar" message:message delegate:self cancelButtonTitle:@"Ok" otherButtonTitles: nil];
+    [alertView show];
+}
 @end

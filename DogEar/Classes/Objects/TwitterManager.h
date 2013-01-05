@@ -16,6 +16,9 @@
 
 +(id) sharedManager;
 
+- (void) connectToTwitterAccount;
+
+
 - (SLComposeViewController*) tweetSLComposerSheetWithSharedImage:(UIImage*)image;
 - (TWTweetComposeViewController*) tweetTWComposerSheetWithSharedImage:(UIImage*)image;
 
