@@ -155,8 +155,14 @@
         float height = [self.tabBarController.view bounds].size.height;
         float width = [self.tabBarController.view bounds].size.width;
         
-        CGRect bgFrame = CGRectMake(0.0f, 0.0f, width, height - 20.0f - 44.0f - 49.0f);        
-        UIImageView *backgroundImage = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"dogear-bg-instructions-fix"]];
+        NSLog(@"%f",height);
+        UIImageView *backgroundImage ;
+        if (height >= 568.0f)
+            backgroundImage = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"dogear-bg-instructions-fix-568h"]];
+        else
+            backgroundImage = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"dogear-bg-instructions-fix-"]];
+        
+        CGRect bgFrame = CGRectMake(0.0f, 0.0f, width, height - 20.0f - 44.0f - 49.0f);
         backgroundImage.frame = bgFrame;
         [vc.view addSubview:backgroundImage];
         [vc.navigationItem setTitle:cell.textLabel.text];

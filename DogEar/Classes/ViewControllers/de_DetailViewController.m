@@ -173,7 +173,7 @@
     {
         if (self.dogEar.category == nil)    //JT - Comment: Necessary to select Category
         {
-            UIAlertView * alertView = [[UIAlertView alloc]initWithTitle:@"Notice" message:@"Please Select A Category (Required)" delegate:self cancelButtonTitle:@"OK" otherButtonTitles: nil];
+            UIAlertView * alertView = [[UIAlertView alloc]initWithTitle:@"Notice" message:@"Please Select A Category (Required)" delegate:self cancelButtonTitle:@"Okay" otherButtonTitles: nil];
             [alertView show];
             return;
         }
@@ -387,7 +387,7 @@
     NSLog(@"addDogEar");
     if (self.dogEar.category == nil) 
     {
-        UIAlertView * alertView = [[UIAlertView alloc]initWithTitle:@"Notice" message:@"Please Select A Category (Required)" delegate:self cancelButtonTitle:@"OK" otherButtonTitles: nil];
+        UIAlertView * alertView = [[UIAlertView alloc]initWithTitle:@"Notice" message:@"Please Select A Category (Required)" delegate:self cancelButtonTitle:@"Okay" otherButtonTitles: nil];
         [alertView show];
         return;
     }

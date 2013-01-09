@@ -106,15 +106,20 @@
 {
     UITableViewCell * twitterCell = [self.tableView cellForRowAtIndexPath:[NSIndexPath indexPathForRow:1 inSection:0]];
     UISwitch * twitterSwitch = (UISwitch*) twitterCell.accessoryView;
+    UIAlertView * alertview;
     if ([[NSUserDefaults standardUserDefaults] boolForKey:@"Twitter_Account"] == NO)
     {
         twitterSwitch.on = NO;
-        UIAlertView * alertview = [[UIAlertView alloc]initWithTitle:@"DogEar" message:@"Connect to Twitter account failed. You can check it in Settings." delegate:nil cancelButtonTitle:@"OK" otherButtonTitles:nil];
-        [alertview show];
+         alertview = [[UIAlertView alloc]initWithTitle:@"DogEar Warning" message:@"Ceonnect to Twitter account failed. You can check Twitter Account in Settings." delegate:nil cancelButtonTitle:@"Okay" otherButtonTitles:nil];
     }
     else
+    {
         twitterSwitch.on = YES;
+        alertview = [[UIAlertView alloc]initWithTitle:@"DogEar" message:@"Connect to Twitter account successfully." delegate:nil cancelButtonTitle:@"Okay" otherButtonTitles:nil];
+    }
+    
     [activityIndicator stopAnimating];
+    [alertview show];
 
 }
 

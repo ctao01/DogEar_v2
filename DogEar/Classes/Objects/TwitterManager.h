@@ -12,7 +12,7 @@
 #import <Twitter/Twitter.h>
 #import <Social/Social.h>
 
-@interface TwitterManager : NSObject
+@interface TwitterManager : NSObject < UIAlertViewDelegate >
 
 +(id) sharedManager;
 

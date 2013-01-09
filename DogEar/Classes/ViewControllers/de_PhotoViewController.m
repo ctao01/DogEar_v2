@@ -63,6 +63,8 @@ int currentAngle = 0;
 	UIImageView * ivRightUp ;
 	UIImageView * ivleftDown ;
 	UIImageView * ivRightDown;
+    
+    UILabel * autoEnhanceLabel;
 }
 //@property (nonatomic) BKToolBarType bkToolBarType;
 @property (nonatomic , retain) UIImage * photo;
@@ -169,11 +171,11 @@ int currentAngle = 0;
     {
         isAutoEnhance = NO;
         
-        UIBarButtonItem * rotateItem = [[UIBarButtonItem alloc]initWithTitle:@"Rotate" style:UIBarButtonItemStyleBordered target:self action:@selector(rotateLeft)];
+        UIBarButtonItem * rotateItem = [[UIBarButtonItem alloc]initWithImage:[UIImage imageNamed:@"dogear-icon-rotate"]  style:UIBarButtonItemStyleBordered target:self action:@selector(rotateLeft)];
         //        UIBarButtonItem * enhanceItem = [[UIBarButtonItem alloc]initWithTitle:@"Enhance" style:UIBarButtonItemStyleBordered target:self action:@selector(autoEnhance)];
-        UIBarButtonItem * enhanceItem = [[UIBarButtonItem alloc]initWithTitle:[NSString stringWithFormat:@"Ehance:%@",isAutoEnhance?@"YES":@"NO"] style:UIBarButtonItemStyleBordered target:self action:@selector(autoEnhance:)];
+        UIBarButtonItem * enhanceItem = [[UIBarButtonItem alloc]initWithImage:[UIImage imageNamed:@"dogear-icon-enhance"] style:UIBarButtonItemStyleBordered target:self action:@selector(autoEnhance:)];
         
-        UIBarButtonItem * cropItem = [[UIBarButtonItem alloc]initWithTitle:@"Crop" style:UIBarButtonItemStyleBordered target:self action:@selector(cropPhoto)];
+        UIBarButtonItem * cropItem = [[UIBarButtonItem alloc]initWithImage:[UIImage imageNamed:@"dogear-icon-crop"]  style:UIBarButtonItemStyleBordered target:self action:@selector(cropPhoto)];
         
         [toolBar setItems:[NSArray arrayWithObjects:rotateItem, spaceItme, enhanceItem, spaceItme, cropItem, nil]];
         
@@ -198,7 +200,7 @@ int currentAngle = 0;
         UIBarButtonItem * cancelItem = [[UIBarButtonItem alloc]initWithTitle:@"Back" style:UIBarButtonItemStyleBordered target:self action:@selector(backToList)];
         self.navigationItem.leftBarButtonItem = cancelItem;
         
-        UIBarButtonItem * detailItem = [[UIBarButtonItem alloc]initWithTitle:@"Detail" style:UIBarButtonItemStyleBordered target:self action:@selector(moreDetail)];
+        UIBarButtonItem * detailItem = [[UIBarButtonItem alloc]initWithTitle:@"Details" style:UIBarButtonItemStyleBordered target:self action:@selector(moreDetail)];
         self.navigationItem.rightBarButtonItem = detailItem;
         self.navigationItem.title = self.existingDogEar.title;
     }
@@ -265,8 +267,8 @@ int currentAngle = 0;
 
 - (void) backToList
 {
-//    if ([self.navigationController.viewControllers count]>3)
-//    {
+    if ([self.navigationController.viewControllers count]>=3)
+    {
         de_ListTableViewController * vc = (de_ListTableViewController*)[self.navigationController.viewControllers objectAtIndex:[self.navigationController.viewControllers count]-2];
         de_ListTableViewController * previousVc = [self.navigationController.viewControllers objectAtIndex:[self.navigationController.viewControllers count]-3];
         NSArray * array = [[NSUserDefaults standardUserDefaults]objectForKey:@"BKFlaggedItems"];
@@ -275,8 +277,10 @@ int currentAngle = 0;
         else if ([previousVc isKindOfClass:[de_FlaggedListViewController class]])
             vc.navigationItem.title = [array objectAtIndex:[self.existingDogEar.flagged integerValue]];
         [self.navigationController popToViewController:vc animated:YES];
-//    }
-//    else [self.navigationController popToRootViewControllerAnimated:YES];
+    }
+    else [self.navigationController popToRootViewControllerAnimated:YES];
+    
+    NSLog(@"%i",[self.navigationController.viewControllers count]);
 }
 
 
@@ -291,34 +295,48 @@ int currentAngle = 0;
     NSLog(@"%i",currentAngle);
 
     UIImage * newImage = [self.photo imageRotatedByDegrees:currentAngle];
-//    if (currentAngle == -90)
-//        newImage = [[UIImage alloc] initWithCGImage:self.photo.CGImage scale:1 orientation:UIImageOrientationLeft];
-//    else if (currentAngle == -180)
-//        newImage = [[UIImage alloc] initWithCGImage:self.photo.CGImage scale:1 orientation:UIImageOrientationDown];
-//    else if (currentAngle == -270)
-//        newImage = [[UIImage alloc] initWithCGImage:self.photo.CGImage scale:1 orientation:UIImageOrientationRight];
-//    else
-//        newImage = [[UIImage alloc] initWithCGImage:self.photo.CGImage scale:1 orientation:UIImageOrientationUp];
     self.photo = newImage;
 }
 
 - (void) autoEnhance:(id)sender
 {
-    UIBarButtonItem * button = (UIBarButtonItem*)sender;
+//    UIBarButtonItem * button = (UIBarButtonItem*)sender;
     if (isAutoEnhance == NO)
     {
-        UIImage * originImage = imageView.image;
-        [imageView setImage:[originImage autoEnhance]];
+//        UIImage * originImage = imageView.image;
+        [imageView setImage:[[self.photo autoEnhance]imageRotatedByDegrees:-currentAngle]];
         isAutoEnhance = YES;
     }
     else
     {
-        [imageView setImage:self.photo];
+        [imageView setImage:[self.photo imageRotatedByDegrees:-currentAngle]];
         isAutoEnhance = NO;
     }
     [imageView setNeedsDisplay];
-    button.title = [NSString stringWithFormat:@"Enhance:%@",isAutoEnhance?@"YES":@"NO"];
 
+    
+    if (!autoEnhanceLabel)
+    {
+        autoEnhanceLabel = [[UILabel alloc]initWithFrame:CGRectMake(0.0f, 0.0f, 200.0f, 20.0f)];
+        CGRect bounds = [[UIScreen mainScreen]bounds];
+        NSInteger cameraActiveBarHeight;
+        cameraActiveBarHeight = 68.0f;
+        autoEnhanceLabel.frame = CGRectOffset(autoEnhanceLabel.frame, 0.0f, bounds.size.height - cameraActiveBarHeight - IPHONE_TOOL_BAR_HEIGHT - autoEnhanceLabel.frame.size.height);
+        autoEnhanceLabel.font = [UIFont fontWithName:@"HelveticaNeue-Bold" size:12];
+        autoEnhanceLabel.backgroundColor = [UIColor clearColor];
+        autoEnhanceLabel.textColor = [UIColor whiteColor];
+        
+        [self.view addSubview:autoEnhanceLabel];
+    }
+    autoEnhanceLabel.text = [NSString stringWithFormat:@"Auton Enhance:%@",isAutoEnhance?@"On":@"Off"];
+    autoEnhanceLabel.hidden = NO;
+    
+    [NSTimer scheduledTimerWithTimeInterval:2.5f target:self selector:@selector(dismissLabel) userInfo:nil repeats:NO];
+}
+
+- (void) dismissLabel
+{
+    autoEnhanceLabel.hidden = YES;
 }
 
 /******************************************************************************************/
@@ -349,7 +367,7 @@ int currentAngle = 0;
 //	[cropView addSubview:ivleftDown];
 //	[cropView addSubview:ivRightUp];
 //	[cropView addSubview:ivRightDown];
-    
+        
     cropView = [[NLImageCropperView alloc]initWithFrame:self.view.frame];
     [self.view addSubview:cropView];
     [cropView setImage:self.photo];
@@ -628,24 +646,54 @@ int currentAngle = 0;
 
 - (void) publishDogEar
 {
-    NSMutableDictionary * params = [[NSMutableDictionary alloc]init];
-    UIImage * pngImg = [UIImage imageWithData:[NSData dataWithContentsOfFile:self.existingDogEar.imagePath]];
+    if (DEVICE_OS >= 6.0f)
+    {
+        if([SLComposeViewController isAvailableForServiceType:SLServiceTypeFacebook]) {
+            
+            SLComposeViewController *controller = [SLComposeViewController composeViewControllerForServiceType:SLServiceTypeFacebook];                
+            SLComposeViewControllerCompletionHandler block = ^(SLComposeViewControllerResult result){
+                
+                if (result == SLComposeViewControllerResultCancelled) {
+                    
+                    NSLog(@"Cancelled");
+                    
+                } else
+                    
+                {
+                    NSLog(@"Done");
+                }
+                
+                [controller dismissViewControllerAnimated:YES completion:Nil];
+            };
+            controller.completionHandler = block;
+            [controller addImage:self.photo];
+            [self presentViewController:controller animated:YES completion:Nil];
+        }
+        else
+            NSLog(@"UnAvaliable");
+        UIAlertView * alertView = [[UIAlertView alloc]initWithTitle:@"No Facebook Account" message:@"There are no Facebook accounts comfigured. You can add or create a Facebook in Settings" delegate:nil cancelButtonTitle:@"Okay" otherButtonTitles:nil];
+        [alertView show];
+    }
     
-    [params setObject:self.existingDogEar.title forKey:@"message"];
-    [params setObject:UIImagePNGRepresentation(pngImg) forKey:@"picture"];
-    
-    [FBRequestConnection startWithGraphPath:@"me/photos" parameters:params HTTPMethod:@"POST"
-                          completionHandler:^(FBRequestConnection *connection, id result, NSError *error){
-                              UIAlertView * alertView;
-                            if (error)
-                    //            NSLog(@"error");
-                                alertView = [[UIAlertView alloc]initWithTitle:@"DogEar" message:@"Oops, Error !" delegate:nil cancelButtonTitle:@"Ok" otherButtonTitles:nil];
-                            else
-                    //            NSLog(@"successful!!");
-                                alertView = [[UIAlertView alloc]initWithTitle:@"DogEar" message:@"Post Successfully " delegate:nil cancelButtonTitle:@"Ok" otherButtonTitles:nil];
-                              [alertView show];
-                            
-    }];
+    else
+    {
+        NSMutableDictionary * params = [[NSMutableDictionary alloc]init];
+        UIImage * pngImg = [UIImage imageWithData:[NSData dataWithContentsOfFile:self.existingDogEar.imagePath]];
+        
+        [params setObject:self.existingDogEar.title forKey:@"message"];
+        [params setObject:UIImagePNGRepresentation(pngImg) forKey:@"picture"];
+        
+        [FBRequestConnection startWithGraphPath:@"me/photos" parameters:params HTTPMethod:@"POST"
+                              completionHandler:^(FBRequestConnection *connection, id result, NSError *error){
+                                  UIAlertView * alertView;
+                                  if (error)
+                                      alertView = [[UIAlertView alloc]initWithTitle:@"DogEar" message:@"Oops, Error !" delegate:nil cancelButtonTitle:@"Okay" otherButtonTitles:nil];
+                                  else
+                                      alertView = [[UIAlertView alloc]initWithTitle:@"DogEar" message:@"Post Successfully " delegate:nil cancelButtonTitle:@"Okay" otherButtonTitles:nil];
+                                  [alertView show];
+                                  
+                              }];
+    }
 }
 
 #pragma mark - NSuserDefaults  Method
@@ -733,14 +781,19 @@ int currentAngle = 0;
             if (DEVICE_OS < 6.0)
             {
                 if ([[NSUserDefaults standardUserDefaults] boolForKey:@"Twitter_Account"] == YES)[self presentViewController:[twitter tweetTWComposerSheetWithSharedImage:self.photo] animated:YES completion:nil];
-                
+                else
+                {
+                    UIAlertView * alertView = [[UIAlertView alloc]initWithTitle:@"Twitter Authorization" message:@"DogEar has been disconnected to Twitter account. Turn on connection in Settings" delegate:self cancelButtonTitle:@"Okay" otherButtonTitles:@"Setting", nil];
+                    [alertView show];
+                }
+
             }
             else
             {
                 if ([[NSUserDefaults standardUserDefaults] boolForKey:@"Twitter_Account"] == YES) [self presentViewController:[twitter tweetSLComposerSheetWithSharedImage:self.photo] animated:YES completion:nil];
                 else
                 {
-                    UIAlertView * alertView = [[UIAlertView alloc]initWithTitle:@"Twitter Authorization" message:@"DogEar has been disconnected to Twitter account. Turn on connection in Settings" delegate:self cancelButtonTitle:@"OK" otherButtonTitles:@"Setting", nil];
+                    UIAlertView * alertView = [[UIAlertView alloc]initWithTitle:@"Twitter Authorization" message:@"DogEar has been disconnected to Twitter account. Turn on connection in Settings" delegate:self cancelButtonTitle:@"Okay" otherButtonTitles:@"Setting", nil];
                     [alertView show];
                 }
             }
@@ -827,7 +880,7 @@ int currentAngle = 0;
         message = @"Oops, Save To Camera Roll Failed...";
     else  // No errors
         message = @"DogEar has been saved to camera roll";
-    UIAlertView * alertView = [[UIAlertView alloc]initWithTitle:@"DogEar" message:message delegate:self cancelButtonTitle:@"Ok" otherButtonTitles: nil];
+    UIAlertView * alertView = [[UIAlertView alloc]initWithTitle:@"DogEar" message:message delegate:self cancelButtonTitle:@"Okay" otherButtonTitles: nil];
     [alertView show];
 }
 @end

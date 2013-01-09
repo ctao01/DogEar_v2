@@ -132,7 +132,11 @@ static TwitterManager * sharedManager = nil;
                     output = @"ACtionCancelled";
                     break;
                 case SLComposeViewControllerResultDone:
+                {
                     output = @"Post Successfully";
+                    UIAlertView * alertView = [[UIAlertView alloc]initWithTitle:@"DogEar" message:@"Post Successfully" delegate:self cancelButtonTitle:@"Okay" otherButtonTitles:nil];
+                    [alertView show];
+                }
                     break;
                 default:
                     break;
@@ -142,7 +146,8 @@ static TwitterManager * sharedManager = nil;
         [tweetSLComposerSheet addImage:image];
     }
     else{
-        NSLog(@"can't send tweet");
+        UIAlertView * alertView = [[UIAlertView alloc]initWithTitle:@"No Twitter Account" message:@"There are no Facebook accounts comfigured. You can add or create a Twitter in Settings" delegate:nil cancelButtonTitle:@"Okay" otherButtonTitles:nil];
+        [alertView show];
     }
     return tweetSLComposerSheet;
 }
@@ -155,7 +160,7 @@ static TwitterManager * sharedManager = nil;
         tweetTWComposerSheet = [[TWTweetComposeViewController alloc] init];
         [tweetTWComposerSheet addImage:image];
         [tweetTWComposerSheet setInitialText:@"DogEar"];
-        UIAlertView * alertView = [[UIAlertView alloc]initWithTitle:@"DogEar" message:@"Post Successfully" delegate:nil cancelButtonTitle:@"Ok" otherButtonTitles:nil];
+        UIAlertView * alertView = [[UIAlertView alloc]initWithTitle:@"DogEar" message:@"Post Successfully" delegate:nil cancelButtonTitle:@"Okay" otherButtonTitles:nil];
         [alertView show];
     }
     else
