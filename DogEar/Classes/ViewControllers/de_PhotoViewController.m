@@ -33,9 +33,6 @@
 #define kWidthDifference 30 
 #define kHeightDifference 30
 
-int currentAngle = 0;
-
-
 @interface de_PhotoViewController ()
 {
     UIPrintInteractionController *printController;
@@ -44,9 +41,12 @@ int currentAngle = 0;
     // Zoom
     UIScrollView * scrollView;
     UIImageView * imageView;
-    
+
+    int currentAngle;
+
     // Auto Enhance Image
     BOOL isAutoEnhance;
+    UIImage * originImage;
     
     // Image Crop
 
@@ -79,6 +79,7 @@ int currentAngle = 0;
     self = [super init];
     if (self) {
         // Custom initialization
+        currentAngle = 0.0f;
     }
     return self;
 }
@@ -114,8 +115,8 @@ int currentAngle = 0;
 {
     [super viewDidLoad];
     
-    if (self.existingDogEar) keyString = self.existingDogEar.category;
-    
+    if (self.existingDogEar)
+        keyString = self.existingDogEar.category;
     
     // JT:ScrollView Setup
     scrollView = [[UIScrollView alloc] initWithFrame:[[UIScreen mainScreen] applicationFrame]];
@@ -124,6 +125,7 @@ int currentAngle = 0;
 	scrollView.delegate = self;
 	imageView = [[UIImageView alloc] initWithImage:self.photo];
     imageView.contentMode = UIViewContentModeScaleAspectFit;
+    originImage = imageView.image;
 	[scrollView addSubview:imageView];
 	scrollView.minimumZoomScale = scrollView.frame.size.width / imageView.frame.size.width;
 	scrollView.maximumZoomScale = 2.0;
@@ -185,6 +187,7 @@ int currentAngle = 0;
         UIBarButtonItem * saveItem = [[UIBarButtonItem alloc]initWithTitle:@"Save" style:UIBarButtonItemStyleBordered target:self action:@selector(storeTheImage)];
         self.navigationItem.rightBarButtonItem = saveItem;
         
+//        self.photo = [self.photo imageRotatedByDegrees:-currentAngle];  //JT:Note rotate back to correct angle
     }
     else
     {
@@ -214,6 +217,7 @@ int currentAngle = 0;
     [tbc makeTabBarHidden:NO];
     
 //    self.existingDogEar = nil;
+    
 }
 
 #pragma mark - Print Feature
@@ -244,11 +248,12 @@ int currentAngle = 0;
 
 - (void) storeTheImage
 {
-    
-//    CGSize size = imageView.frame.size;
-    if (isAutoEnhance) self.photo = [self.photo autoEnhance];
-    
-    de_DetailViewController * vc = [[de_DetailViewController alloc]initWithStyle:UITableViewStyleGrouped andImage:self.photo];
+    UIImage * savedImage;
+    if (isAutoEnhance)
+        savedImage = [[imageView.image autoEnhance] imageRotatedByDegrees:currentAngle];
+    else
+        savedImage = [imageView.image imageRotatedByDegrees:currentAngle];
+    de_DetailViewController * vc = [[de_DetailViewController alloc]initWithStyle:UITableViewStyleGrouped andImage:savedImage];
 //    [vc setAction:DogEarActionEditing];
     vc.existingDogEar = nil;
     [self.navigationController pushViewController:vc animated:YES];
@@ -293,26 +298,24 @@ int currentAngle = 0;
     CGAffineTransform rotate = CGAffineTransformMakeRotation( currentAngle / 180.0 * 3.14 );
 	[scrollView setTransform:rotate];
     NSLog(@"%i",currentAngle);
-
-    UIImage * newImage = [self.photo imageRotatedByDegrees:currentAngle];
-    self.photo = newImage;
+    
+//    UIImage * image = [self.photo imageRotatedByDegrees:currentAngle];
+//    self.photo = image;
 }
 
 - (void) autoEnhance:(id)sender
 {
-//    UIBarButtonItem * button = (UIBarButtonItem*)sender;
+    
     if (isAutoEnhance == NO)
     {
-//        UIImage * originImage = imageView.image;
-        [imageView setImage:[[self.photo autoEnhance]imageRotatedByDegrees:-currentAngle]];
+        imageView.image = [[imageView.image copy] autoEnhance];
         isAutoEnhance = YES;
     }
     else
     {
-        [imageView setImage:[self.photo imageRotatedByDegrees:-currentAngle]];
+        imageView.image = originImage;
         isAutoEnhance = NO;
     }
-    [imageView setNeedsDisplay];
 
     
     if (!autoEnhanceLabel)
@@ -341,36 +344,10 @@ int currentAngle = 0;
 
 /******************************************************************************************/
 - (void) cropPhoto
-{
-//    CGRect cropFrame = CGRectMake(40.0f, 40.0f, 240, 320.0f);
-//    cropTL_y = cropFrame.origin.y;
-//    cropTR_x = cropFrame.origin.x + cropFrame.size.width;
-//    cropBR_y = cropFrame.origin.y + cropFrame.size.height;
-//    cropBL_x = cropFrame.origin.x;
-//    
-//    cropView = [[CropView alloc]initWithOuterFrame:self.view.frame andInnerFrame:cropFrame];
-//    [self.view addSubview:cropView];
-//    [cropView setNeedsDisplay];
-//    
-//    UIImage * cropPointImg = [UIImage imageNamed:@"cropPoint.png"];
-//	ivleftUp = [[UIImageView alloc]initWithImage:cropPointImg];
-//	ivRightUp = [[UIImageView alloc]initWithImage:cropPointImg];
-//	ivleftDown = [[UIImageView alloc]initWithImage:cropPointImg];
-//	ivRightDown = [[UIImageView alloc]initWithImage:cropPointImg];
-//	
-//	ivleftUp.center = CGPointMake(cropBL_x, cropTL_y);
-//	ivleftDown.center = CGPointMake(cropBL_x, cropBR_y);;
-//	ivRightUp.center = CGPointMake(cropTR_x, cropTL_y);
-//	ivRightDown.center = CGPointMake(cropTR_x, cropBR_y);;
-//	
-//	[cropView addSubview:ivleftUp];
-//	[cropView addSubview:ivleftDown];
-//	[cropView addSubview:ivRightUp];
-//	[cropView addSubview:ivRightDown];
-        
+{    
     cropView = [[NLImageCropperView alloc]initWithFrame:self.view.frame];
     [self.view addSubview:cropView];
-    [cropView setImage:self.photo];
+    [cropView setImage:[imageView.image imageRotatedByDegrees:currentAngle]];
     [cropView setCropRegionRect:CGRectMake(10, 50, 450, 680)];
     
     UIBarButtonItem * cancelButton = [[UIBarButtonItem alloc]initWithBarButtonSystemItem:UIBarButtonSystemItemCancel target:self action:@selector(cancelCrop)];
@@ -382,14 +359,9 @@ int currentAngle = 0;
 
 - (void) doneCrop
 {
-//    CGRect rect = CGRectMake(cropBL_x, cropTL_y, cropTR_x - cropBL_x, cropBR_y - cropTL_y);
-//    CGSize imageViewSize = imageView.frame.size;
-    UIImage * image = [cropView getCroppedImage];
-//    UIImage * image = [[UIImage alloc]imageByCropping:[self.photo scaleToFitSize:imageViewSize] toRect:rect];
-    imageView.image = [image imageRotatedByDegrees:-currentAngle];
-    self.photo = image;
-    [imageView setNeedsDisplay];
-
+    imageView.image = [[cropView getCroppedImage] imageRotatedByDegrees:-currentAngle];
+    originImage = imageView.image;
+    
     self.navigationItem.rightBarButtonItem = [[UIBarButtonItem alloc]initWithTitle:@"Save" style:UIBarButtonItemStyleDone target:self action:@selector(storeTheImage)];
     self.navigationItem.leftBarButtonItem = [[UIBarButtonItem alloc]initWithTitle:@"Retake" style:UIBarButtonItemStyleBordered target:self action:@selector(retakePhoto)];
     [cropView removeFromSuperview];
@@ -402,228 +374,6 @@ int currentAngle = 0;
     [cropView removeFromSuperview];
 }
 
-//- (void) doneCropPhoto
-//{
-//    CGRect rect = CGRectMake(cropBL_x, cropTL_y, cropTR_x - cropBL_x, cropBR_y - cropTL_y);
-//    CGSize imageViewSize = imageView.frame.size;
-//    UIImage * image = [[UIImage alloc]imageByCropping:[self.photo scaleToFitSize:imageViewSize] toRect:rect];
-//    
-//    self.photo = image;
-//    
-//    self.navigationItem.rightBarButtonItem = [[UIBarButtonItem alloc]initWithTitle:@"Save" style:UIBarButtonItemStyleDone target:self action:@selector(storeTheImage)];
-//    self.navigationItem.leftBarButtonItem = [[UIBarButtonItem alloc]initWithTitle:@"Retake" style:UIBarButtonItemStyleBordered target:self action:@selector(retakePhoto)];
-//}
-//
-//- (void) cancelCropPhoto
-//{
-//    self.navigationItem.rightBarButtonItem = [[UIBarButtonItem alloc]initWithTitle:@"Save" style:UIBarButtonItemStyleDone target:self action:@selector(storeTheImage)];
-//    self.navigationItem.leftBarButtonItem = [[UIBarButtonItem alloc]initWithTitle:@"Retake" style:UIBarButtonItemStyleBordered target:self action:@selector(retakePhoto)];
-//}
-
-
-//- (void)ControlCropView:(NSSet *)touches {
-//	
-//    
-//    CGPoint movedPoint = [[touches anyObject] locationInView:self.view];
-//	    
-//    if ((fabs(movedPoint.x - cropBL_x)<=ktapDiff)&&(fabs(movedPoint.y -cropTL_y)<= ktapDiff))
-//        //    if ((abs(movedPoint.x - cropBL_x)<ktapDiff) && ((cropTL_y -movedPoint.y <= ktapDiff)||(cropTL_y -movedPoint.y <= ktapDiff)))
-//    {
-//        NSLog(@"Touched upper left corner");
-//        isTappedOnUpperLeftCorner = TRUE;
-//    }
-//    else if((fabs(movedPoint.x - cropTR_x)<=ktapDiff)&&(fabs(movedPoint.y -cropTL_y)<= ktapDiff))
-//        //    else if(((movedPoint.x - cropTR_x <= ktapDiff)||(cropTR_x - movedPoint.x <= ktapDiff)) && ((cropTL_y -movedPoint.y <= ktapDiff)||(cropTL_y -movedPoint.y <= ktapDiff)))
-//    {
-//        NSLog(@"Touched upper Right corner");
-//        isTappedOnUpperRightCorner = TRUE;
-//    }
-//    else if((fabs(movedPoint.x - cropTR_x)<=ktapDiff)&&(fabs(movedPoint.y -cropBR_y)<= ktapDiff))
-//        
-//        //    else if (((movedPoint.x - cropTR_x <= ktapDiff)||(cropTR_x -movedPoint.x <= ktapDiff)) && ((cropBR_y -movedPoint.y <= ktapDiff)||(cropBR_y -movedPoint.y <= ktapDiff)))
-//        
-//    {
-//        NSLog(@"Touched lower Right corner");
-//        isTappedOnLowerRightCorner = TRUE;
-//
-//    }
-//    else if((fabs(movedPoint.x - cropBL_x)<=ktapDiff)&&(fabs(movedPoint.y -cropBR_y)<= ktapDiff))
-//        
-//        //    else if (((movedPoint.x - cropBL_x <= ktapDiff)||(cropBL_x -movedPoint.x <= ktapDiff)) && ((cropBR_y -movedPoint.y <= ktapDiff)||(cropBR_y -movedPoint.y <= ktapDiff)))
-//    {
-//        NSLog(@"Touched lower left corner");
-//        isTappedOnLowerLeftCorner = TRUE;
-//    }
-//}
-//
-//-(void) updateCropPoints
-//{
-//	ivleftUp.center = CGPointMake(cropBL_x, cropTL_y);
-//	ivleftDown.center = CGPointMake(cropBL_x, cropBR_y);;
-//	ivRightUp.center = CGPointMake(cropTR_x, cropTL_y);
-//	ivRightDown.center = CGPointMake(cropTR_x, cropBR_y);;
-//}
-//
-//#pragma mark -
-//#pragma mark UITOUCHES Stuff
-//
-//- (void)touchesBegan:(NSSet *)touches withEvent:(UIEvent *)event {
-//	[self ControlCropView:touches];
-//}
-//- (void)touchesCancelled:(NSSet *)touches withEvent:(UIEvent *)event{
-//	isTappedOnLowerLeftCorner = FALSE;
-//	isTappedOnLowerRightCorner = FALSE;
-//	isTappedOnUpperLeftCorner = FALSE;
-//	isTappedOnUpperRightCorner = FALSE;
-//}
-//- (void)touchesEnded:(NSSet *)touches withEvent:(UIEvent *)event {
-//    //    messageLabel.text = @"Touches Stopped.";
-//	isTappedOnLowerLeftCorner = FALSE;
-//	isTappedOnLowerRightCorner = FALSE;
-//	isTappedOnUpperLeftCorner = FALSE;
-//	isTappedOnUpperRightCorner = FALSE;
-//}
-//
-//- (void)touchesMoved:(NSSet *)touches withEvent:(UIEvent *)event
-//{
-//    CGPoint movedPoint = [[touches anyObject] locationInView:self.view];
-//    
-//    CGRect viewFrame = imageView.frame;
-//    
-//    if ((movedPoint.x <= 10 && movedPoint.x >= 310))
-//		return;
-//	if ((movedPoint.y <= 10  && movedPoint.y >= viewFrame.size.height - 10)) {
-//		return;
-//	}
-//    
-//    
-//    if (isTappedOnUpperLeftCorner)
-//    {
-//        if (movedPoint.x >= cropView.frame.origin.x + cropView.frame.size.width) return;
-//        if (movedPoint.y >= cropView.frame.origin.y + cropView.frame.size.height) return;
-//        
-//        // TODO: move left
-//        
-//        if ((cropBL_x - movedPoint.x) >= kWidthDifference)
-//        {
-//            if ((cropTL_y - movedPoint.y)>=kHeightDifference) // move up
-//                cropTL_y = movedPoint.y;
-//            else if ((movedPoint.y -cropTL_y)>= kHeightDifference) // move down
-//                cropTL_y = movedPoint.y;
-//            else return;
-//            
-//            cropBL_x = movedPoint.x;
-//            
-//        }
-//        // TODO: move right
-//        else if ((movedPoint.x -cropBL_x) >= kWidthDifference)
-//        {
-//            if ((cropTL_y - movedPoint.y)>=kHeightDifference) // move up
-//                cropTL_y = movedPoint.y;
-//            else if ((movedPoint.y -cropTL_y)>= kHeightDifference) // move down
-//                cropTL_y = movedPoint.y;
-//            else return;
-//            
-//            cropBL_x = movedPoint.x;
-//        }
-//        else return;
-//    }
-//    
-//    else if (isTappedOnUpperRightCorner)
-//    {
-//        if (movedPoint.x <= cropView.frame.origin.x) return;
-//        if (movedPoint.y >= cropView.frame.origin.y + cropView.frame.size.height) return;
-//        
-//        if ((cropTR_x - movedPoint.x) >= kWidthDifference)
-//        {
-//            if ((cropTL_y - movedPoint.y)>=kHeightDifference) // move up
-//                cropTL_y = movedPoint.y;
-//            else if ((movedPoint.y -cropTL_y)>= kHeightDifference) // move down
-//                cropTL_y = movedPoint.y;
-//            else return;
-//            
-//            cropTR_x = movedPoint.x;
-//            
-//        }
-//        // TODO: move right
-//        else if ((movedPoint.x -cropTR_x) >= kWidthDifference)
-//        {
-//            if ((cropTL_y - movedPoint.y)>=kHeightDifference) // move up
-//                cropTL_y = movedPoint.y;
-//            else if ((movedPoint.y -cropTL_y)>= kHeightDifference) // move down
-//                cropTL_y = movedPoint.y;
-//            else return;
-//            
-//            cropTR_x = movedPoint.x;
-//        }
-//        else return;
-//    }
-//    
-//     else if (isTappedOnLowerRightCorner)
-//     {
-//         if (movedPoint.x <= cropView.frame.origin.x) return;
-//         if (movedPoint.y <=cropView.frame.origin.y) return;
-//         
-//         if ((cropTR_x - movedPoint.x) >= kWidthDifference)
-//         {
-//             if ((cropBR_y - movedPoint.y)>=kHeightDifference) // move up
-//             cropBR_y = movedPoint.y;
-//             else if ((movedPoint.y -cropBR_y)>= kHeightDifference) // move down
-//             cropBR_y = movedPoint.y;
-//             else return;
-//             
-//             cropTR_x = movedPoint.x;
-//             
-//             }
-//             // TODO: move right
-//             else if ((movedPoint.x -cropTR_x) >= kWidthDifference)
-//             {
-//             if ((cropBR_y - movedPoint.y)>=kHeightDifference) // move up
-//             cropBR_y = movedPoint.y;
-//             else if ((movedPoint.y -cropBR_y)>= kHeightDifference) // move down
-//             cropBR_y = movedPoint.y;
-//             else return;
-//             
-//             cropTR_x = movedPoint.x;
-//             }
-//         else return;
-//     }
-//     
-//     else if (isTappedOnLowerLeftCorner)
-//     {
-//         if (movedPoint.x >= cropView.frame.origin.x + cropView.frame.size.width) return;
-//         if (movedPoint.y <=cropView.frame.origin.y) return;
-//
-//         
-//         if ((cropBL_x - movedPoint.x) >= kWidthDifference)
-//         {
-//             if ((cropBR_y - movedPoint.y)>=kHeightDifference) // move up
-//             cropBR_y = movedPoint.y;
-//             else if ((movedPoint.y -cropBR_y)>= kHeightDifference) // move down
-//             cropBR_y = movedPoint.y;
-//             else return;
-//             
-//             cropBL_x = movedPoint.x;
-//         
-//         }
-//         // TODO: move right
-//         else if ((movedPoint.x -cropBL_x) >= kWidthDifference)
-//         {
-//             if ((cropBR_y - movedPoint.y)>=kHeightDifference) // move up
-//             cropBR_y = movedPoint.y;
-//             else if ((movedPoint.y -cropBR_y)>= kHeightDifference) // move down
-//             cropBR_y = movedPoint.y;
-//             else return;
-//             
-//             cropBL_x = movedPoint.x;
-//         }
-//         else return;
-//     }
-//    cropView.cropFrame = CGRectMake(cropBL_x, cropTL_y, cropTR_x - cropBL_x, cropBR_y - cropTL_y);
-//    [self updateCropPoints];
-//    [cropView setNeedsDisplay];
-//    
-//}
 /******************************************************************************************/
 
 

@@ -17,6 +17,7 @@
 		3D30028D169B990B00C72E02 /* dogear-icon-enhance@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 3D300287169B990B00C72E02 /* dogear-icon-enhance@2x.png */; };
 		3D30028E169B990B00C72E02 /* dogear-icon-rotate.png in Resources */ = {isa = PBXBuildFile; fileRef = 3D300288169B990B00C72E02 /* dogear-icon-rotate.png */; };
 		3D30028F169B990B00C72E02 /* dogear-icon-rotate@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 3D300289169B990B00C72E02 /* dogear-icon-rotate@2x.png */; };
+		3D3002AF169DF01400C72E02 /* FacebookManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 3D3002AE169DF01400C72E02 /* FacebookManager.m */; };
 		3D3EC7801677C33E0074945F /* cropPoint.png in Resources */ = {isa = PBXBuildFile; fileRef = 3D3EC77F1677C33E0074945F /* cropPoint.png */; };
 		3D81651E1683D38C001159FF /* dogear-bg-instructions-fix-568h@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 3D81651B1683D38C001159FF /* dogear-bg-instructions-fix-568h@2x.png */; };
 		3D81651F1683D38C001159FF /* dogear-bg-instructions-fix.png in Resources */ = {isa = PBXBuildFile; fileRef = 3D81651C1683D38C001159FF /* dogear-bg-instructions-fix.png */; };
@@ -112,6 +113,8 @@
 		3D300287169B990B00C72E02 /* dogear-icon-enhance@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "dogear-icon-enhance@2x.png"; sourceTree = "<group>"; };
 		3D300288169B990B00C72E02 /* dogear-icon-rotate.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "dogear-icon-rotate.png"; sourceTree = "<group>"; };
 		3D300289169B990B00C72E02 /* dogear-icon-rotate@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "dogear-icon-rotate@2x.png"; sourceTree = "<group>"; };
+		3D3002AD169DF01400C72E02 /* FacebookManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = FacebookManager.h; path = Classes/Objects/FacebookManager.h; sourceTree = "<group>"; };
+		3D3002AE169DF01400C72E02 /* FacebookManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = FacebookManager.m; path = Classes/Objects/FacebookManager.m; sourceTree = "<group>"; };
 		3D3EC77F1677C33E0074945F /* cropPoint.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = cropPoint.png; sourceTree = "<group>"; };
 		3D81651B1683D38C001159FF /* dogear-bg-instructions-fix-568h@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "dogear-bg-instructions-fix-568h@2x.png"; sourceTree = "<group>"; };
 		3D81651C1683D38C001159FF /* dogear-bg-instructions-fix.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "dogear-bg-instructions-fix.png"; sourceTree = "<group>"; };
@@ -279,6 +282,8 @@
 				3DD764D7166D365E00C7CA9B /* TwitterManager.m */,
 				3DD764DB166D50F500C7CA9B /* MessageManager.h */,
 				3DD764DC166D50F500C7CA9B /* MessageManager.m */,
+				3D3002AD169DF01400C72E02 /* FacebookManager.h */,
+				3D3002AE169DF01400C72E02 /* FacebookManager.m */,
 			);
 			name = Objects;
 			sourceTree = "<group>";
@@ -724,6 +729,7 @@
 				3D1A666E1672EED200699B30 /* CropView.m in Sources */,
 				7E4D39BB1676EC2700739546 /* de_HeaderView.m in Sources */,
 				7E4CA5B9167A66EF003F0013 /* FBSession+DGAdditions.m in Sources */,
+				3D3002AF169DF01400C72E02 /* FacebookManager.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

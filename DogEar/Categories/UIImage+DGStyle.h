@@ -14,6 +14,7 @@
 
 + (UIImage *)rotateImage:(UIImage *)aImage;
 - (UIImage *)imageRotatedByDegrees:(CGFloat)degrees;
++ (CGImageRef)CGImageRotatedByAngle:(CGImageRef)imgRef angle:(CGFloat)angle;
 
 // Image Enhance
 

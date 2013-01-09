@@ -156,6 +156,8 @@
     }
     else
         _movePoint = NoPoint;
+    
+    NSLog(@"%i",_movePoint);
 }
 
 - (void)touchesMoved:(NSSet *)touches withEvent:(UIEvent *)event

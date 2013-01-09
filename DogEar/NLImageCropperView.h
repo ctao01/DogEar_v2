@@ -27,7 +27,7 @@
 #import <UIKit/UIKit.h>
 #import "NLCropViewLayer.h"
 #define IMAGE_BOUNDRY_SPACE 10
-enum rectPoint { LeftTop = 0, RightTop=1, LeftBottom = 2, RightBottom = 3, MoveCenter = 4, NoPoint = 1};
+enum rectPoint { LeftTop = 0, RightTop=1, LeftBottom = 2, RightBottom = 3, MoveCenter = 4, NoPoint = 999};
 @interface NLImageCropperView : UIView
 {
     UIImageView* _imageView;
