@@ -104,7 +104,7 @@
     if (self)
     {
         self.existingDogEar = object;
-        self.photo = [UIImage rotateImage:image];
+        self.photo = [[UIImage alloc]scaleAndRotateImage:image];
         self.view.backgroundColor = [UIColor blackColor];
     }
     return self;

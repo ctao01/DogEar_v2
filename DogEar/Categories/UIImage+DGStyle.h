@@ -31,6 +31,7 @@
 
 - (UIImage *)imageByScalingAndCroppingForSize:(CGSize)targetSize;
 - (UIImage*)imageByCropping:(UIImage *)imageToCrop toRect:(CGRect)rect;
+- (UIImage *)scaleAndRotateImage:(UIImage *)image;
 
 
 @end
