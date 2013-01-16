@@ -76,7 +76,7 @@
     if (height >= 568.0f)
         backgroundImage = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"dogear-bg-instructions-fix-568h"]];
     else
-        backgroundImage = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"dogear-bg-instructions-fix-"]];
+        backgroundImage = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"dogear-bg-instructions-fix"]];
     backgroundImage.tag = 999;
     backgroundImage.frame = bgFrame;
     
