@@ -107,7 +107,9 @@
     imagePickerController.modalTransitionStyle = UIModalTransitionStyleCoverVertical;
     [self presentViewController:imagePickerController animated:YES completion:^{
     }];
-    
+//    de_MainNavigationController * nc = (de_MainNavigationController*)[self.viewControllers objectAtIndex:1];
+//    de_PhotoViewController * vc = [[de_PhotoViewController alloc]initWithImage:[UIImage imageNamed:@"sample"] andExistingDogEar:nil];
+//    [nc pushViewController:vc animated:YES];
 }
 
 -(void)makeTabBarHidden:(BOOL)hide

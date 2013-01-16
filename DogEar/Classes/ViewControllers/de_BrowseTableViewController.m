@@ -108,6 +108,8 @@
         }
         
         [[NSUserDefaults standardUserDefaults] setObject:dict forKey:@"BKDataCollections"];
+        [[NSUserDefaults standardUserDefaults]setBool:NO forKey:@"Twitter_Account"];
+
         [[NSUserDefaults standardUserDefaults] synchronize];
         
     }

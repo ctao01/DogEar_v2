@@ -394,6 +394,30 @@
 
 #pragma mark - 
 
+- (void) publishDogEarWithoutSheet
+{
+    NSMutableDictionary * params = [[NSMutableDictionary alloc]init];
+    UIImage * pngImg = [UIImage imageWithData:[NSData dataWithContentsOfFile:self.existingDogEar.imagePath]];
+    
+    [params setObject:self.existingDogEar.title forKey:@"message"];
+    [params setObject:UIImagePNGRepresentation(pngImg) forKey:@"picture"];
+
+
+    
+    [FBRequestConnection startWithGraphPath:@"me/photos" parameters:params HTTPMethod:@"POST"
+                          completionHandler:^(FBRequestConnection *connection, id result, NSError *error){
+                              UIAlertView * alertView;
+                              if (error)
+                                  alertView = [[UIAlertView alloc]initWithTitle:@"DogEar" message:@"Oops, Error !" delegate:nil cancelButtonTitle:@"Okay" otherButtonTitles:nil];
+                              else
+                              {
+                                  alertView = [[UIAlertView alloc]initWithTitle:@"DogEar" message:@"Post Successfully " delegate:nil cancelButtonTitle:@"Okay" otherButtonTitles:nil];
+                                  [alertView show];
+                              }
+                              
+                          }];
+}
+
 - (void) publishDogEar
 {
     if (DEVICE_OS >= 6.0f)
@@ -420,29 +444,17 @@
             [self presentViewController:controller animated:YES completion:Nil];
         }
         else
-            NSLog(@"UnAvaliable");
-        UIAlertView * alertView = [[UIAlertView alloc]initWithTitle:@"No Facebook Account" message:@"There are no Facebook accounts comfigured. You can add or create a Facebook in Settings" delegate:nil cancelButtonTitle:@"Okay" otherButtonTitles:nil];
-        [alertView show];
+        {
+            [self publishDogEarWithoutSheet];
+//            UIAlertView * alertView = [[UIAlertView alloc]initWithTitle:@"No Facebook Account" message:@"There are no Facebook accounts comfigured. You can add or create a Facebook in Settings" delegate:nil cancelButtonTitle:@"Okay" otherButtonTitles:nil];
+//            [alertView show];
+            
+        }
     }
     
     else
     {
-        NSMutableDictionary * params = [[NSMutableDictionary alloc]init];
-        UIImage * pngImg = [UIImage imageWithData:[NSData dataWithContentsOfFile:self.existingDogEar.imagePath]];
-        
-        [params setObject:self.existingDogEar.title forKey:@"message"];
-        [params setObject:UIImagePNGRepresentation(pngImg) forKey:@"picture"];
-        
-        [FBRequestConnection startWithGraphPath:@"me/photos" parameters:params HTTPMethod:@"POST"
-                              completionHandler:^(FBRequestConnection *connection, id result, NSError *error){
-                                  UIAlertView * alertView;
-                                  if (error)
-                                      alertView = [[UIAlertView alloc]initWithTitle:@"DogEar" message:@"Oops, Error !" delegate:nil cancelButtonTitle:@"Okay" otherButtonTitles:nil];
-                                  else
-                                      alertView = [[UIAlertView alloc]initWithTitle:@"DogEar" message:@"Post Successfully " delegate:nil cancelButtonTitle:@"Okay" otherButtonTitles:nil];
-                                  [alertView show];
-                                  
-                              }];
+        [self publishDogEarWithoutSheet];
     }
 }
 
