@@ -151,13 +151,13 @@
     [pathThumbImg fill];
     
     
-    CGRect innerRect = UIEdgeInsetsInsetRect(rect, UIEdgeInsetsMake(10.0f, 10.0f, 10.0f, 10.0f));
-    UIBezierPath * dashedRect = [UIBezierPath bezierPathWithRoundedRect:innerRect cornerRadius:RADIUS];
-    
-    CGFloat dashPattern[2] = { 5.0f, 4.0f };
-    [dashedRect setLineDash:dashPattern count:2 phase:0];
-    [dashedRect setLineWidth:2.0f];
-    [dashedRect stroke];
+//    CGRect innerRect = UIEdgeInsetsInsetRect(rect, UIEdgeInsetsMake(10.0f, 10.0f, 10.0f, 10.0f));
+//    UIBezierPath * dashedRect = [UIBezierPath bezierPathWithRoundedRect:innerRect cornerRadius:RADIUS];
+//    
+//    CGFloat dashPattern[2] = { 5.0f, 4.0f };
+//    [dashedRect setLineDash:dashPattern count:2 phase:0];
+//    [dashedRect setLineWidth:2.0f];
+//    [dashedRect stroke];
 }
 
 - (void) drawTextFieldWithRect:(CGRect)rect
