@@ -331,7 +331,7 @@
         
         [self.view addSubview:autoEnhanceLabel];
     }
-    autoEnhanceLabel.text = [NSString stringWithFormat:@"Auton Enhance:%@",isAutoEnhance?@"On":@"Off"];
+    autoEnhanceLabel.text = [NSString stringWithFormat:@"Auto Enhance: %@",isAutoEnhance?@"On":@"Off"];
     autoEnhanceLabel.hidden = NO;
     
     [NSTimer scheduledTimerWithTimeInterval:2.5f target:self selector:@selector(dismissLabel) userInfo:nil repeats:NO];
