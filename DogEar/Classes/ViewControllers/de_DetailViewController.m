@@ -385,9 +385,9 @@
 - (void) addDogEar
 {
     NSLog(@"addDogEar");
-    if (self.dogEar.category == nil) 
+    if (self.dogEar.category == nil || self.dogEar.title == nil)
     {
-        UIAlertView * alertView = [[UIAlertView alloc]initWithTitle:@"Notice" message:@"Please Select A Category (Required)" delegate:self cancelButtonTitle:@"Okay" otherButtonTitles: nil];
+        UIAlertView * alertView = [[UIAlertView alloc]initWithTitle:@"Notice" message:@"Please Select A Category / Title (Required)" delegate:self cancelButtonTitle:@"Okay" otherButtonTitles: nil];
         [alertView show];
         return;
     }
