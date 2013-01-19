@@ -36,6 +36,8 @@
     [super viewDidLoad];
 	self.delegate = self;
     
+    
+    
     de_BrowseTableViewController * vcBrowse = [[de_BrowseTableViewController alloc]initWithStyle:UITableViewStyleGrouped];
     vcBrowse.title = @"Browse";
     
@@ -137,7 +139,13 @@
     if (self.selectedIndex == 0)
     {
         de_BrowseTableViewController * vc1 = (de_BrowseTableViewController*)[[[self.viewControllers objectAtIndex:self.selectedIndex] viewControllers] objectAtIndex:0];
-        [vc1 viewWillAppear:YES];
+        if ([[NSUserDefaults standardUserDefaults] boolForKey:@"HasLaunchedOnce"])
+        {
+            //JT-Notes: Has Launch App - Read Category Array
+            UIImageView *image = (UIImageView *)[vc1.view viewWithTag:999];
+            if (image) [image removeFromSuperview];
+            vc1.tableView.scrollEnabled = YES;
+        }
     }
     
     return YES;

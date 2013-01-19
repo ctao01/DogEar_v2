@@ -55,67 +55,70 @@
     self.tableView.contentInset = UIEdgeInsetsMake(0.0f, 0.0f, 44.0f, 0.0f);
     self.tableView.scrollIndicatorInsets = UIEdgeInsetsMake(0.0f, 0.0f, 0.0f, 0.0f);
 
+    self.navigationItem.title = @"Browse DogEars";
     
     self.vcSearchDispay = [[UISearchDisplayController alloc]initWithSearchBar:searchBar contentsController:self];
     self.vcSearchDispay.searchResultsDataSource = self;
     self.vcSearchDispay.searchResultsDelegate = self;
     self.vcSearchDispay.delegate = self;
     
-}
-
-- (void) viewWillAppear:(BOOL)animated
-{
-    [super viewWillAppear:animated];
-     self.navigationItem.title = @"Browse DogEars";
-    
-    float height = [self.tabBarController.view bounds].size.height;
-    float width = [self.tabBarController.view bounds].size.width;
-    CGRect bgFrame = CGRectMake(0.0f, 0.0f, width, height - 20.0f - 44.0f - 49.0f);
-    
-    UIImageView *backgroundImage ;
-    if (height >= 568.0f)
-        backgroundImage = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"dogear-bg-instructions-fix-568h"]];
-    else
-        backgroundImage = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"dogear-bg-instructions-fix"]];
-    backgroundImage.tag = 999;
-    backgroundImage.frame = bgFrame;
-    
-    if ([[NSUserDefaults standardUserDefaults] boolForKey:@"HasLaunchedOnce"])
+    if ([[NSUserDefaults standardUserDefaults] boolForKey:@"HasLaunchedOnce"] == NO)
     {
-        //JT-Notes: Has Launch App - Read Category Array 
         
-        UIImageView *image = (UIImageView *)[self.view viewWithTag:999];
-        if (image) [image removeFromSuperview];
-        categories = [[NSArray alloc]initWithArray:[[NSUserDefaults standardUserDefaults]objectForKey:@"BKCategory"]];
-    }
-    else
-    {
-        // JT-Notes: First Time Launch App - Create Category Array and Data Dictionary 
+        float height = [self.tabBarController.view bounds].size.height;
+        float width = [self.tabBarController.view bounds].size.width;
+        CGRect bgFrame = CGRectMake(0.0f, 0.0f, width, height - 20.0f - 44.0f - 49.0f);
         
+        UIImageView *backgroundImage ;
+        if (height >= 568.0f)
+            backgroundImage = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"dogear-bg-instructions-fix-568h"]];
+        else
+            backgroundImage = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"dogear-bg-instructions-fix"]];
+        backgroundImage.tag = 999;
+        backgroundImage.frame = bgFrame;
         [self.view addSubview:backgroundImage];
+        self.tableView.scrollEnabled = NO;
+        [self setUpDefaultCategories];
         [[NSUserDefaults standardUserDefaults] setBool:YES forKey:@"HasLaunchedOnce"];
-        
-        NSArray * array = [NSArray arrayWithObjects:@"Articles",@"Magazine",@"Sports",@"Fashion", nil];
-        [[NSUserDefaults standardUserDefaults] setObject:array forKey:@"BKCategory"];
-        
-        NSMutableDictionary * dict = [[NSMutableDictionary alloc]init];
-        
-        for (int count = 0; count < [array count]; count ++)
-        {
-            NSArray * dataArray = [[NSArray alloc]init];
-            NSData * encodedObjects = [NSKeyedArchiver archivedDataWithRootObject:dataArray];
-            [dict setObject:encodedObjects forKey:[array objectAtIndex:count]];
-        }
-        
-        [[NSUserDefaults standardUserDefaults] setObject:dict forKey:@"BKDataCollections"];
-        [[NSUserDefaults standardUserDefaults]setBool:NO forKey:@"Twitter_Account"];
-
-        [[NSUserDefaults standardUserDefaults] synchronize];
-        
     }
-    
-    [self.tableView reloadData];
+    categories = [[NSArray alloc]initWithArray:[[NSUserDefaults standardUserDefaults]objectForKey:@"BKCategory"]];
 }
+
+//- (void) viewWillAppear:(BOOL)animated
+//{
+//    [super viewWillAppear:animated];
+//    
+//    float height = [self.tabBarController.view bounds].size.height;
+//    float width = [self.tabBarController.view bounds].size.width;
+//    CGRect bgFrame = CGRectMake(0.0f, 0.0f, width, height - 20.0f - 44.0f - 49.0f);
+//    
+//    UIImageView *backgroundImage ;
+//    if (height >= 568.0f)
+//        backgroundImage = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"dogear-bg-instructions-fix-568h"]];
+//    else
+//        backgroundImage = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"dogear-bg-instructions-fix"]];
+//    backgroundImage.tag = 999;
+//    backgroundImage.frame = bgFrame;
+//    
+//    if ([[NSUserDefaults standardUserDefaults] boolForKey:@"HasLaunchedOnce"])
+//    {
+//        //JT-Notes: Has Launch App - Read Category Array 
+//        
+//        UIImageView *image = (UIImageView *)[self.view viewWithTag:999];
+//        if (image) [image removeFromSuperview];
+//        categories = [[NSArray alloc]initWithArray:[[NSUserDefaults standardUserDefaults]objectForKey:@"BKCategory"]];
+//    }
+//    else
+//    {
+//        // JT-Notes: First Time Launch App - Create Category Array and Data Dictionary 
+//        
+//        [self.view addSubview:backgroundImage];
+//        
+//       
+//    }
+//    
+//    [self.tableView reloadData];
+//}
 
 - (void) viewWillDisappear:(BOOL)animated
 {
@@ -130,7 +133,28 @@
     // Dispose of any resources that can be recreated.
 }
 
-#pragma mark - 
+#pragma mark -
+
+- (void) setUpDefaultCategories
+{
+    NSArray * array = [NSArray arrayWithObjects:@"Books",@"Coupons",@"Events",@"Newspapers",@"Magazines", nil];
+    [[NSUserDefaults standardUserDefaults] setObject:array forKey:@"BKCategory"];
+    
+    NSMutableDictionary * dict = [[NSMutableDictionary alloc]init];
+    
+    for (int count = 0; count < [array count]; count ++)
+    {
+        NSArray * dataArray = [[NSArray alloc]init];
+        NSData * encodedObjects = [NSKeyedArchiver archivedDataWithRootObject:dataArray];
+        [dict setObject:encodedObjects forKey:[array objectAtIndex:count]];
+    }
+    
+    [[NSUserDefaults standardUserDefaults] setObject:dict forKey:@"BKDataCollections"];
+    [[NSUserDefaults standardUserDefaults]setBool:NO forKey:@"Twitter_Account"];
+    
+    [[NSUserDefaults standardUserDefaults] synchronize];
+    
+}
 
 - (NSMutableArray *) allItems
 {
