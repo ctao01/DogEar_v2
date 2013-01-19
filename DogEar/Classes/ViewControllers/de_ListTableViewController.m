@@ -22,10 +22,13 @@
 
 - (void) refreshDogEarDataAccrodingToCategory;
 - (void) refreshDogEarDataAccrodingToFlagged;
+
+@property (nonatomic , retain) UISegmentedControl * segmentControl;
 @end
 
 @implementation de_ListTableViewController
 @synthesize collections;
+@synthesize segmentControl;
 
 - (id)initWithStyle:(UITableViewStyle)style
 {
@@ -42,7 +45,7 @@
     UIImageView * bgImage = [[UIImageView alloc]initWithImage:[UIImage imageNamed:@"dogear-bg-master"]];
     self.tableView.backgroundView = bgImage;
     
-    UISegmentedControl * segmentControl = [[UISegmentedControl alloc]initWithItems:[NSArray arrayWithObjects:@"Most Recent", @"Most Important", nil]];
+    self.segmentControl = [[UISegmentedControl alloc]initWithItems:[NSArray arrayWithObjects:@"Most Recent", @"Most Important", nil]];
     segmentControl.frame = CGRectMake(0.0f, 5.0f, 200.0f, 30.0f);
     segmentControl.center = CGPointMake(self.view.center.x, segmentControl.center.y);
     [segmentControl addTarget:self action:@selector(didChangeSegmentControl:) forControlEvents:UIControlEventValueChanged];
@@ -76,7 +79,7 @@
         [self refreshDogEarDataAccrodingToCategory];
 
     
-    NSSortDescriptor *sortDescriptor = [[NSSortDescriptor alloc] initWithKey:@"insertedDate" ascending:FALSE];
+    NSSortDescriptor *sortDescriptor = [[NSSortDescriptor alloc] initWithKey:[self.segmentControl selectedSegmentIndex]==0 ? @"insertedDate":@"flagged" ascending:FALSE];
     [self.collections sortUsingDescriptors:[NSArray arrayWithObject:sortDescriptor]];
     [self.tableView reloadData];
     
