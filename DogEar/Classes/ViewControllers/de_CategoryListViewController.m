@@ -40,7 +40,8 @@
     self.navigationItem.rightBarButtonItem = editButton;
     
     self.editing = NO;
-    collections = [[NSMutableArray alloc]initWithArray:[[NSUserDefaults standardUserDefaults]objectForKey:@"BKCategory"]];
+    collections = [[NSMutableArray alloc]initWithArray:[[[NSUserDefaults standardUserDefaults]objectForKey:@"BKCategory"] sortedArrayUsingSelector:@selector(localizedCaseInsensitiveCompare:)]];
+
 
     self.navigationItem.title = @"Select Category";
     self.tableView.contentInset = UIEdgeInsetsMake(0.0f, 0.0f, 49.0f, 0.0f);

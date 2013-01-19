@@ -42,6 +42,7 @@
 - (void)viewDidLoad
 {
     [super viewDidLoad];
+    
     UIImageView * bgImage = [[UIImageView alloc]initWithImage:[UIImage imageNamed:@"dogear-bg-master"]];
     self.tableView.backgroundView = bgImage;
     
@@ -56,15 +57,19 @@
     [view addSubview:segmentControl];
     
     UIViewController * vc = (UIViewController*)[self.navigationController.viewControllers objectAtIndex:[self.navigationController.viewControllers count]-2];
-    if ([vc isMemberOfClass:[de_BrowseTableViewController class]])self.tableView.tableHeaderView = view;
+    if ([vc isMemberOfClass:[de_BrowseTableViewController class]]){
+       
+        self.navigationItem.rightBarButtonItem = [[UIBarButtonItem alloc]initWithBarButtonSystemItem:UIBarButtonSystemItemEdit target:self action:@selector(editCategories)];
+        self.tableView.tableHeaderView = view;
+    }
     else if ([vc isMemberOfClass:[de_FlaggedListViewController class]]) self.tableView.tableHeaderView = nil;
     self.tableView.showsHorizontalScrollIndicator = YES;
     self.tableView.contentInset = UIEdgeInsetsMake(0.0f, 0.0f, 44.0f, 0.0f);
     self.tableView.scrollIndicatorInsets = UIEdgeInsetsMake(0.0f, 0.0f, 0.0f, 0.0f);
     
-    [[SDImageCache sharedImageCache] clearMemory];
     [[SDImageCache sharedImageCache] clearDisk];
     [[SDImageCache sharedImageCache] cleanDisk];
+    [[SDImageCache sharedImageCache] clearMemory];
 }
 
 
@@ -91,6 +96,16 @@
     // Dispose of any resources that can be recreated.
 }
 
+#pragma mark -
+
+- (void) editCategories
+{
+    UIAlertView * newCategoryView = [[UIAlertView alloc]initWithTitle:@"Category Name" message:@"Change Category Name" delegate:self cancelButtonTitle:@"Cancel" otherButtonTitles:@"Done", nil];
+    newCategoryView.alertViewStyle = UIAlertViewStylePlainTextInput;
+    [newCategoryView show];
+    
+}
+
 #pragma mark - Refresh Current Items
 
 - (void) refreshDogEarDataAccrodingToCategory
@@ -98,7 +113,6 @@
     NSData * data = [[[NSUserDefaults standardUserDefaults]objectForKey:@"BKDataCollections"] objectForKey:self.navigationItem.title];
     
     NSMutableArray * decodedCollections = [NSMutableArray arrayWithArray:[NSKeyedUnarchiver unarchiveObjectWithData: data]];
-    NSLog(@"%i",[decodedCollections count]);
     self.collections = decodedCollections;
 }
 
@@ -185,6 +199,34 @@
             break;
     }
     [self.tableView reloadData];
+}
+
+#pragma mark - UIAlertView Delegate Method
+
+- (void)alertView:(UIAlertView *)alertView clickedButtonAtIndex:(NSInteger)buttonIndex
+{
+    if (buttonIndex != alertView.cancelButtonIndex)
+    {
+        NSString * newName = [[alertView textFieldAtIndex:0] text];
+        NSMutableArray * categories = [[NSMutableArray alloc]initWithArray:[[NSUserDefaults standardUserDefaults]objectForKey:@"BKCategory"]];
+        
+        [categories insertObject:newName atIndex:[categories count]];
+        
+        NSData * data = [[[NSUserDefaults standardUserDefaults]objectForKey:@"BKDataCollections"] objectForKey:self.navigationItem.title];
+         NSMutableDictionary * dict = [[[NSUserDefaults standardUserDefaults]objectForKey:@"BKDataCollections"] mutableCopy];
+        [dict setObject:data forKey:newName];
+        
+        [categories removeObject:self.navigationItem.title];
+        
+        [[NSUserDefaults standardUserDefaults]setObject:categories forKey:@"BKCategory"];
+        [[NSUserDefaults standardUserDefaults]setObject:dict forKey:@"BKDataCollections"];
+        [[NSUserDefaults standardUserDefaults] synchronize];
+        
+        self.navigationItem.title = newName;
+        [self refreshDogEarDataAccrodingToCategory];
+        [self.tableView reloadData];
+    }
+    
 }
 
 #pragma mark - Table View Data Source

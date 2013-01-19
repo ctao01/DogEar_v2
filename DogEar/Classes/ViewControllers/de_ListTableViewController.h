@@ -8,7 +8,7 @@
 
 #import <UIKit/UIKit.h>
 
-@interface de_ListTableViewController : UITableViewController
+@interface de_ListTableViewController : UITableViewController <UIAlertViewDelegate>
 
 @property (nonatomic ,strong) NSMutableArray * collections;
 

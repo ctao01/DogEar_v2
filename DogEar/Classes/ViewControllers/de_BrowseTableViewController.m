@@ -62,6 +62,12 @@
     self.vcSearchDispay.searchResultsDelegate = self;
     self.vcSearchDispay.delegate = self;
     
+    
+}
+
+- (void) viewWillAppear:(BOOL)animated
+{
+    [super viewWillAppear:animated];
     if ([[NSUserDefaults standardUserDefaults] boolForKey:@"HasLaunchedOnce"] == NO)
     {
         
@@ -82,43 +88,9 @@
         [[NSUserDefaults standardUserDefaults] setBool:YES forKey:@"HasLaunchedOnce"];
     }
     categories = [[NSArray alloc]initWithArray:[[NSUserDefaults standardUserDefaults]objectForKey:@"BKCategory"]];
+    categories = [categories sortedArrayUsingSelector:@selector(localizedCaseInsensitiveCompare:)];
+    [self.tableView reloadData];
 }
-
-//- (void) viewWillAppear:(BOOL)animated
-//{
-//    [super viewWillAppear:animated];
-//    
-//    float height = [self.tabBarController.view bounds].size.height;
-//    float width = [self.tabBarController.view bounds].size.width;
-//    CGRect bgFrame = CGRectMake(0.0f, 0.0f, width, height - 20.0f - 44.0f - 49.0f);
-//    
-//    UIImageView *backgroundImage ;
-//    if (height >= 568.0f)
-//        backgroundImage = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"dogear-bg-instructions-fix-568h"]];
-//    else
-//        backgroundImage = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"dogear-bg-instructions-fix"]];
-//    backgroundImage.tag = 999;
-//    backgroundImage.frame = bgFrame;
-//    
-//    if ([[NSUserDefaults standardUserDefaults] boolForKey:@"HasLaunchedOnce"])
-//    {
-//        //JT-Notes: Has Launch App - Read Category Array 
-//        
-//        UIImageView *image = (UIImageView *)[self.view viewWithTag:999];
-//        if (image) [image removeFromSuperview];
-//        categories = [[NSArray alloc]initWithArray:[[NSUserDefaults standardUserDefaults]objectForKey:@"BKCategory"]];
-//    }
-//    else
-//    {
-//        // JT-Notes: First Time Launch App - Create Category Array and Data Dictionary 
-//        
-//        [self.view addSubview:backgroundImage];
-//        
-//       
-//    }
-//    
-//    [self.tableView reloadData];
-//}
 
 - (void) viewWillDisappear:(BOOL)animated
 {
