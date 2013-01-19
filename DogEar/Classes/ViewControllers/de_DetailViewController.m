@@ -110,13 +110,6 @@
         UIBarButtonItem * backItem = [[UIBarButtonItem alloc]initWithTitle:@"Back" style:UIBarButtonItemStylePlain target:self action:@selector(backToHome)];
         self.navigationItem.leftBarButtonItem = backItem;
         self.navigationItem.title = @"Details";
-        
-        //        self.tableView.userInteractionEnabled = NO;
-//        for (int c = 0; c < [self.tableView numberOfRowsInSection:0] - 1; c++) {
-//            NSIndexPath * disabledIndexPath = [NSIndexPath indexPathForRow:c inSection:0];
-//            UITableViewCell * disabledCell = [self.tableView cellForRowAtIndexPath:disabledIndexPath];
-//            [disabledCell setUserInteractionEnabled:NO];
-//        }
         self.dogEar = [self setupNewObjectWithObject:self.existingDogEar];
 
     }
@@ -136,16 +129,6 @@
 - (void) viewWillAppear:(BOOL)animated
 {
     [super viewWillAppear:animated];
-    
-//    [[NSNotificationCenter defaultCenter] addObserver:self
-//                                             selector:@selector(appHasGoneInBackground:)
-//                                                 name:UIApplicationDidEnterBackgroundNotification
-//                                               object:nil];
-//    
-//    [[NSNotificationCenter defaultCenter] addObserver:self
-//                                             selector:@selector(appWillEnterForeground:)
-//                                                 name:UIApplicationWillEnterForegroundNotification
-//                                               object:nil];
     
     
     [self.tableView reloadData];
@@ -171,7 +154,7 @@
 {
     if (self.isEditing)
     {
-        if (self.dogEar.category == nil)    //JT - Comment: Necessary to select Category
+        if (self.dogEar.category == nil || self.dogEar.title == nil)    //JT - Comment: Necessary to select Category
         {
             UIAlertView * alertView = [[UIAlertView alloc]initWithTitle:@"Notice" message:@"Please Select A Category (Required)" delegate:self cancelButtonTitle:@"Okay" otherButtonTitles: nil];
             [alertView show];
@@ -211,20 +194,6 @@
         self.isEditing = YES;
         [self setTableViewUserInteractionEnable:YES];
         [self setHeaderViewEditingEnable:YES];
-
-//        [headerView.titleField setEnabled:YES];
-//        [headerView.notesField setEditable:YES];
-        
-        /*NSMutableArray * temp = [[NSMutableArray alloc]initWithArray:[self decodedCollections]];
-        
-        for (int d = 0; d < [temp count]; d++)
-        {
-            DogEarObject * object = [temp objectAtIndex:d];
-            if ([object.title isEqualToString:self.existingDogEar.title] && [object.insertedDate isEqualToDate:self.existingDogEar.insertedDate])
-                [temp removeObject:object];
-        }
-
-        [self updateDogEarDataCollectionWithSelectedCollections:temp];*/
         
         [self.navigationItem.rightBarButtonItem setTitle:@"Done"];
         [self.navigationItem.rightBarButtonItem setStyle:UIBarButtonItemStylePlain];
@@ -243,14 +212,6 @@
 - (void) appHasGoneInBackground:(NSNotification*) notice
 {
     NSLog(@"appHasGoneInBackground");
-//    if (self.isEditing == YES)
-//    {
-//        NSLog(@"self.isEditing-%@",self.dogEar);
-//        NSMutableArray * array = [[NSMutableArray alloc]initWithArray:[self decodedCollections]];
-//        [self saveDogEar];
-//        [array addObject:self.dogEar];
-//        [self updateDogEarDataCollectionWithSelectedCollections:array];
-//    }
 }
 
 
@@ -283,10 +244,6 @@
     [self setTableViewUserInteractionEnable:NO];
     [self setHeaderViewEditingEnable:NO];
     self.isEditing = NO;
-    
-//    NSMutableArray * array = [[NSMutableArray alloc]initWithArray:[self decodedCollections]];
-//    [array addObject:self.existingDogEar];
-//    [self updateDogEarDataCollectionWithSelectedCollections:array];
 
 }
 
@@ -330,6 +287,7 @@
     [self updateDogEarDataCollectionWithSelectedCollections:array withObject:self.dogEar];
     
     self.existingDogEar = [self setupNewObjectWithObject:self.dogEar];
+
 
 }
 
@@ -384,12 +342,20 @@
 
 - (void) addDogEar
 {
+
     NSLog(@"addDogEar");
+    if (self.dogEar.title == nil && [headerView.titleField.text length]>0)
+        NSLog(@"title:%@",headerView.titleField.text);
+    
     if (self.dogEar.category == nil || self.dogEar.title == nil)
     {
-        UIAlertView * alertView = [[UIAlertView alloc]initWithTitle:@"Notice" message:@"Please Select A Category / Title (Required)" delegate:self cancelButtonTitle:@"Okay" otherButtonTitles: nil];
-        [alertView show];
-        return;
+        if ([headerView.titleField.text length]>0)
+            [self.dogEar setTitle:headerView.titleField.text];
+        else
+        {
+            UIAlertView * alertView = [[UIAlertView alloc]initWithTitle:@"Notice" message:@"Please Select A Category / Title (Required)" delegate:self cancelButtonTitle:@"Okay" otherButtonTitles: nil];
+            [alertView show];
+        }
     }
     
     [activityIndicator startAnimating];
