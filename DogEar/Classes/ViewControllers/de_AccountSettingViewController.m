@@ -55,6 +55,8 @@
 - (void) buttonTapped:(id)sender
 {
     UISwitch * button = (UISwitch*)sender;
+    [activityIndicator startAnimating];
+
     if (button.tag == 0)
     {
         if (    [[NSUserDefaults standardUserDefaults] objectForKey:@"DGFacebookSession_Token"])
@@ -74,8 +76,10 @@
                 [[NSUserDefaults standardUserDefaults]synchronize];
                 
             }  failure:^(FBSession *session, FBSessionState status, NSError *error) {
-                button.on = [FBSession.activeSession isOpen];
+                button.on = NO;
             }];
+        [activityIndicator stopAnimating];
+
     }
     
     else if (button.tag == 1)
@@ -84,7 +88,6 @@
         {
             TwitterManager * twitter  = [TwitterManager sharedManager];
             [twitter connectToTwitterAccount];
-            [activityIndicator startAnimating];
             [NSTimer scheduledTimerWithTimeInterval:1.5f target:self selector:@selector(checkTwitterConnection) userInfo:nil repeats:NO];
 
         }
