@@ -21,7 +21,8 @@
     self.window.backgroundColor = [UIColor whiteColor];
     [self.window makeKeyAndVisible];
     self.bkSplashScreenVC = [[de_DefaultViewController alloc]init];
-
+    application.applicationIconBadgeNumber = 0;
+    
     //JT-Note: Handle Local Notification
     UILocalNotification * notification = [launchOptions objectForKey:@"UIApplicationLaunchOptionsLocalNotificationKey"];
     
@@ -29,8 +30,7 @@
     {
         self.localNotification = notification;
         [application cancelLocalNotification:notification];
-        notification.applicationIconBadgeNumber = 0;
-        application.applicationIconBadgeNumber = 0;
+//        application.applicationIconBadgeNumber = 0;
         [NSTimer scheduledTimerWithTimeInterval:5 target:self selector:@selector(showAlert:) userInfo:nil repeats:NO];
     }
     self.bkMainNav = [[UINavigationController alloc]initWithRootViewController:self.bkSplashScreenVC];
@@ -94,13 +94,7 @@
 #pragma mark - NSLocalNotification
 
 - (void) application:(UIApplication *)application didReceiveLocalNotification:(UILocalNotification *)notification
-{
-    NSLog(@"didReceiveLocalNotification");
-//    [self.bkSplashScreenVC showReminderWithLocalNotification:notification];
-    notification.applicationIconBadgeNumber = 0;
-    application.applicationIconBadgeNumber = 0;
-
-    [application cancelLocalNotification:notification];
+{    
     self.localNotification = notification;
     UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"DogEar Reminder"
                                                     message:notification.alertBody
@@ -108,10 +102,11 @@
                                           cancelButtonTitle:@"Cancel"
                                           otherButtonTitles:@"Check it",nil];
     [alert show];
-    
+    [application cancelLocalNotification:notification];
+
 }
 
-#pragma mark - 
+#pragma mark -
 
 - (void) alertView:(UIAlertView *)alertView clickedButtonAtIndex:(NSInteger)buttonIndex
 {

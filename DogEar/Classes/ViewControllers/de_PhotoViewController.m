@@ -392,6 +392,21 @@
     [alertView show];
 }
 
+- (void) cancelExistingNotificationWithObject:(DogEarObject*)object
+{
+    NSArray *localNotifications = [[UIApplication sharedApplication] scheduledLocalNotifications];
+    for (UILocalNotification *notification in localNotifications)
+    {
+        NSDictionary * dict = notification.userInfo;
+        if (dict)
+        {
+            NSDate * insertedDate = [dict objectForKey:@"DogEarObjectInsertedDate"];
+            if ([insertedDate isEqualToDate:object.insertedDate])
+                [[UIApplication sharedApplication] cancelLocalNotification:notification];
+        }
+    }
+}
+
 #pragma mark - 
 
 - (void) publishDogEarWithoutSheet
@@ -446,8 +461,6 @@
         else
         {
             [self publishDogEarWithoutSheet];
-//            UIAlertView * alertView = [[UIAlertView alloc]initWithTitle:@"No Facebook Account" message:@"There are no Facebook accounts comfigured. You can add or create a Facebook in Settings" delegate:nil cancelButtonTitle:@"Okay" otherButtonTitles:nil];
-//            [alertView show];
             
         }
     }
@@ -569,10 +582,6 @@
             break;
         case 3: // Message
         {
-//            UIAlertView * alertView = [[UIAlertView alloc]initWithTitle:@"DogEar" message:@"Save To Camera Roll Coming Soon" delegate:nil cancelButtonTitle:@"Ok" otherButtonTitles: nil];
-//            [alertView show];
-//            MessageManager * composer = [MessageManager sharedComposer];
-//            [composer presentShareImageFromDogEar:self.existingDogEar viaMessageComposerFromParentent:self];
             UIImageWriteToSavedPhotosAlbum(self.photo, self, @selector(image:didFinishSavingWithError:contextInfo:), nil);
  
         }
@@ -622,6 +631,7 @@
             {
                 DogEarObject * object = [temp objectAtIndex:d];
                 if ([object.title isEqualToString:self.existingDogEar.title] && [object.insertedDate isEqualToDate:self.existingDogEar.insertedDate])
+                    [self cancelExistingNotificationWithObject:object];
                     [temp removeObject:object];
             }
             

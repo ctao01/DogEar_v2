@@ -9,6 +9,7 @@
 #import "de_DefaultViewController.h"
 #import "de_MainTabBarController.h"
 #import "de_PhotoViewController.h"
+#import "AppDelegate.h"
 
 @interface de_DefaultViewController ()
 
@@ -106,17 +107,20 @@
 {
     if (!self.bkTabBarVC) return;
     
+    if ([UIApplication sharedApplication].applicationIconBadgeNumber>0) 
+		[UIApplication sharedApplication].applicationIconBadgeNumber--;
+    
     DogEarObject * dogEar = (DogEarObject*)[self getDogEarObjectWithNotification:aNotification];
     
     UIImage * image = [UIImage imageWithData:[NSData dataWithContentsOfFile:dogEar.imagePath]];
-//    if (dogEar.reminderDate != NULL) dogEar.reminderDate = NULL;
-//    if (dogEar.repeatingReminder != NULL) dogEar.repeatingReminder = NULL;
     
     UINavigationController * nc = [self.bkTabBarVC.viewControllers objectAtIndex:0];
     de_PhotoViewController * vc = [[de_PhotoViewController alloc]initWithImage:image andExistingDogEar:dogEar];
     [nc pushViewController:vc animated:YES];
     
     [self.bkTabBarVC setSelectedIndex:0];
+    
+    
 }
 
 @end

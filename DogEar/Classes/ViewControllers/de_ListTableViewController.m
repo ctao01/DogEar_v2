@@ -106,6 +106,23 @@
     
 }
 
+#pragma mark - Cacnel Notification
+
+- (void) cancelExistingNotificationWithObject:(DogEarObject*)object
+{
+    NSArray *localNotifications = [[UIApplication sharedApplication] scheduledLocalNotifications];
+    for (UILocalNotification *notification in localNotifications)
+    {
+        NSDictionary * dict = notification.userInfo;
+        if (dict)
+        {
+            NSDate * insertedDate = [dict objectForKey:@"DogEarObjectInsertedDate"];
+            if ([insertedDate isEqualToDate:object.insertedDate])
+                [[UIApplication sharedApplication] cancelLocalNotification:notification];
+        }
+    }
+}
+
 #pragma mark - Refresh Current Items
 
 - (void) refreshDogEarDataAccrodingToCategory
@@ -303,7 +320,10 @@
     {
         DogEarObject * object = [decodedObjects objectAtIndex:d];
         if ([object.title isEqualToString:selectedDogEar.title] && [object.insertedDate isEqualToDate:selectedDogEar.insertedDate])
+        {
+            [self cancelExistingNotificationWithObject:object];
             [decodedObjects removeObject:object];
+        }
     }
     NSLog(@"category:%i",[decodedObjects count]);
 
