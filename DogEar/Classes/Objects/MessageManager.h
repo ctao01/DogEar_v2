@@ -16,5 +16,7 @@
 - (void) presentShareImageFromDogEarObject:(DogEarObject*)sharedObject viaMailComposerFromParent:(UIViewController *)vcParent;
 - (void) presentShareImageFromDogEar:(DogEarObject*)sharedObject viaMessageComposerFromParentent:(UIViewController*)vcParent;
 
+- (void) reportSupportviaMailComposerFromParent:(UIViewController *)vcParent;
+
 
 @end

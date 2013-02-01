@@ -19,6 +19,15 @@
 		3D30028F169B990B00C72E02 /* dogear-icon-rotate@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 3D300289169B990B00C72E02 /* dogear-icon-rotate@2x.png */; };
 		3D3002AF169DF01400C72E02 /* FacebookManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 3D3002AE169DF01400C72E02 /* FacebookManager.m */; };
 		3D3EC7801677C33E0074945F /* cropPoint.png in Resources */ = {isa = PBXBuildFile; fileRef = 3D3EC77F1677C33E0074945F /* cropPoint.png */; };
+		3D605FBD16BC668600E05647 /* de_AboutViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 3D605FBC16BC668600E05647 /* de_AboutViewController.m */; };
+		3D605FC116BC683E00E05647 /* de_AboutHeaderView.m in Sources */ = {isa = PBXBuildFile; fileRef = 3D605FC016BC683E00E05647 /* de_AboutHeaderView.m */; };
+		3D605FC416BC688B00E05647 /* DogEarLogo_About.png in Resources */ = {isa = PBXBuildFile; fileRef = 3D605FC216BC688B00E05647 /* DogEarLogo_About.png */; };
+		3D605FC516BC688B00E05647 /* DogEarLogo_About@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 3D605FC316BC688B00E05647 /* DogEarLogo_About@2x.png */; };
+		3D605FC816BC740D00E05647 /* UITextView+EULA.m in Sources */ = {isa = PBXBuildFile; fileRef = 3D605FC716BC740D00E05647 /* UITextView+EULA.m */; };
+		3D605FCB16BC7D0C00E05647 /* dogear-icon-cancel.png in Resources */ = {isa = PBXBuildFile; fileRef = 3D605FC916BC7D0C00E05647 /* dogear-icon-cancel.png */; };
+		3D605FCC16BC7D0C00E05647 /* dogear-icon-cancel@2xpng.png in Resources */ = {isa = PBXBuildFile; fileRef = 3D605FCA16BC7D0C00E05647 /* dogear-icon-cancel@2xpng.png */; };
+		3D605FCF16BC7E1600E05647 /* dogear-icon-load.png in Resources */ = {isa = PBXBuildFile; fileRef = 3D605FCD16BC7E1600E05647 /* dogear-icon-load.png */; };
+		3D605FD016BC7E1600E05647 /* dogear-icon-load@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 3D605FCE16BC7E1600E05647 /* dogear-icon-load@2x.png */; };
 		3D81651E1683D38C001159FF /* dogear-bg-instructions-fix-568h@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 3D81651B1683D38C001159FF /* dogear-bg-instructions-fix-568h@2x.png */; };
 		3D81651F1683D38C001159FF /* dogear-bg-instructions-fix.png in Resources */ = {isa = PBXBuildFile; fileRef = 3D81651C1683D38C001159FF /* dogear-bg-instructions-fix.png */; };
 		3D8165201683D38C001159FF /* dogear-bg-instructions-fix@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 3D81651D1683D38C001159FF /* dogear-bg-instructions-fix@2x.png */; };
@@ -116,6 +125,18 @@
 		3D3002AD169DF01400C72E02 /* FacebookManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = FacebookManager.h; path = Classes/Objects/FacebookManager.h; sourceTree = "<group>"; };
 		3D3002AE169DF01400C72E02 /* FacebookManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = FacebookManager.m; path = Classes/Objects/FacebookManager.m; sourceTree = "<group>"; };
 		3D3EC77F1677C33E0074945F /* cropPoint.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = cropPoint.png; sourceTree = "<group>"; };
+		3D605FBB16BC668600E05647 /* de_AboutViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = de_AboutViewController.h; path = Classes/ViewControllers/de_AboutViewController.h; sourceTree = "<group>"; };
+		3D605FBC16BC668600E05647 /* de_AboutViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = de_AboutViewController.m; path = Classes/ViewControllers/de_AboutViewController.m; sourceTree = "<group>"; };
+		3D605FBF16BC683E00E05647 /* de_AboutHeaderView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = de_AboutHeaderView.h; path = Classes/Views/de_AboutHeaderView.h; sourceTree = "<group>"; };
+		3D605FC016BC683E00E05647 /* de_AboutHeaderView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = de_AboutHeaderView.m; path = Classes/Views/de_AboutHeaderView.m; sourceTree = "<group>"; };
+		3D605FC216BC688B00E05647 /* DogEarLogo_About.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = DogEarLogo_About.png; sourceTree = "<group>"; };
+		3D605FC316BC688B00E05647 /* DogEarLogo_About@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "DogEarLogo_About@2x.png"; sourceTree = "<group>"; };
+		3D605FC616BC740D00E05647 /* UITextView+EULA.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = "UITextView+EULA.h"; path = "Categories/UITextView+EULA.h"; sourceTree = "<group>"; };
+		3D605FC716BC740D00E05647 /* UITextView+EULA.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = "UITextView+EULA.m"; path = "Categories/UITextView+EULA.m"; sourceTree = "<group>"; };
+		3D605FC916BC7D0C00E05647 /* dogear-icon-cancel.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "dogear-icon-cancel.png"; sourceTree = "<group>"; };
+		3D605FCA16BC7D0C00E05647 /* dogear-icon-cancel@2xpng.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "dogear-icon-cancel@2xpng.png"; sourceTree = "<group>"; };
+		3D605FCD16BC7E1600E05647 /* dogear-icon-load.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "dogear-icon-load.png"; sourceTree = "<group>"; };
+		3D605FCE16BC7E1600E05647 /* dogear-icon-load@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "dogear-icon-load@2x.png"; sourceTree = "<group>"; };
 		3D81651B1683D38C001159FF /* dogear-bg-instructions-fix-568h@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "dogear-bg-instructions-fix-568h@2x.png"; sourceTree = "<group>"; };
 		3D81651C1683D38C001159FF /* dogear-bg-instructions-fix.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "dogear-bg-instructions-fix.png"; sourceTree = "<group>"; };
 		3D81651D1683D38C001159FF /* dogear-bg-instructions-fix@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "dogear-bg-instructions-fix@2x.png"; sourceTree = "<group>"; };
@@ -390,6 +411,8 @@
 		7E4252B716645F4400741A41 /* Assets */ = {
 			isa = PBXGroup;
 			children = (
+				3D605FC216BC688B00E05647 /* DogEarLogo_About.png */,
+				3D605FC316BC688B00E05647 /* DogEarLogo_About@2x.png */,
 				3DDF1D4516960DDB005B378C /* corner.png */,
 				3D28E02E167AEB3F0086B331 /* sample.png */,
 				3D3EC77F1677C33E0074945F /* cropPoint.png */,
@@ -424,6 +447,10 @@
 		7E4252C216645F5800741A41 /* Icons */ = {
 			isa = PBXGroup;
 			children = (
+				3D605FCD16BC7E1600E05647 /* dogear-icon-load.png */,
+				3D605FCE16BC7E1600E05647 /* dogear-icon-load@2x.png */,
+				3D605FC916BC7D0C00E05647 /* dogear-icon-cancel.png */,
+				3D605FCA16BC7D0C00E05647 /* dogear-icon-cancel@2xpng.png */,
 				3D300284169B990B00C72E02 /* dogear-icon-crop-@2x.png */,
 				3D300285169B990B00C72E02 /* dogear-icon-crop.png */,
 				3D300286169B990B00C72E02 /* dogear-icon-enhance.png */,
@@ -454,6 +481,8 @@
 				7E98E221166EA7D900FAFA60 /* UIImage+DGStyle.m */,
 				7E4CA5B7167A66EF003F0013 /* FBSession+DGAdditions.h */,
 				7E4CA5B8167A66EF003F0013 /* FBSession+DGAdditions.m */,
+				3D605FC616BC740D00E05647 /* UITextView+EULA.h */,
+				3D605FC716BC740D00E05647 /* UITextView+EULA.m */,
 			);
 			name = Categories;
 			sourceTree = "<group>";
@@ -478,6 +507,8 @@
 				3D1A665616726C1B00699B30 /* de_NavigationBar.m */,
 				7E4D39B91676EC2600739546 /* de_HeaderView.h */,
 				7E4D39BA1676EC2700739546 /* de_HeaderView.m */,
+				3D605FBF16BC683E00E05647 /* de_AboutHeaderView.h */,
+				3D605FC016BC683E00E05647 /* de_AboutHeaderView.m */,
 			);
 			name = Views;
 			sourceTree = "<group>";
@@ -523,6 +554,8 @@
 				7E4252EE16646C5600741A41 /* de_SettingViewController.m */,
 				3DD76483166C5E7D00C7CA9B /* de_AccountSettingViewController.h */,
 				3DD76484166C5E7D00C7CA9B /* de_AccountSettingViewController.m */,
+				3D605FBB16BC668600E05647 /* de_AboutViewController.h */,
+				3D605FBC16BC668600E05647 /* de_AboutViewController.m */,
 			);
 			name = Settings;
 			sourceTree = "<group>";
@@ -681,6 +714,12 @@
 				3D30028D169B990B00C72E02 /* dogear-icon-enhance@2x.png in Resources */,
 				3D30028E169B990B00C72E02 /* dogear-icon-rotate.png in Resources */,
 				3D30028F169B990B00C72E02 /* dogear-icon-rotate@2x.png in Resources */,
+				3D605FC416BC688B00E05647 /* DogEarLogo_About.png in Resources */,
+				3D605FC516BC688B00E05647 /* DogEarLogo_About@2x.png in Resources */,
+				3D605FCB16BC7D0C00E05647 /* dogear-icon-cancel.png in Resources */,
+				3D605FCC16BC7D0C00E05647 /* dogear-icon-cancel@2xpng.png in Resources */,
+				3D605FCF16BC7E1600E05647 /* dogear-icon-load.png in Resources */,
+				3D605FD016BC7E1600E05647 /* dogear-icon-load@2x.png in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -730,6 +769,9 @@
 				7E4D39BB1676EC2700739546 /* de_HeaderView.m in Sources */,
 				7E4CA5B9167A66EF003F0013 /* FBSession+DGAdditions.m in Sources */,
 				3D3002AF169DF01400C72E02 /* FacebookManager.m in Sources */,
+				3D605FBD16BC668600E05647 /* de_AboutViewController.m in Sources */,
+				3D605FC116BC683E00E05647 /* de_AboutHeaderView.m in Sources */,
+				3D605FC816BC740D00E05647 /* UITextView+EULA.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

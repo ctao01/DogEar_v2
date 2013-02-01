@@ -16,6 +16,8 @@
 
 #import "UIImage+DGStyle.h"
 
+#import <QuartzCore/QuartzCore.h>
+
 @interface de_MainTabBarController ()
 
 @end
@@ -96,6 +98,14 @@
     [self.view addSubview:button];
 }
 
+#pragma mark - UINavigationController Delegate
+
+- (void)navigationController:(UINavigationController *)navigationController willShowViewController:(UIViewController *)viewController animated:(BOOL)animated
+{
+    [self addSomeElements:viewController];
+}
+
+
 #pragma mark -
 
 - (void) activateCamera
@@ -103,7 +113,7 @@
     self.selectedIndex = 1;
     UIImagePickerController * imagePickerController = [[UIImagePickerController alloc]init];
     imagePickerController.delegate = self;
-    imagePickerController.allowsEditing = NO;
+    imagePickerController.allowsEditing = NO;    
     
     imagePickerController.sourceType =  UIImagePickerControllerSourceTypeCamera;
     imagePickerController.modalTransitionStyle = UIModalTransitionStyleCoverVertical;
@@ -188,6 +198,69 @@
         
     }];
     
+}
+
+#pragma mark - Custom UIImagePicker 
+-(UIView *)findView:(UIView *)aView withName:(NSString *)name
+{
+    Class cl = [aView class];
+    NSString *desc = [cl description];
+    
+    if ([name isEqualToString:desc])
+        return aView;
+    
+    for (NSUInteger i = 0; i < [aView.subviews count]; i++)
+    {
+        UIView *subView = [aView.subviews objectAtIndex:i];
+        subView = [self findView:subView withName:name];
+        if (subView)
+            return subView;
+    }
+    return nil;
+}
+
+- (void)addSomeElements:(UIViewController *)viewController{
+    
+    
+    UIView *PLCameraView=[self findView:viewController.view withName:@"PLCameraView"];
+
+    UIView * bottomBar=[self findView:PLCameraView withName:@"PLCropOverlayBottomBar"];
+    UIImageView *bottomBarImageForSave = [bottomBar.subviews objectAtIndex:1];
+    NSLog(@"%@",bottomBarImageForSave.subviews);
+    
+    UIButton *cameraButton=[bottomBarImageForSave.subviews objectAtIndex:0];
+    UIButton *cacnelBtn =[bottomBarImageForSave.subviews objectAtIndex:1];
+//    [loadButton setTitle:@"Load" forState:UIControlStateNormal];  //右下角按钮
+    UIButton * loadButton = [UIButton buttonWithType:UIButtonTypeCustom];
+    [loadButton setFrame:cacnelBtn.frame];
+    [loadButton setImage:[UIImage imageNamed:@"dogear-icon-load"] forState:UIControlStateNormal];
+    [loadButton addTarget:self action:@selector(loadImageFromLibrary) forControlEvents:UIControlEventTouchUpInside];
+    
+    [cacnelBtn removeFromSuperview];
+    [bottomBarImageForSave addSubview:loadButton];
+    
+//    UIBarButtonItem * button = [[UIBarButtonItem alloc]initWithBarButtonSystemItem:UIBarButtonSystemItemCancel target:self action:@selector(dismissPicker)];
+    UIButton * button = [UIButton buttonWithType:UIButtonTypeCustom];
+//    [button setTitle:@"Cancel" forState:UIControlStateNormal];
+    [button setImage:[UIImage imageNamed:@"dogear-icon-cancel"] forState:UIControlStateNormal];
+    [button setFrame:loadButton.frame];
+    [button setCenter:CGPointMake(cameraButton.center.x + (cameraButton.center.x - loadButton.center.x), button.center.y)];
+    [button addTarget:self action:@selector(dismissImagePicker) forControlEvents:UIControlEventTouchUpInside];
+
+    [bottomBarImageForSave addSubview:button];
+}
+
+- (void) loadImageFromLibrary
+{
+    NSLog(@"loadImageFromLibrary");
+}
+
+- (void) dismissImagePicker
+{
+    NSLog(@"dismissImagePicker");
+    self.selectedIndex = 0;
+
+    [self dismissModalViewControllerAnimated:YES];
 }
 
 @end

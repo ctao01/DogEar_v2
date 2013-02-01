@@ -8,6 +8,7 @@
 
 #import "de_SettingViewController.h"
 #import "de_AccountSettingViewController.h"
+#import "de_AboutViewController.h"
 
 @interface de_SettingViewController ()
 @end
@@ -141,7 +142,13 @@
 {
     UITableViewCell * cell = (UITableViewCell*)[self.tableView cellForRowAtIndexPath:indexPath];
    
-    if (indexPath.row == 2)
+    if (indexPath.row == 0)
+    {
+        de_AboutViewController * vc = [[de_AboutViewController alloc]initWithStyle:UITableViewStyleGrouped];
+        [self.navigationController pushViewController:vc animated:YES];
+    }
+    
+    else if (indexPath.row == 2)
     {
         de_AccountSettingViewController * vc = [[de_AccountSettingViewController alloc]initWithStyle:UITableViewStyleGrouped];
         [self.navigationController pushViewController:vc animated:YES];

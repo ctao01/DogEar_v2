@@ -53,6 +53,27 @@ static MessageManager * sharedManager = nil;
 	}
 }
 
+- (void) reportSupportviaMailComposerFromParent:(UIViewController *)vcParent
+{
+    if (!vcParent) return;
+	
+	if ([MFMailComposeViewController canSendMail])
+	{
+        self.mailComposer = nil;
+        self.mailComposer = [[MFMailComposeViewController alloc]init];
+        self.mailComposer.mailComposeDelegate = self;
+        
+        [self.mailComposer setToRecipients:[NSArray arrayWithObjects:@"dogear-support@bloomfieldknoble.com", nil]];
+		[self.mailComposer setSubject:@"DogEar Support Query from Apple Device"];
+		
+		[vcParent presentViewController:self.mailComposer animated:YES completion:nil];
+	}
+	else {
+		NSLog(@"Can't send out");
+	}
+}
+
+
 - (void) presentMessageComposerWithBody:(NSString*)body fromParentViewController:(UIViewController*)vc
 {
     if (!vc) return;
