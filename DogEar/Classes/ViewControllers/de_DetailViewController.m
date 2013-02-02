@@ -72,7 +72,7 @@
     activityIndicator.center = self.view.center;
     [self.view addSubview:activityIndicator];
     
-    UIImageView * bgImage = [[UIImageView alloc]initWithImage:[UIImage imageNamed:@"dogear-bg-master"]];
+    UIImageView * bgImage = [[UIImageView alloc]initWithImage:[UIImage imageNamed:@"dogear-bg-content-master"]];
     self.tableView.backgroundView = bgImage;
         
 //    headerView = [[de_HeaderView alloc]initWithFrame:CGRectMake(0.0f, 0.0f, 320.0f, 200.0f)];
@@ -156,7 +156,7 @@
     {
         if (self.dogEar.category == nil || self.dogEar.title == nil)    //JT - Comment: Necessary to select Category
         {
-            UIAlertView * alertView = [[UIAlertView alloc]initWithTitle:@"Notice" message:@"Please Select A Category (Required)" delegate:self cancelButtonTitle:@"Okay" otherButtonTitles: nil];
+            UIAlertView * alertView = [[UIAlertView alloc]initWithTitle:@"Warning" message:@"Please enter a Title and Category for your DogEar" delegate:self cancelButtonTitle:@"Okay" otherButtonTitles: nil];
             [alertView show];
             return;
         }
@@ -353,7 +353,7 @@
             [self.dogEar setTitle:headerView.titleField.text];
         else
         {
-            UIAlertView * alertView = [[UIAlertView alloc]initWithTitle:@"Notice" message:@"Please Select A Category / Title (Required)" delegate:self cancelButtonTitle:@"Okay" otherButtonTitles: nil];
+            UIAlertView * alertView = [[UIAlertView alloc]initWithTitle:@"Warning" message:@"Please enter a Title and Category for your DogEar" delegate:self cancelButtonTitle:@"Okay" otherButtonTitles: nil];
             [alertView show];
         }
     }

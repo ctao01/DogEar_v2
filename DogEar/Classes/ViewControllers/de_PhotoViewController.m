@@ -558,7 +558,7 @@
                 if ([[NSUserDefaults standardUserDefaults] boolForKey:@"Twitter_Account"] == YES)[self presentViewController:[twitter tweetTWComposerSheetWithSharedImage:self.photo] animated:YES completion:nil];
                 else
                 {
-                    UIAlertView * alertView = [[UIAlertView alloc]initWithTitle:@"Twitter Authorization" message:@"DogEar has been disconnected to Twitter account. Turn on connection in Settings" delegate:self cancelButtonTitle:@"Okay" otherButtonTitles:@"Setting", nil];
+                    UIAlertView * alertView = [[UIAlertView alloc]initWithTitle:@"Twitter" message:@"Can't connect to Twitter account. Please check your settings and try again" delegate:self cancelButtonTitle:@"Okay" otherButtonTitles:@"Setting", nil];
                     [alertView show];
                 }
 
@@ -568,7 +568,7 @@
                 if ([[NSUserDefaults standardUserDefaults] boolForKey:@"Twitter_Account"] == YES) [self presentViewController:[twitter tweetSLComposerSheetWithSharedImage:self.photo] animated:YES completion:nil];
                 else
                 {
-                    UIAlertView * alertView = [[UIAlertView alloc]initWithTitle:@"Twitter Authorization" message:@"DogEar has been disconnected to Twitter account. Turn on connection in Settings" delegate:self cancelButtonTitle:@"Okay" otherButtonTitles:@"Setting", nil];
+                    UIAlertView * alertView = [[UIAlertView alloc]initWithTitle:@"Twitter" message:@"Can't connect to Twitter account. Please check your settings and try again" delegate:self cancelButtonTitle:@"Okay" otherButtonTitles:@"Setting", nil];
                     [alertView show];
                 }
             }

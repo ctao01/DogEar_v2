@@ -146,7 +146,7 @@ static TwitterManager * sharedManager = nil;
         [tweetSLComposerSheet addImage:image];
     }
     else{
-        UIAlertView * alertView = [[UIAlertView alloc]initWithTitle:@"No Twitter Account" message:@"There are no Facebook accounts comfigured. You can add or create a Twitter in Settings" delegate:nil cancelButtonTitle:@"Okay" otherButtonTitles:nil];
+        UIAlertView * alertView = [[UIAlertView alloc]initWithTitle:@"No Twitter Account" message:@"In order to connect, please set up your Twitter account in iPhone Settings" delegate:nil cancelButtonTitle:@"Okay" otherButtonTitles:nil];
         [alertView show];
     }
     return tweetSLComposerSheet;
@@ -160,11 +160,15 @@ static TwitterManager * sharedManager = nil;
         tweetTWComposerSheet = [[TWTweetComposeViewController alloc] init];
         [tweetTWComposerSheet addImage:image];
         [tweetTWComposerSheet setInitialText:@"DogEar"];
-        UIAlertView * alertView = [[UIAlertView alloc]initWithTitle:@"DogEar" message:@"Post Successfully" delegate:nil cancelButtonTitle:@"Okay" otherButtonTitles:nil];
+        UIAlertView * alertView = [[UIAlertView alloc]initWithTitle:@"Twitter" message:@"Your DogEar was posted successfully" delegate:nil cancelButtonTitle:@"Okay" otherButtonTitles:nil];
         [alertView show];
     }
     else
+    {
         NSLog(@"can't send tweet");
+        UIAlertView * alertView = [[UIAlertView alloc]initWithTitle:@"Twitter" message:@"Post failed. Please try again" delegate:nil cancelButtonTitle:@"Okay" otherButtonTitles:nil];
+        [alertView show];
+    }
     return tweetTWComposerSheet;
 
 }
