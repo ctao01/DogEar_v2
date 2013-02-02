@@ -12,7 +12,9 @@
 #import "AppDelegate.h"
 
 @interface de_DefaultViewController ()
-
+{
+    UIActivityIndicatorView *activityIndicator;
+}
 - (void) displayScreen;
 - (void) removeScreen;
 
@@ -91,7 +93,27 @@
 
 -(void) displayScreen
 {
-    self.view.backgroundColor = [UIColor colorWithPatternImage:[UIImage imageNamed:@"dogear-bg-splash"]];
+    float height = self.view.bounds.size.height;
+//    CGRect bgFrame = CGRectMake(0.0f, 0.0f, self.view.bounds.size.width, height - 20.0f - 44.0f - 49.0f);
+
+//    if (height < 568.0f)
+//        self.view.backgroundColor = [UIColor colorWithPatternImage:[UIImage imageNamed:@"dogear-bg-splash-new"]];
+//    else
+//        self.view.backgroundColor = [UIColor colorWithPatternImage:[UIImage imageNamed:@"dogear-bg-splash-568h"]];
+    UIImageView *backgroundImage ;
+    if (height >= 568.0f)
+        backgroundImage = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"dogear-bg-splash-new-568h"]];
+    else
+        backgroundImage = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"dogear-bg-splash-new"]];
+    backgroundImage.frame = self.view.bounds;
+    [self.view addSubview:backgroundImage];
+    
+    activityIndicator = [[UIActivityIndicatorView alloc] initWithFrame:CGRectMake(0, 0, 44, 44)];
+    activityIndicator.activityIndicatorViewStyle = UIActivityIndicatorViewStyleWhite;
+    activityIndicator.center = CGPointMake(self.view.center.x, self.view.center.y + 120.0f);
+    [self.view addSubview:activityIndicator];
+    [activityIndicator startAnimating];
+    
     [self performSelector:@selector(removeScreen) withObject:nil afterDelay:3.0];
 }
 
@@ -100,6 +122,7 @@
     //    [self.view removeFromSuperview];
     self.bkTabBarVC = [[de_MainTabBarController alloc]init];
     [self presentViewController:self.bkTabBarVC animated:NO completion:^{
+        [activityIndicator stopAnimating];
     }];
 }
 

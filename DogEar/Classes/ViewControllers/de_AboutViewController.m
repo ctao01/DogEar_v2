@@ -30,12 +30,28 @@
 - (void)viewDidLoad
 {
     [super viewDidLoad];
-    UIImageView * bgImage = [[UIImageView alloc]initWithImage:[UIImage imageNamed:@"dogear-bg-master"]];
-    self.tableView.backgroundView = bgImage;
+    
+    float height = self.view.bounds.size.height;
+
+    
+    UIImageView *backgroundImage ;
+    if (height >= 568.0f)
+        backgroundImage = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"dogear-bg-master-blue-568h"]];
+    else
+        backgroundImage = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"dogear-bg-master-blue"]];
+    self.tableView.backgroundView = backgroundImage;
+    
+//    CGRect bgFrame = CGRectMake(0.0f, 0.0f, self.view.bounds.size.width, height - 20.0f - 44.0f - 49.0f);
+//    backgroundImage.frame = bgFrame;
+//    [vc.view addSubview:backgroundImage];
+//    UIImageView * bgImage = [[UIImageView alloc]initWithImage:[UIImage imageNamed:@"dogear-bg-master"]];
+//    self.tableView.backgroundView = bgImage;
     
     de_AboutHeaderView * aboutHeaderView = [[de_AboutHeaderView alloc]initWithFrame:CGRectMake(0.0f, 0.0f, self.view.frame.size.width, 240.0f)];
     self.tableView.tableHeaderView = aboutHeaderView;
     self.title = @"About";
+    self.tableView.showsVerticalScrollIndicator = NO;
+    self.tableView.scrollEnabled = NO;
 }
 
 - (void)didReceiveMemoryWarning

@@ -38,7 +38,7 @@
         [[NSUserDefaults standardUserDefaults] synchronize];
     }
     else flaggedArray = [[[NSUserDefaults standardUserDefaults]objectForKey:@"BKFlaggedItems"] copy];
-    UIImageView * bgImage = [[UIImageView alloc]initWithImage:[UIImage imageNamed:@"dogear-bg-master"]];
+    UIImageView * bgImage = [[UIImageView alloc]initWithImage:[UIImage imageNamed:@"dogear-bg-content-master"]];
     self.tableView.backgroundView = bgImage;
     self.navigationItem.title = @"Flagged It";
 }

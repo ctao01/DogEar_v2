@@ -43,7 +43,12 @@
 {
     [super viewDidLoad];
 
-    UIImageView * bgImage = [[UIImageView alloc]initWithImage:[UIImage imageNamed:@"dogear-bg-master"]];
+    float height = self.view.bounds.size.height;
+    UIImageView * bgImage;
+    if (height < 568.0f)        
+        bgImage = [[UIImageView alloc]initWithImage:[UIImage imageNamed:@"dogear-bg-content-master"]];
+    else
+        bgImage = [[UIImageView alloc]initWithImage:[UIImage imageNamed:@"dogear-bg-content-master-568h"]];
     self.tableView.backgroundView = bgImage;
     
     UISearchBar * searchBar = [[UISearchBar alloc]initWithFrame:CGRectMake(0.0f, 0.0f, 320.0f, 44.0f)];
@@ -55,6 +60,7 @@
     self.tableView.contentInset = UIEdgeInsetsMake(0.0f, 0.0f, 44.0f, 0.0f);
     self.tableView.scrollIndicatorInsets = UIEdgeInsetsMake(0.0f, 0.0f, 0.0f, 0.0f);
 
+    
     self.navigationItem.title = @"Browse DogEars";
     
     self.vcSearchDispay = [[UISearchDisplayController alloc]initWithSearchBar:searchBar contentsController:self];
