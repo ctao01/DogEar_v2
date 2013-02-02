@@ -388,7 +388,7 @@
 - (void) deleteThePhoto
 {
     
-    UIAlertView * alertView = [[UIAlertView alloc]initWithTitle:@"DogEar" message:@"Are you sure delete this DogEar" delegate:self cancelButtonTitle:@"Cancel" otherButtonTitles:@"Move To Trash", nil];
+    UIAlertView * alertView = [[UIAlertView alloc]initWithTitle:@"DogEar" message:@"Are you sure to delete this DogEar?" delegate:self cancelButtonTitle:@"Cancel" otherButtonTitles:@"Move To Trash", nil];
     [alertView show];
 }
 
@@ -638,11 +638,19 @@
             [self updateDogEarDataCollectionWithSelectedCollections:temp];
             
             [vc.collections removeObject:self.existingDogEar];
-            
-            [self.navigationController popViewControllerAnimated:YES];
+            UIAlertView * alertview = [[UIAlertView alloc]initWithTitle:@"Delete DogEar" message:@"Photo deleted successfully!" delegate:nil cancelButtonTitle:@"Okay" otherButtonTitles: nil];
+            [alertview show];
+            [NSTimer scheduledTimerWithTimeInterval:2.0f target:self selector:@selector(popToViewController:) userInfo:nil repeats:NO];
+
+//            [self.navigationController popViewControllerAnimated:YES];
 
         }
     }
+}
+
+- (void) popToViewController:(NSTimer*) timer
+{
+     [self.navigationController popViewControllerAnimated:YES];
 }
 
 - (void)image:(UIImage *)image didFinishSavingWithError:(NSError *)error contextInfo:(void *)contextInfo

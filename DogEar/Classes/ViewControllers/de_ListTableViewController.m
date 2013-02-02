@@ -52,6 +52,7 @@
     [segmentControl addTarget:self action:@selector(didChangeSegmentControl:) forControlEvents:UIControlEventValueChanged];
     segmentControl.segmentedControlStyle = UISegmentedControlStyleBar;
     segmentControl.selectedSegmentIndex = 0;
+    segmentControl.tintColor = [UIColor colorWithRed:62.0f/255.0f green:153.0f/255.0f blue:166.0f/255.0f alpha:1.0];
     
     UIView * view = [[UIView alloc]initWithFrame:CGRectMake(0.0f, 0.0f, 320.0f, 44.0f)];
     [view addSubview:segmentControl];
@@ -59,7 +60,7 @@
     UIViewController * vc = (UIViewController*)[self.navigationController.viewControllers objectAtIndex:[self.navigationController.viewControllers count]-2];
     if ([vc isMemberOfClass:[de_BrowseTableViewController class]]){
        
-        self.navigationItem.rightBarButtonItem = [[UIBarButtonItem alloc]initWithBarButtonSystemItem:UIBarButtonSystemItemEdit target:self action:@selector(editCategories)];
+        self.navigationItem.rightBarButtonItem = [[UIBarButtonItem alloc]initWithTitle:@"Rename" style:UIBarButtonItemStyleBordered target:self action:@selector(editCategories)];
         self.tableView.tableHeaderView = view;
     }
     else if ([vc isMemberOfClass:[de_FlaggedListViewController class]]) self.tableView.tableHeaderView = nil;
