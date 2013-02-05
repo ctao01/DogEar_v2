@@ -252,7 +252,16 @@
 
 - (void) loadImageFromLibrary
 {
-    NSLog(@"loadImageFromLibrary");
+    [self dismissModalViewControllerAnimated:NO];
+    
+    UIImagePickerController * imagePickerController = [[UIImagePickerController alloc]init];
+    imagePickerController.delegate = self;
+    imagePickerController.allowsEditing = NO;
+    
+    imagePickerController.sourceType =  UIImagePickerControllerSourceTypeSavedPhotosAlbum;
+    imagePickerController.modalTransitionStyle = UIModalTransitionStyleCoverVertical;
+    [self presentViewController:imagePickerController animated:YES completion:^{
+    }];
 }
 
 - (void) dismissImagePicker

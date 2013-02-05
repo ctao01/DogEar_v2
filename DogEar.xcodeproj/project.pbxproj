@@ -18,6 +18,8 @@
 		3D30028E169B990B00C72E02 /* dogear-icon-rotate.png in Resources */ = {isa = PBXBuildFile; fileRef = 3D300288169B990B00C72E02 /* dogear-icon-rotate.png */; };
 		3D30028F169B990B00C72E02 /* dogear-icon-rotate@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 3D300289169B990B00C72E02 /* dogear-icon-rotate@2x.png */; };
 		3D3002AF169DF01400C72E02 /* FacebookManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 3D3002AE169DF01400C72E02 /* FacebookManager.m */; };
+		3D39286B16C1A20E00A705DF /* DE-icon.png in Resources */ = {isa = PBXBuildFile; fileRef = 3D39286916C1A20E00A705DF /* DE-icon.png */; };
+		3D39286C16C1A20E00A705DF /* DE-icon@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 3D39286A16C1A20E00A705DF /* DE-icon@2x.png */; };
 		3D3EC7801677C33E0074945F /* cropPoint.png in Resources */ = {isa = PBXBuildFile; fileRef = 3D3EC77F1677C33E0074945F /* cropPoint.png */; };
 		3D605FBD16BC668600E05647 /* de_AboutViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 3D605FBC16BC668600E05647 /* de_AboutViewController.m */; };
 		3D605FC116BC683E00E05647 /* de_AboutHeaderView.m in Sources */ = {isa = PBXBuildFile; fileRef = 3D605FC016BC683E00E05647 /* de_AboutHeaderView.m */; };
@@ -133,6 +135,8 @@
 		3D300289169B990B00C72E02 /* dogear-icon-rotate@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "dogear-icon-rotate@2x.png"; sourceTree = "<group>"; };
 		3D3002AD169DF01400C72E02 /* FacebookManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = FacebookManager.h; path = Classes/Objects/FacebookManager.h; sourceTree = "<group>"; };
 		3D3002AE169DF01400C72E02 /* FacebookManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = FacebookManager.m; path = Classes/Objects/FacebookManager.m; sourceTree = "<group>"; };
+		3D39286916C1A20E00A705DF /* DE-icon.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "DE-icon.png"; sourceTree = "<group>"; };
+		3D39286A16C1A20E00A705DF /* DE-icon@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "DE-icon@2x.png"; sourceTree = "<group>"; };
 		3D3EC77F1677C33E0074945F /* cropPoint.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = cropPoint.png; sourceTree = "<group>"; };
 		3D605FBB16BC668600E05647 /* de_AboutViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = de_AboutViewController.h; path = Classes/ViewControllers/de_AboutViewController.h; sourceTree = "<group>"; };
 		3D605FBC16BC668600E05647 /* de_AboutViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = de_AboutViewController.m; path = Classes/ViewControllers/de_AboutViewController.m; sourceTree = "<group>"; };
@@ -355,6 +359,8 @@
 				7E4CA5BF167A698F003F0013 /* AdSupport.framework */,
 				7E84F50216713BD6004A13D2 /* icon.png */,
 				7E84F50016713BCB004A13D2 /* icon@2x.png */,
+				3D39286916C1A20E00A705DF /* DE-icon.png */,
+				3D39286A16C1A20E00A705DF /* DE-icon@2x.png */,
 				7E42529F16645DF400741A41 /* DogEar */,
 				7E42529816645DF400741A41 /* Frameworks */,
 				7E42529616645DF400741A41 /* Products */,
@@ -756,6 +762,8 @@
 				3D605FE616BCB0E800E05647 /* dogear-bg-content-master.png in Resources */,
 				3D605FE716BCB0E800E05647 /* dogear-bg-content-master-568h@2x.png in Resources */,
 				3D605FE816BCB0E800E05647 /* dogear-bg-content-master@2x.png in Resources */,
+				3D39286B16C1A20E00A705DF /* DE-icon.png in Resources */,
+				3D39286C16C1A20E00A705DF /* DE-icon@2x.png in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
