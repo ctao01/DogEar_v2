@@ -414,12 +414,13 @@
 
 - (void) publishDogEarWithoutSheet
 {
-    NSMutableDictionary * params = [[NSMutableDictionary alloc]init];
-    UIImage * pngImg = [UIImage imageWithData:[NSData dataWithContentsOfFile:self.existingDogEar.imagePath]];
     
-    [params setObject:self.existingDogEar.title forKey:@"message"];
-    [params setObject:UIImagePNGRepresentation(pngImg) forKey:@"picture"];
+//    NSMutableDictionary * params = [[NSMutableDictionary alloc]init];
+    UIImage * pngImg = [UIImage imageWithData:[NSData dataWithContentsOfFile:self.existingDogEar.imagePath]];
 
+    NSMutableDictionary * params = [NSMutableDictionary dictionaryWithObjectsAndKeys:
+                                    self.existingDogEar.title,@"message",
+                                    UIImagePNGRepresentation(pngImg), @"picture", nil];
 
     
     [FBRequestConnection startWithGraphPath:@"me/photos" parameters:params HTTPMethod:@"POST"
@@ -571,7 +572,7 @@
             }
             else
             {
-                UIAlertView * alertView = [[UIAlertView alloc]initWithTitle:@"Facebook" message:@"We’re sorry. DogEar cannot connect to your Facebook account. please check your settings and try again" delegate:self cancelButtonTitle:@"Okay" otherButtonTitles:@"Setting", nil];
+                UIAlertView * alertView = [[UIAlertView alloc]initWithTitle:@"Facebook" message:@"We’re sorry. DogEar cannot connect to your Facebook account. please check your settings and try again." delegate:self cancelButtonTitle:@"Okay" otherButtonTitles:@"Setting", nil];
                 [alertView show];
 //                NSLog(@"not connect to facebook");
 //                
@@ -716,7 +717,7 @@
 {
     NSString * message;
     if (error != NULL)
-        message = @"Oops, Save To Camera Roll Failed...";
+        message = @"DogEar not saved to Camera Roll. Please try again";
     else  // No errors
         message = @"DogEar has successfully save this image to your camera roll";
     UIAlertView * alertView = [[UIAlertView alloc]initWithTitle:@"DogEar" message:message delegate:self cancelButtonTitle:@"Okay" otherButtonTitles: nil];
