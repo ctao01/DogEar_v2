@@ -9,6 +9,8 @@
 #import "de_AccountSettingViewController.h"
 #import "TwitterManager.h"
 
+#define DEVICE_OS [[[UIDevice currentDevice] systemVersion] intValue]
+
 @interface de_AccountSettingViewController ()
 {
     UIActivityIndicatorView * activityIndicator;
@@ -59,22 +61,26 @@
 
     if (button.tag == 0)
     {
-        if (    [[NSUserDefaults standardUserDefaults] objectForKey:@"DGFacebookSession_Token"])
+        if ([[NSUserDefaults standardUserDefaults] objectForKey:@"DGFacebookSession_Token"])
         {
             if ( [FBSession.activeSession isOpen])
-            {
                 [FBSession.activeSession closeAndClearTokenInformationWithSeccess:nil];
-                [[NSUserDefaults standardUserDefaults]removeObjectForKey:@"DGFacebookSession_Token"];
-                [[NSUserDefaults standardUserDefaults]synchronize];
-            }
+                
+            [[NSUserDefaults standardUserDefaults]removeObjectForKey:@"DGFacebookSession_Token"];
+            [[NSUserDefaults standardUserDefaults]synchronize];
+            UIAlertView * alertview = [[UIAlertView alloc]initWithTitle:@"Facebook" message:@"Disconnected Successfully." delegate:nil cancelButtonTitle:@"Okay" otherButtonTitles:nil];
+            [alertview show];
         }
         else
-            [FBSession openActiveSessionWithAllowLoginUI:YES success:^(FBSession *session, FBSessionState status, NSError *error) {
+            [FBSession openActiveSessionWithAllowLoginUI:YES success:^(FBSession *session, FBSessionState status, NSError *error)
+        {
                 button.on = [FBSession.activeSession isOpen];
-                
+
                 [[NSUserDefaults standardUserDefaults]setObject:session.accessToken forKey:@"DGFacebookSession_Token"];
                 [[NSUserDefaults standardUserDefaults]synchronize];
-                
+                UIAlertView * alertview = [[UIAlertView alloc]initWithTitle:@"Facebook" message:@"DogEar successfully connected to your Facebook account." delegate:nil cancelButtonTitle:@"Okay" otherButtonTitles:nil];
+                [alertview show];
+
             }  failure:^(FBSession *session, FBSessionState status, NSError *error) {
                 button.on = NO;
             }];
@@ -84,46 +90,158 @@
     
     else if (button.tag == 1)
     {
+        NSLog(@"%i",[[NSUserDefaults standardUserDefaults]boolForKey:@"Twitter_Account"]);
         if ([[NSUserDefaults standardUserDefaults]boolForKey:@"Twitter_Account"]== NO)
         {
-            TwitterManager * twitter  = [TwitterManager sharedManager];
-            [twitter connectToTwitterAccount];
-            [NSTimer scheduledTimerWithTimeInterval:1.5f target:self selector:@selector(checkTwitterConnection) userInfo:nil repeats:NO];
+            ACAccountStore * accountStore = [[ACAccountStore alloc]init];
+            ACAccountType * twitterType = [accountStore accountTypeWithAccountTypeIdentifier:ACAccountTypeIdentifierTwitter];
+            
+            if (DEVICE_OS < 6.0)
+            {
+                [accountStore requestAccessToAccountsWithType:twitterType withCompletionHandler:^(BOOL granted, NSError *error)
+                {
+                    NSString * message;
+                    BOOL connected = NO;
+                    
+                    if(granted)
+                    {
+                        if (!error)
+                        {
+                            [[NSUserDefaults standardUserDefaults] setBool:YES forKey:@"Twitter_Account"];
+                            [[NSUserDefaults standardUserDefaults]synchronize];
+                            message = @"DogEar successfully connected to your Twitter account!";
+                            connected = YES;
+                        }
+                        else
+                        {
+                            [[NSUserDefaults standardUserDefaults] setBool:NO forKey:@"Twitter_Account"];
+                            [[NSUserDefaults standardUserDefaults]synchronize];
+                            message = @"In order to connect, please set up your Twitter account in iPhone Settings.";
+                            connected = NO;
+                        }
+                    }
+                    else
+                    {
+                        [[NSUserDefaults standardUserDefaults] setBool:NO forKey:@"Twitter_Account"];
+                        [[NSUserDefaults standardUserDefaults]synchronize];
+                        message = @"If you have not opted to allow DogEar to post on your behalf, please login and post from the Twitter app.";
+                        connected = NO;
+                    }
+                    [self performSelectorOnMainThread:@selector(showAlertWithMessage:) withObject:[NSArray arrayWithObjects:button,message, nil] waitUntilDone:YES];
 
+                }];
+            }
+            else if (DEVICE_OS >= 6.0)
+            {
+                [accountStore requestAccessToAccountsWithType:twitterType
+                                                      options:nil
+                                                   completion:^(BOOL granted, NSError * error)
+                 {
+                     NSString * message;
+                     BOOL connected = NO;
+                     
+                     if (granted)
+                     {
+                         if (!error)
+                         {
+                             [[NSUserDefaults standardUserDefaults] setBool:YES forKey:@"Twitter_Account"];
+                             [[NSUserDefaults standardUserDefaults]synchronize];
+                             message = @"Connected Successfully!";
+                             connected = YES;
+                             
+                         }
+                         else
+                         {
+                             [[NSUserDefaults standardUserDefaults] setBool:NO forKey:@"Twitter_Account"];
+                             [[NSUserDefaults standardUserDefaults]synchronize];
+                             message = @"In order to connect, please set up your Twitter account in iPhone Settings.";
+                             connected = NO;
+                         }
+                     }
+                     else
+                     {
+                         [[NSUserDefaults standardUserDefaults] setBool:NO forKey:@"Twitter_Account"];
+                         [[NSUserDefaults standardUserDefaults]synchronize];
+                         message = @"If you have not opted to allow DogEar to post on your behalf, please login and post from the Twitter app.";
+                         connected = NO;
+                         
+                     }
+//                     UIAlertView * alertView = [[UIAlertView alloc]initWithTitle:@"Twitter" message:message delegate:nil cancelButtonTitle:@"Okay" otherButtonTitles: nil];
+//                     button.on = connected;
+                     [self performSelectorOnMainThread:@selector(showAlertWithMessage:) withObject:[NSArray arrayWithObjects:button,message, nil] waitUntilDone:YES];
+                     
+                 }];
+            }
         }
         else
         {
-            NSLog(@"%i",[[NSUserDefaults standardUserDefaults]boolForKey:@"Twitter_Account"]);
-
             [[NSUserDefaults standardUserDefaults]setBool:NO forKey:@"Twitter_Account"];
             [[NSUserDefaults standardUserDefaults]synchronize];
-//            [button setOn:[[NSUserDefaults standardUserDefaults]boolForKey:@"Twitter_Account"]== YES?YES:NO animated:YES];
-
+            [activityIndicator stopAnimating];
+            UIAlertView * alertview = [[UIAlertView alloc]initWithTitle:@"Twitter" message:@"Disconnected Successfully." delegate:nil cancelButtonTitle:@"Okay" otherButtonTitles:nil];
+            [alertview show];
+            
         }
     }
-
-}
-
-- (void) checkTwitterConnection
-{
-    UITableViewCell * twitterCell = [self.tableView cellForRowAtIndexPath:[NSIndexPath indexPathForRow:1 inSection:0]];
-    UISwitch * twitterSwitch = (UISwitch*) twitterCell.accessoryView;
-    UIAlertView * alertview;
-    if ([[NSUserDefaults standardUserDefaults] boolForKey:@"Twitter_Account"] == NO)
-    {
-        twitterSwitch.on = NO;
-         alertview = [[UIAlertView alloc]initWithTitle:@"DogEar Warning" message:@"Ceonnect to Twitter account failed. You can check Twitter Account in Settings." delegate:nil cancelButtonTitle:@"Okay" otherButtonTitles:nil];
-    }
-    else
-    {
-        twitterSwitch.on = YES;
-        alertview = [[UIAlertView alloc]initWithTitle:@"DogEar" message:@"Connect to Twitter account successfully." delegate:nil cancelButtonTitle:@"Okay" otherButtonTitles:nil];
-    }
     
-    [activityIndicator stopAnimating];
-    [alertview show];
+
+    
+//        if ([[NSUserDefaults standardUserDefaults]boolForKey:@"Twitter_Account"]== NO)
+//        {
+//            TwitterManager * twitter  = [TwitterManager sharedManager];
+//            [twitter connectToTwitterAccount];
+//            [NSTimer scheduledTimerWithTimeInterval:1.5f target:self selector:@selector(checkTwitterConnection:) userInfo:nil repeats:NO];
+//
+//        }
+//        else
+//        {
+//            [[NSUserDefaults standardUserDefaults]setBool:NO forKey:@"Twitter_Account"];
+//            [[NSUserDefaults standardUserDefaults]synchronize];
+//            [activityIndicator stopAnimating];
+//
+////            [button setOn:[[NSUserDefaults standardUserDefaults]boolForKey:@"Twitter_Account"]== YES?YES:NO animated:YES];
+//            UIAlertView * alertview = [[UIAlertView alloc]initWithTitle:@"Twitter" message:@"Disconnected Successfully." delegate:nil cancelButtonTitle:@"Okay" otherButtonTitles:nil];
+//            [alertview show];
+//
+//        }
+
 
 }
+
+- (void)showAlertWithMessage:(NSArray *)objects
+{
+    [activityIndicator stopAnimating];
+    
+    UIAlertView * alertView = [[UIAlertView alloc]initWithTitle:@"Twitter" message:[objects objectAtIndex:1] delegate:nil cancelButtonTitle:@"Okay" otherButtonTitles: nil];
+    [alertView show];
+    
+    UISwitch * toggle = (UISwitch*)[objects objectAtIndex:0];
+    if ([[NSUserDefaults standardUserDefaults]boolForKey:@"Twitter_Account"]== NO)
+        toggle.on = NO;
+    else toggle.on = YES;
+}
+
+//- (void) checkTwitterConnection:(id)sender;
+//{
+//    NSLog(@"%i",[[NSUserDefaults standardUserDefaults] boolForKey:@"Twitter_Account"]);
+//    UITableViewCell * twitterCell = [self.tableView cellForRowAtIndexPath:[NSIndexPath indexPathForRow:1 inSection:0]];
+//    UISwitch * twitterSwitch = (UISwitch*) twitterCell.accessoryView;
+//    UIAlertView * alertview;
+//    if ([[NSUserDefaults standardUserDefaults] boolForKey:@"Twitter_Account"] == NO)
+//    {
+//        twitterSwitch.on = NO;
+//         alertview = [[UIAlertView alloc]initWithTitle:@"Twitter" message:@"In order to connect, please set up your Twitter account in iPhone Settings." delegate:nil cancelButtonTitle:@"Okay" otherButtonTitles:nil];
+//    }
+//    else
+//    {
+//        twitterSwitch.on = YES;
+//        alertview = [[UIAlertView alloc]initWithTitle:@"Twitter" message:@"Connected Successfully!" delegate:nil cancelButtonTitle:@"Okay" otherButtonTitles:nil];
+//    }
+//    
+//    [activityIndicator stopAnimating];
+//    [alertview show];
+//
+//}
 
 #pragma mark - UIAlertView Delegate Method
 

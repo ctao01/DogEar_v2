@@ -16,7 +16,8 @@
 
 #import "TwitterManager.h"
 #import "MessageManager.h"
-
+#import "de_MainNavigationController.h"
+#import "de_SettingViewController.h"
 //#import "UIImage+DGStyle.h"
 //#import "CropView.h"
 #import "NLImageCropperView.h"
@@ -35,6 +36,8 @@
 
 @interface de_PhotoViewController ()
 {
+    UIActivityIndicatorView * activityIndicator;
+    
     UIPrintInteractionController *printController;
     NSString * keyString;
     
@@ -135,11 +138,11 @@
 	[self.view sendSubviewToBack:scrollView];
     scrollView.frame = CGRectOffset(scrollView.frame, 0.0f, - 68.0f);
     
-//    UIImageView * imageView = [[UIImageView alloc]initWithFrame:self.view.frame];
-//    imageView.tag = 222;
-//    imageView.contentMode = UIViewContentModeScaleAspectFit;
-//    [self.view addSubview:imageView];
-    
+    activityIndicator = [[UIActivityIndicatorView alloc]initWithActivityIndicatorStyle:UIActivityIndicatorViewStyleWhite];
+    activityIndicator.frame = CGRectMake(0.0f, 0.0f, 120.0f, 120.0f);
+    activityIndicator.center = scrollView.center;
+    [scrollView addSubview:activityIndicator];
+
 }
 
 - (void)didReceiveMemoryWarning
@@ -423,11 +426,17 @@
                           completionHandler:^(FBRequestConnection *connection, id result, NSError *error){
                               UIAlertView * alertView;
                               if (error)
-                                  alertView = [[UIAlertView alloc]initWithTitle:@"DogEar" message:@"Oops, Error !" delegate:nil cancelButtonTitle:@"Okay" otherButtonTitles:nil];
+                              {
+                                  alertView = [[UIAlertView alloc]initWithTitle:@"Facebook" message:@"Post failed. Please try again." delegate:nil cancelButtonTitle:@"Okay" otherButtonTitles:nil];
+                                  [activityIndicator stopAnimating];
+
+                              }
                               else
                               {
-                                  alertView = [[UIAlertView alloc]initWithTitle:@"DogEar" message:@"Post Successfully " delegate:nil cancelButtonTitle:@"Okay" otherButtonTitles:nil];
+                                  alertView = [[UIAlertView alloc]initWithTitle:@"Facebook" message:@"Your DogEar has been successfully posted to Facebook!" delegate:nil cancelButtonTitle:@"Okay" otherButtonTitles:nil];
                                   [alertView show];
+                                  [activityIndicator stopAnimating];
+
                               }
                               
                           }];
@@ -435,21 +444,26 @@
 
 - (void) publishDogEar
 {
+
     if (DEVICE_OS >= 6.0f)
     {
-        if([SLComposeViewController isAvailableForServiceType:SLServiceTypeFacebook]) {
+        if([SLComposeViewController isAvailableForServiceType:SLServiceTypeFacebook])
+        {
             
             SLComposeViewController *controller = [SLComposeViewController composeViewControllerForServiceType:SLServiceTypeFacebook];                
             SLComposeViewControllerCompletionHandler block = ^(SLComposeViewControllerResult result){
                 
                 if (result == SLComposeViewControllerResultCancelled) {
                     
-                    NSLog(@"Cancelled");
+                    UIAlertView * alertView = [[UIAlertView alloc]initWithTitle:@"Facebook" message:@"Your post has been canceled." delegate:nil cancelButtonTitle:@"Okay" otherButtonTitles:nil];
+                    [alertView show];
                     
                 } else
                     
                 {
-                    NSLog(@"Done");
+                    UIAlertView * alertView = [[UIAlertView alloc]initWithTitle:@"Facebook" message:@"Your DogEar has been successfully posted to Facebook!." delegate:nil cancelButtonTitle:@"Okay" otherButtonTitles:nil];
+                    [alertView show];
+
                 }
                 
                 [controller dismissViewControllerAnimated:YES completion:Nil];
@@ -457,11 +471,21 @@
             controller.completionHandler = block;
             [controller addImage:self.photo];
             [self presentViewController:controller animated:YES completion:Nil];
+            [activityIndicator stopAnimating];
+
         }
         else
         {
-            [self publishDogEarWithoutSheet];
             
+            if ([[NSUserDefaults standardUserDefaults] objectForKey:@"DGFacebookSession_Token"])
+                [self publishDogEarWithoutSheet];            
+            else
+            {
+                UIAlertView * alertView = [[UIAlertView alloc]initWithTitle:@"Facebook" message:@"We’re sorry. DogEar cannot connect to your Facebook account. Please check your settings and try again." delegate:self cancelButtonTitle:@"Okay" otherButtonTitles:@"Setting",nil];
+                [alertView show];
+                [activityIndicator stopAnimating];
+
+            }
         }
     }
     
@@ -537,16 +561,44 @@
     switch (buttonIndex) {
         case 0: //Facebook
         {
-            if (FBSession.activeSession.isOpen) {
-                [self publishDogEar];
-            } else {
-                [FBSession openActiveSessionWithAllowLoginUI:YES success:^(FBSession *session, FBSessionState status, NSError *error) {
-                    [self publishDogEar];
+            [activityIndicator startAnimating];
 
-                } failure:^(FBSession *session, FBSessionState status, NSError *error) {
-                    NSLog(@"Facebook connect Error.");
-                }];
+            if ([[NSUserDefaults standardUserDefaults] objectForKey:@"DGFacebookSession_Token"] )
+            {
+                if ([FBSession.activeSession isOpen]== NO) [FBSession openActiveSessionWithAllowLoginUI:YES];
+
+                [self performSelector:@selector(publishDogEar) withObject:nil afterDelay:0.1f];
             }
+            else
+            {
+                UIAlertView * alertView = [[UIAlertView alloc]initWithTitle:@"Facebook" message:@"We’re sorry. DogEar cannot connect to your Facebook account. please check your settings and try again" delegate:self cancelButtonTitle:@"Okay" otherButtonTitles:@"Setting", nil];
+                [alertView show];
+//                NSLog(@"not connect to facebook");
+//                
+//                [FBSession openActiveSessionWithAllowLoginUI:YES success:^(FBSession *session, FBSessionState status, NSError *error)
+//                 {
+//                     [[NSUserDefaults standardUserDefaults]setObject:session.accessToken forKey:@"DGFacebookSession_Token"];
+//                     [[NSUserDefaults standardUserDefaults]synchronize];
+//                     [self publishDogEar];
+//                     
+//                 }  failure:^(FBSession *session, FBSessionState status, NSError *error) {
+//                     UIAlertView * alertView = [[UIAlertView alloc]initWithTitle:@"Facebook" message:@"Could not connect to Facebook, please check your settings and try again" delegate:self cancelButtonTitle:@"Okay" otherButtonTitles: nil];
+//                     [alertView show];
+//                     
+//                 }];
+            }
+
+            
+//            if (FBSession.activeSession.isOpen) {
+//                [self publishDogEar];
+//            } else {
+//                [FBSession openActiveSessionWithAllowLoginUI:YES success:^(FBSession *session, FBSessionState status, NSError *error) {
+//                    [self publishDogEar];
+//
+//                } failure:^(FBSession *session, FBSessionState status, NSError *error) {
+//                    NSLog(@"Facebook connect Error.");
+//                }];
+//            }
         }
             break;
         case 1: // Twitter
@@ -558,7 +610,7 @@
                 if ([[NSUserDefaults standardUserDefaults] boolForKey:@"Twitter_Account"] == YES)[self presentViewController:[twitter tweetTWComposerSheetWithSharedImage:self.photo] animated:YES completion:nil];
                 else
                 {
-                    UIAlertView * alertView = [[UIAlertView alloc]initWithTitle:@"Twitter" message:@"Can't connect to Twitter account. Please check your settings and try again" delegate:self cancelButtonTitle:@"Okay" otherButtonTitles:@"Setting", nil];
+                    UIAlertView * alertView = [[UIAlertView alloc]initWithTitle:@"Twitter" message:@"We’re sorry. DogEar cannot connect to your Twitter account. Please check your settings and try again" delegate:self cancelButtonTitle:@"Okay" otherButtonTitles:@"Setting", nil];
                     [alertView show];
                 }
 
@@ -568,7 +620,7 @@
                 if ([[NSUserDefaults standardUserDefaults] boolForKey:@"Twitter_Account"] == YES) [self presentViewController:[twitter tweetSLComposerSheetWithSharedImage:self.photo] animated:YES completion:nil];
                 else
                 {
-                    UIAlertView * alertView = [[UIAlertView alloc]initWithTitle:@"Twitter" message:@"Can't connect to Twitter account. Please check your settings and try again" delegate:self cancelButtonTitle:@"Okay" otherButtonTitles:@"Setting", nil];
+                    UIAlertView * alertView = [[UIAlertView alloc]initWithTitle:@"Twitter" message:@"We’re sorry. DogEar cannot connect to your Twitter account. Please check your settings and try again" delegate:self cancelButtonTitle:@"Okay" otherButtonTitles:@"Setting", nil];
                     [alertView show];
                 }
             }
@@ -580,8 +632,9 @@
             [composer presentShareImageFromDogEarObject:self.existingDogEar viaMailComposerFromParent:self];
         }
             break;
-        case 3: // Message
+        case 3: // Save To Photo
         {
+            [activityIndicator startAnimating];
             UIImageWriteToSavedPhotosAlbum(self.photo, self, @selector(image:didFinishSavingWithError:contextInfo:), nil);
  
         }
@@ -614,8 +667,14 @@
 {
     if (buttonIndex != alertView.cancelButtonIndex)
     {
-        if ([alertView.title isEqualToString:@"Twitter Authorization"])
+        if ([alertView.title isEqualToString:@"Twitter"] || [alertView.title isEqualToString:@"Facebook"])
+        {
             [self.tabBarController setSelectedIndex:2];
+            de_MainNavigationController * nc = [self.tabBarController.viewControllers objectAtIndex:2];
+            UITableViewController * vc = (UITableViewController*)[nc.viewControllers objectAtIndex:0];
+            [vc tableView:vc.tableView didSelectRowAtIndexPath:[NSIndexPath indexPathForRow:2 inSection:0]];
+        }
+//            [self.tabBarController setSelectedIndex:2];
         else if ([alertView.title isEqualToString:@"DogEar"])
         {
             de_ListTableViewController * vc  = (de_ListTableViewController*)[self.navigationController.viewControllers objectAtIndex:[self.navigationController.viewControllers count]-2];
@@ -659,8 +718,9 @@
     if (error != NULL)
         message = @"Oops, Save To Camera Roll Failed...";
     else  // No errors
-        message = @"DogEar has been saved to camera roll";
+        message = @"DogEar has successfully save this image to your camera roll";
     UIAlertView * alertView = [[UIAlertView alloc]initWithTitle:@"DogEar" message:message delegate:self cancelButtonTitle:@"Okay" otherButtonTitles: nil];
     [alertView show];
+    [activityIndicator stopAnimating];
 }
 @end

@@ -138,7 +138,8 @@
 
     self.tabBar.hidden = hide;
     UIButton * button = (UIButton*)[self.view viewWithTag:3059];
-    button.enabled = hide ? NO:YES;
+    if (button) button.enabled = !hide;
+
     
 }
 
