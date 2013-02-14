@@ -12,6 +12,7 @@
 @interface de_CategoryListViewController ()
 {
     NSMutableArray * collections;
+    NSString * beDeletedCategory;
 }
 
 //@property (nonatomic , retain) NSIndexPath * checkedIndexPath;;
@@ -40,8 +41,8 @@
     self.navigationItem.rightBarButtonItem = editButton;
     
     self.editing = NO;
-    collections = [[NSMutableArray alloc]initWithArray:[[[NSUserDefaults standardUserDefaults]objectForKey:@"BKCategory"] sortedArrayUsingSelector:@selector(localizedCaseInsensitiveCompare:)]];
-
+//    collections = [[NSMutableArray alloc]initWithArray:[[[NSUserDefaults standardUserDefaults]objectForKey:@"BKCategory"] sortedArrayUsingSelector:@selector(localizedCaseInsensitiveCompare:)]];
+    collections = [[NSMutableArray alloc]initWithArray:[[NSUserDefaults standardUserDefaults]objectForKey:@"BKCategory"]];
 
     self.navigationItem.title = @"Select Category";
     self.tableView.contentInset = UIEdgeInsetsMake(0.0f, 0.0f, 49.0f, 0.0f);
@@ -64,10 +65,8 @@
 {
     [super viewWillDisappear:animated];
     
-    
-    
-    [[NSUserDefaults standardUserDefaults]setObject:collections forKey:@"BKCategory"];
-    [[NSUserDefaults standardUserDefaults] synchronize];
+//    [[NSUserDefaults standardUserDefaults]setObject:collections forKey:@"BKCategory"];
+//    [[NSUserDefaults standardUserDefaults] synchronize];
 
 }
 
@@ -169,6 +168,8 @@
 - (void)tableView:(UITableView *)tableView commitEditingStyle:(UITableViewCellEditingStyle)editingStyle forRowAtIndexPath:(NSIndexPath *)indexPath
 {
     if (editingStyle == UITableViewCellEditingStyleDelete) {
+        beDeletedCategory = [collections objectAtIndex:indexPath.row];
+
         UIAlertView * alertview = [[UIAlertView alloc]initWithTitle:@"Delete Category" message:@"All photos will be deleted within this category. Are you sure you want to delete this category? " delegate:self cancelButtonTitle:@"Cancel" otherButtonTitles:@"Delete", nil];
         [alertview show];
 //        NSString * key = [collections objectAtIndex:indexPath.row];
@@ -257,23 +258,25 @@
         [[NSUserDefaults standardUserDefaults] synchronize];
         [self.tableView reloadData];
     }
-    else if ([title isEqualToString:@"Delete Category"])
+    else if ([title isEqualToString:@"Delete"])
     {
-        if (buttonIndex != alertView.cancelButtonIndex)
-        {
-            NSIndexPath * indexPath = [self.tableView indexPathForSelectedRow];
-            if (buttonIndex != [alertView cancelButtonIndex]) {
-                NSString * key = [collections objectAtIndex:indexPath.row];
-                [collections removeObjectAtIndex:indexPath.row];    //J-Comment: Delete
-                
-                [[NSUserDefaults standardUserDefaults]setObject:collections forKey:@"BKCategory"];
-                NSMutableDictionary * dict = [[[NSUserDefaults standardUserDefaults]objectForKey:@"BKDataCollections"] mutableCopy];
-                [dict removeObjectForKey:key];  //JT-Comment: Dictionary remove object for key
-                [[NSUserDefaults standardUserDefaults]setObject:dict forKey:@"BKDataCollections"];
-                [[NSUserDefaults standardUserDefaults] synchronize];
-                [self.tableView reloadData];
-            }
-        }
+//        NSIndexPath * indexPath = [self.tableView indexPathForSelectedRow];
+//        NSLog(@"%i",indexPath.row);
+        if (buttonIndex != [alertView cancelButtonIndex]) {
+//            NSString * key = [collections objectAtIndex:indexPath.row];
+//            [collections removeObjectAtIndex:indexPath.row];    //J-Comment: Delete
+            NSString * key = beDeletedCategory;
+            [collections removeObject:beDeletedCategory];
+            
+            [[NSUserDefaults standardUserDefaults]setObject:collections forKey:@"BKCategory"];
+            NSMutableDictionary * dict = [[[NSUserDefaults standardUserDefaults]objectForKey:@"BKDataCollections"] mutableCopy];
+            [dict removeObjectForKey:key];  //JT-Comment: Dictionary remove object for key
+            [[NSUserDefaults standardUserDefaults]setObject:dict forKey:@"BKDataCollections"];
+            [[NSUserDefaults standardUserDefaults] synchronize];
+            [self.tableView reloadData];
+            
+            beDeletedCategory = nil;
+    }
         else return;
     }
 }
