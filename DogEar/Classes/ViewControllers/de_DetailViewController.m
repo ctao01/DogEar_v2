@@ -129,8 +129,6 @@
 - (void) viewWillAppear:(BOOL)animated
 {
     [super viewWillAppear:animated];
-    
-    
     [self.tableView reloadData];
 }
 
@@ -533,6 +531,9 @@
             void (^completionHandler)(UIPrintInteractionController *, BOOL, NSError *) =
             ^(UIPrintInteractionController *pic, BOOL completed, NSError *error) {
                 if (!completed && error) NSLog(@"Print error: %@", error);
+                [self.tableView deselectRowAtIndexPath:[self.tableView indexPathForSelectedRow] animated:YES];
+
+
             };
             
             NSData *pdfData = [self generatePDFDataForPrinting];
