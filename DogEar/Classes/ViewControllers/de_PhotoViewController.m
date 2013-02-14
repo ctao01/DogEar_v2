@@ -679,30 +679,36 @@
         else if ([alertView.title isEqualToString:@"DogEar"])
         {
             de_ListTableViewController * vc  = (de_ListTableViewController*)[self.navigationController.viewControllers objectAtIndex:[self.navigationController.viewControllers count]-2];
-            
-            NSLog(@"%@",vc.collections);
-            NSLog(@"%@",self.existingDogEar);
 
-
-            
             NSMutableArray * temp = [[NSMutableArray alloc]initWithArray:[self decodedCollections]];
-            
+            NSLog(@"before:%@",temp);
             for (int d = 0; d < [temp count]; d++)
             {
-                DogEarObject * object = [temp objectAtIndex:d];
+                DogEarObject * object = (DogEarObject*)[temp objectAtIndex:d];
                 if ([object.title isEqualToString:self.existingDogEar.title] && [object.insertedDate isEqualToDate:self.existingDogEar.insertedDate])
+                {
+                    NSLog(@"object:%@",object);
                     [self cancelExistingNotificationWithObject:object];
                     [temp removeObject:object];
+                }
+                
             }
-            
+            NSLog(@"after:%@",temp);
+
             [self updateDogEarDataCollectionWithSelectedCollections:temp];
+       
+//            [vc.collections removeObject:self.existingDogEar];
+//            NSData * data = [[[NSUserDefaults standardUserDefaults]objectForKey:@"BKDataCollections"] objectForKey:self.existingDogEar.category];
+//            NSMutableArray * decodedCollections = [NSMutableArray arrayWithArray:[NSKeyedUnarchiver unarchiveObjectWithData: data]];
+//            [decodedCollections removeObject:self.existingDogEar];
+//            [self updateDogEarDataCollectionWithSelectedCollections:decodedCollections];
             
-            [vc.collections removeObject:self.existingDogEar];
+            
+            
             UIAlertView * alertview = [[UIAlertView alloc]initWithTitle:@"Delete DogEar" message:@"Photo deleted successfully!" delegate:nil cancelButtonTitle:@"Okay" otherButtonTitles: nil];
             [alertview show];
-            [NSTimer scheduledTimerWithTimeInterval:2.0f target:self selector:@selector(popToViewController:) userInfo:nil repeats:NO];
+            [NSTimer scheduledTimerWithTimeInterval:3.0f target:self selector:@selector(popToViewController:) userInfo:nil repeats:NO];
 
-//            [self.navigationController popViewControllerAnimated:YES];
 
         }
     }
