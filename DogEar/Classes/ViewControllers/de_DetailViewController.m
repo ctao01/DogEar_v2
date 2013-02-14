@@ -342,41 +342,40 @@
 
 - (void) addDogEar
 {
-
-    NSLog(@"addDogEar");
-    if (self.dogEar.title == nil && [headerView.titleField.text length]>0)
-        NSLog(@"title:%@",headerView.titleField.text);
     
     if (self.dogEar.category == nil || self.dogEar.title == nil)
     {
         if ([headerView.titleField.text length]>0)
             [self.dogEar setTitle:headerView.titleField.text];
-        else
-        {
-            UIAlertView * alertView = [[UIAlertView alloc]initWithTitle:@"Warning" message:@"Please enter a Title and Category for your DogEar" delegate:self cancelButtonTitle:@"Okay" otherButtonTitles: nil];
-            [alertView show];
+        UIAlertView * alertView = [[UIAlertView alloc]initWithTitle:@"Warning" message:@"Please enter a Title and Category for your DogEar" delegate:self cancelButtonTitle:@"Okay" otherButtonTitles: nil];
+        [alertView show];
+    }
+    else
+    {
+        [activityIndicator startAnimating];
+        if (self.existingDogEar != nil)
+            [self handleImageWithDogEarObject:self.existingDogEar];
+        else [self handleImageWithDogEarObject:self.dogEar];
+        
+        NSLog(@"reminderDate:%@",self.dogEar.reminderDate);
+        NSLog(@"repeatingReminder:%@",self.dogEar.repeatingReminder);
+        NSLog(@"category:%@",self.dogEar.category);
+        NSLog(@"flagged:%@",self.dogEar.flagged);
+        NSLog(@"title:%@",self.dogEar.title);
+        NSLog(@"note:%@",self.dogEar.note);
+        
+        NSMutableArray * array = [[NSMutableArray alloc]initWithArray:[self decodedCollectionsWithObject:self.dogEar]];
+        [array addObject:self.dogEar];
+        [self updateDogEarDataCollectionWithSelectedCollections:array withObject:self.dogEar];
+        
+        if (self.tabBarController.selectedIndex == 0)[self.navigationController popToRootViewControllerAnimated:YES];
+        else {
+            [self.tabBarController setSelectedIndex:0];
+            UINavigationController * nc = [self.tabBarController.viewControllers objectAtIndex:0];
+            [nc popToRootViewControllerAnimated:YES];
         }
     }
     
-    [activityIndicator startAnimating];
-    if (self.existingDogEar != nil)
-        [self handleImageWithDogEarObject:self.existingDogEar];
-    else [self handleImageWithDogEarObject:self.dogEar];
-
-    
-       //JT-Note: Add "insertedDate" only when add a new object.
-//    [self saveDogEar];
-    
-    NSLog(@"reminderDate:%@",self.dogEar.reminderDate);
-    NSLog(@"repeatingReminder:%@",self.dogEar.repeatingReminder);
-    NSLog(@"category:%@",self.dogEar.category);
-    NSLog(@"flagged:%@",self.dogEar.flagged);
-    NSLog(@"title:%@",self.dogEar.title);
-    NSLog(@"note:%@",self.dogEar.note);
-
-    NSMutableArray * array = [[NSMutableArray alloc]initWithArray:[self decodedCollectionsWithObject:self.dogEar]];
-    [array addObject:self.dogEar];
-    [self updateDogEarDataCollectionWithSelectedCollections:array withObject:self.dogEar];
     
     /*NSIndexPath * indexPath = [NSIndexPath indexPathForRow:0 inSection:0];
     UITableViewCell * cell = [self.tableView cellForRowAtIndexPath:indexPath];
@@ -395,12 +394,7 @@
     [[NSUserDefaults standardUserDefaults] synchronize];*/
 //    [self updateDogEarDataCollectionWithSelectedCollections:[self decodedCollections]];
 
-    if (self.tabBarController.selectedIndex == 0)[self.navigationController popToRootViewControllerAnimated:YES];
-    else {
-        [self.tabBarController setSelectedIndex:0];
-        UINavigationController * nc = [self.tabBarController.viewControllers objectAtIndex:0];
-        [nc popToRootViewControllerAnimated:YES];
-    }
+    
 }
 
 #pragma mark - Print Feature
