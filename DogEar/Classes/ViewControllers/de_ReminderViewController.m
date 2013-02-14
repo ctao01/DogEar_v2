@@ -157,7 +157,7 @@
             reminder.fireDate = vc.dogEar.reminderDate;
             reminder.timeZone = [NSTimeZone defaultTimeZone];
             
-            reminder.alertBody = [NSString stringWithFormat:@"%@:%@",vc.dogEar.category, vc.dogEar.title];
+            reminder.alertBody = [NSString stringWithFormat:@"%@: %@",vc.dogEar.category, vc.dogEar.title];
             reminder.hasAction = TRUE;
             reminder.alertAction = @"Check it";
             reminder.soundName = UILocalNotificationDefaultSoundName;   //JT-TODO: Select Notification sound
