@@ -101,14 +101,14 @@ static TwitterManager * sharedManager = nil;
                  {
                      [[NSUserDefaults standardUserDefaults] setBool:NO forKey:@"Twitter_Account"];
                      [[NSUserDefaults standardUserDefaults]synchronize];
-                     message = @"There are no Twitter accounts configured. You can add or create a Twitter account in Settings";
+                     message = @"There are no Twitter accounts configured. You can add or create a Twitter account in Settings.";
                  }
              }
              else
              {
                  [[NSUserDefaults standardUserDefaults] setBool:NO forKey:@"Twitter_Account"];
                  [[NSUserDefaults standardUserDefaults]synchronize];
-                 message = @"DogEar is not allowed to connect your Twitter account. You can change it in Settings";
+                 message = @"DogEar is not allowed to connect your Twitter account. You can change it in Settings.";
 
              }
          }];
@@ -146,7 +146,7 @@ static TwitterManager * sharedManager = nil;
         [tweetSLComposerSheet addImage:image];
     }
     else{
-        UIAlertView * alertView = [[UIAlertView alloc]initWithTitle:@"No Twitter Account" message:@"In order to connect, please set up your Twitter account in iPhone Settings" delegate:nil cancelButtonTitle:@"Okay" otherButtonTitles:nil];
+        UIAlertView * alertView = [[UIAlertView alloc]initWithTitle:@"No Twitter Account" message:@"In order to connect, please set up your Twitter account in iPhone Settings." delegate:nil cancelButtonTitle:@"Okay" otherButtonTitles:nil];
         [alertView show];
     }
     return tweetSLComposerSheet;
@@ -160,13 +160,13 @@ static TwitterManager * sharedManager = nil;
         tweetTWComposerSheet = [[TWTweetComposeViewController alloc] init];
         [tweetTWComposerSheet addImage:image];
         [tweetTWComposerSheet setInitialText:@"DogEar"];
-        UIAlertView * alertView = [[UIAlertView alloc]initWithTitle:@"Twitter" message:@"Your DogEar was posted successfully" delegate:nil cancelButtonTitle:@"Okay" otherButtonTitles:nil];
+        UIAlertView * alertView = [[UIAlertView alloc]initWithTitle:@"Twitter" message:@"Your DogEar was posted successfully." delegate:nil cancelButtonTitle:@"Okay" otherButtonTitles:nil];
         [alertView show];
     }
     else
     {
         NSLog(@"can't send tweet");
-        UIAlertView * alertView = [[UIAlertView alloc]initWithTitle:@"Twitter" message:@"Post failed. Please try again" delegate:nil cancelButtonTitle:@"Okay" otherButtonTitles:nil];
+        UIAlertView * alertView = [[UIAlertView alloc]initWithTitle:@"Twitter" message:@"Post failed. Please try again." delegate:nil cancelButtonTitle:@"Okay" otherButtonTitles:nil];
         [alertView show];
     }
     return tweetTWComposerSheet;

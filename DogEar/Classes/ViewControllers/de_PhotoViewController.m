@@ -611,7 +611,7 @@
                 if ([[NSUserDefaults standardUserDefaults] boolForKey:@"Twitter_Account"] == YES)[self presentViewController:[twitter tweetTWComposerSheetWithSharedImage:self.photo] animated:YES completion:nil];
                 else
                 {
-                    UIAlertView * alertView = [[UIAlertView alloc]initWithTitle:@"Twitter" message:@"We’re sorry. DogEar cannot connect to your Twitter account. Please check your settings and try again" delegate:self cancelButtonTitle:@"Okay" otherButtonTitles:@"Setting", nil];
+                    UIAlertView * alertView = [[UIAlertView alloc]initWithTitle:@"Twitter" message:@"We’re sorry. DogEar cannot connect to your Twitter account. Please check your settings and try again." delegate:self cancelButtonTitle:@"Okay" otherButtonTitles:@"Setting", nil];
                     [alertView show];
                 }
 
@@ -621,7 +621,7 @@
                 if ([[NSUserDefaults standardUserDefaults] boolForKey:@"Twitter_Account"] == YES) [self presentViewController:[twitter tweetSLComposerSheetWithSharedImage:self.photo] animated:YES completion:nil];
                 else
                 {
-                    UIAlertView * alertView = [[UIAlertView alloc]initWithTitle:@"Twitter" message:@"We’re sorry. DogEar cannot connect to your Twitter account. Please check your settings and try again" delegate:self cancelButtonTitle:@"Okay" otherButtonTitles:@"Setting", nil];
+                    UIAlertView * alertView = [[UIAlertView alloc]initWithTitle:@"Twitter" message:@"We’re sorry. DogEar cannot connect to your Twitter account. Please check your settings and try again." delegate:self cancelButtonTitle:@"Okay" otherButtonTitles:@"Setting", nil];
                     [alertView show];
                 }
             }
@@ -678,7 +678,6 @@
 //            [self.tabBarController setSelectedIndex:2];
         else if ([alertView.title isEqualToString:@"DogEar"])
         {
-            de_ListTableViewController * vc  = (de_ListTableViewController*)[self.navigationController.viewControllers objectAtIndex:[self.navigationController.viewControllers count]-2];
 
             NSMutableArray * temp = [[NSMutableArray alloc]initWithArray:[self decodedCollections]];
             NSLog(@"before:%@",temp);
