@@ -93,15 +93,16 @@
 
 -(void) displayScreen
 {
-    float height = self.view.bounds.size.height;
-//    CGRect bgFrame = CGRectMake(0.0f, 0.0f, self.view.bounds.size.width, height - 20.0f - 44.0f - 49.0f);
+    float height = self.view.frame.size.height;
+    NSLog(@"%f",height);
+    //    CGRect bgFrame = CGRectMake(0.0f, 0.0f, self.view.bounds.size.width, height - 20.0f - 44.0f - 49.0f);
 
 //    if (height < 568.0f)
 //        self.view.backgroundColor = [UIColor colorWithPatternImage:[UIImage imageNamed:@"dogear-bg-splash-new"]];
 //    else
 //        self.view.backgroundColor = [UIColor colorWithPatternImage:[UIImage imageNamed:@"dogear-bg-splash-568h"]];
     UIImageView *backgroundImage ;
-    if (height >= 568.0f)
+    if (height >= 548.0f)
         backgroundImage = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"dogear-bg-splash-new-568h"]];
     else
         backgroundImage = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"dogear-bg-splash-new"]];
