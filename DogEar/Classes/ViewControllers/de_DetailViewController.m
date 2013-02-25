@@ -346,7 +346,7 @@
     
     if (self.dogEar.category == nil || self.dogEar.title == nil)
     {
-        UIAlertView * alertView = [[UIAlertView alloc]initWithTitle:@"Warning" message:@"Please enter a Title and Category for your DogEar" delegate:self cancelButtonTitle:@"Okay" otherButtonTitles: nil];
+        UIAlertView * alertView = [[UIAlertView alloc]initWithTitle:@"Warning" message:@"Please enter a Title and Category for your DogEar." delegate:self cancelButtonTitle:@"Okay" otherButtonTitles: nil];
         [alertView show];
     }
     else

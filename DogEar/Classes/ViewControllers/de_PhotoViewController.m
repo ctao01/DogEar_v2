@@ -724,7 +724,7 @@
     if (error != NULL)
         message = @"DogEar not saved to Camera Roll. Please try again";
     else  // No errors
-        message = @"DogEar has successfully save this image to your camera roll";
+        message = @"DogEar has successfully saved this image to your camera roll.";
     UIAlertView * alertView = [[UIAlertView alloc]initWithTitle:@"DogEar" message:message delegate:self cancelButtonTitle:@"Okay" otherButtonTitles: nil];
     [alertView show];
     [activityIndicator stopAnimating];
