@@ -110,7 +110,7 @@
 
 - (void) activateCamera
 {
-    self.selectedIndex = 1;
+    [self setSelectedIndex:1];
     UIImagePickerController * imagePickerController = [[UIImagePickerController alloc]init];
     imagePickerController.delegate = self;
     imagePickerController.allowsEditing = NO;    
@@ -179,16 +179,11 @@
 - (void)imagePickerController:(UIImagePickerController *)picker didFinishPickingMediaWithInfo:(NSDictionary *)info
 {
     UIImage * originImage = [info objectForKey:@"UIImagePickerControllerOriginalImage"];
-    [self dismissViewControllerAnimated:YES completion:^{
-        
-        [self.tabBarController setSelectedIndex:1];
-        
-        de_MainNavigationController * nc = (de_MainNavigationController*)[self.viewControllers objectAtIndex:1];
-//        de_PhotoViewController * vc = [[de_PhotoViewController alloc]initWithImage:originImage toolBarType:BKToolBarTypeEditing];
-        de_PhotoViewController * vc = [[de_PhotoViewController alloc]initWithImage:originImage andExistingDogEar:nil];
-        [nc pushViewController:vc animated:YES];
-        
-    }];
+    [self dismissViewControllerAnimated:YES completion:^{}];
+    
+    de_MainNavigationController * nc = (de_MainNavigationController*)[self.viewControllers objectAtIndex:1];
+    de_PhotoViewController * vc = [[de_PhotoViewController alloc]initWithImage:originImage andExistingDogEar:nil];
+    [nc pushViewController:vc animated:YES];
     
 }
 - (void)imagePickerControllerDidCancel:(UIImagePickerController *)picker
@@ -196,7 +191,6 @@
     
     [picker dismissViewControllerAnimated:YES completion:^{
         self.selectedIndex = 0;
-        
     }];
     
 }

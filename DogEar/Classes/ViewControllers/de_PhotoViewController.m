@@ -351,7 +351,7 @@
     cropView = [[NLImageCropperView alloc]initWithFrame:self.view.frame];
     [self.view addSubview:cropView];
     [cropView setImage:[imageView.image imageRotatedByDegrees:currentAngle]];
-    [cropView setCropRegionRect:CGRectMake(10, 50, 450, 680)];
+    [cropView setCropRegionRect:CGRectMake(10, 50, 200, 200)];
     
     UIBarButtonItem * cancelButton = [[UIBarButtonItem alloc]initWithBarButtonSystemItem:UIBarButtonSystemItemCancel target:self action:@selector(cancelCrop)];
     self.navigationItem.leftBarButtonItem = cancelButton;
@@ -391,7 +391,7 @@
 - (void) deleteThePhoto
 {
     
-    UIAlertView * alertView = [[UIAlertView alloc]initWithTitle:@"DogEar" message:@"Are you sure to delete this DogEar?" delegate:self cancelButtonTitle:@"Cancel" otherButtonTitles:@"Move To Trash", nil];
+    UIAlertView * alertView = [[UIAlertView alloc]initWithTitle:@"DogEar" message:@"Are you sure you want to delete this DogEar?" delegate:self cancelButtonTitle:@"Cancel" otherButtonTitles:@"Move To Trash", nil];
     [alertView show];
 }
 

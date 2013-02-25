@@ -68,7 +68,7 @@
                 
             [[NSUserDefaults standardUserDefaults]removeObjectForKey:@"DGFacebookSession_Token"];
             [[NSUserDefaults standardUserDefaults]synchronize];
-            UIAlertView * alertview = [[UIAlertView alloc]initWithTitle:@"Facebook" message:@"Disconnected Successfully." delegate:nil cancelButtonTitle:@"Okay" otherButtonTitles:nil];
+            UIAlertView * alertview = [[UIAlertView alloc]initWithTitle:@"Facebook" message:@"Disconnected successfully." delegate:nil cancelButtonTitle:@"Okay" otherButtonTitles:nil];
             [alertview show];
         }
         else
@@ -146,7 +146,7 @@
                          {
                              [[NSUserDefaults standardUserDefaults] setBool:YES forKey:@"Twitter_Account"];
                              [[NSUserDefaults standardUserDefaults]synchronize];
-                             message = @"Connected Successfully!";
+                             message = @"DogEar successfully connected to your Twitter account.";
                              connected = YES;
                              
                          }
@@ -178,7 +178,7 @@
             [[NSUserDefaults standardUserDefaults]setBool:NO forKey:@"Twitter_Account"];
             [[NSUserDefaults standardUserDefaults]synchronize];
             [activityIndicator stopAnimating];
-            UIAlertView * alertview = [[UIAlertView alloc]initWithTitle:@"Twitter" message:@"Disconnected Successfully." delegate:nil cancelButtonTitle:@"Okay" otherButtonTitles:nil];
+            UIAlertView * alertview = [[UIAlertView alloc]initWithTitle:@"Twitter" message:@"Disconnected successfully." delegate:nil cancelButtonTitle:@"Okay" otherButtonTitles:nil];
             [alertview show];
             
         }

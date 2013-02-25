@@ -133,7 +133,7 @@ static TwitterManager * sharedManager = nil;
                     break;
                 case SLComposeViewControllerResultDone:
                 {
-                    output = @"Post Successfully";
+                    output = @"Post successfully";
                     UIAlertView * alertView = [[UIAlertView alloc]initWithTitle:@"DogEar" message:@"Post Successfully" delegate:self cancelButtonTitle:@"Okay" otherButtonTitles:nil];
                     [alertView show];
                 }

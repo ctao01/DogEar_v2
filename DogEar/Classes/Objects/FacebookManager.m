@@ -42,7 +42,7 @@ static FacebookManager * sharedManager = nil;
              {
                  [[NSUserDefaults standardUserDefaults] setBool:YES forKey:@"Facebook_Account"];
                  [[NSUserDefaults standardUserDefaults]synchronize];
-                 message = @"Connected";
+                 message = @"DogEar successfully connected to your Facebook account.";
                  
              }
              else

@@ -114,7 +114,7 @@
             break;
         case 1:
         {
-            cell.textLabel.text = @"Notification";
+            cell.textLabel.text = @"Notifications";
             UISwitch * reminderSwitch = [[UISwitch alloc]initWithFrame:CGRectMake(0.0f, 0.0f, 80.0f, 44.0f)];
             [reminderSwitch addTarget:self action:@selector(switchTurnOnOff:) forControlEvents:UIControlEventValueChanged];
             reminderSwitch.on = ([[NSUserDefaults standardUserDefaults]boolForKey:@"DogEar_PostNotification"]==YES) ? YES:NO;
