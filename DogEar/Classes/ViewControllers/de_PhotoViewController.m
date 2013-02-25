@@ -482,7 +482,7 @@
                 [self publishDogEarWithoutSheet];            
             else
             {
-                UIAlertView * alertView = [[UIAlertView alloc]initWithTitle:@"Facebook" message:@"We’re sorry. DogEar cannot connect to your Facebook account. Please check your settings and try again." delegate:self cancelButtonTitle:@"Okay" otherButtonTitles:@"Setting",nil];
+                UIAlertView * alertView = [[UIAlertView alloc]initWithTitle:@"Facebook" message:@"We’re sorry. DogEar cannot connect to your Facebook account. Please check your settings and try again." delegate:self cancelButtonTitle:@"Okay" otherButtonTitles:@"Settings",nil];
                 [alertView show];
                 [activityIndicator stopAnimating];
 
@@ -572,7 +572,7 @@
             }
             else
             {
-                UIAlertView * alertView = [[UIAlertView alloc]initWithTitle:@"Facebook" message:@"We’re sorry. DogEar cannot connect to your Facebook account. please check your settings and try again." delegate:self cancelButtonTitle:@"Okay" otherButtonTitles:@"Setting", nil];
+                UIAlertView * alertView = [[UIAlertView alloc]initWithTitle:@"Facebook" message:@"We’re sorry. DogEar cannot connect to your Facebook account. please check your settings and try again." delegate:self cancelButtonTitle:@"Okay" otherButtonTitles:@"Settings", nil];
                 [alertView show];
 //                NSLog(@"not connect to facebook");
 //                
@@ -611,7 +611,7 @@
                 if ([[NSUserDefaults standardUserDefaults] boolForKey:@"Twitter_Account"] == YES)[self presentViewController:[twitter tweetTWComposerSheetWithSharedImage:self.photo] animated:YES completion:nil];
                 else
                 {
-                    UIAlertView * alertView = [[UIAlertView alloc]initWithTitle:@"Twitter" message:@"We’re sorry. DogEar cannot connect to your Twitter account. Please check your settings and try again." delegate:self cancelButtonTitle:@"Okay" otherButtonTitles:@"Setting", nil];
+                    UIAlertView * alertView = [[UIAlertView alloc]initWithTitle:@"Twitter" message:@"We’re sorry. DogEar cannot connect to your Twitter account. Please check your settings and try again." delegate:self cancelButtonTitle:@"Okay" otherButtonTitles:@"Settings", nil];
                     [alertView show];
                 }
 
@@ -621,7 +621,7 @@
                 if ([[NSUserDefaults standardUserDefaults] boolForKey:@"Twitter_Account"] == YES) [self presentViewController:[twitter tweetSLComposerSheetWithSharedImage:self.photo] animated:YES completion:nil];
                 else
                 {
-                    UIAlertView * alertView = [[UIAlertView alloc]initWithTitle:@"Twitter" message:@"We’re sorry. DogEar cannot connect to your Twitter account. Please check your settings and try again." delegate:self cancelButtonTitle:@"Okay" otherButtonTitles:@"Setting", nil];
+                    UIAlertView * alertView = [[UIAlertView alloc]initWithTitle:@"Twitter" message:@"We’re sorry. DogEar cannot connect to your Twitter account. Please check your settings and try again." delegate:self cancelButtonTitle:@"Okay" otherButtonTitles:@"Settings", nil];
                     [alertView show];
                 }
             }
