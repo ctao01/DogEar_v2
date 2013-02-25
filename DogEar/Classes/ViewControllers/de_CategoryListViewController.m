@@ -196,19 +196,23 @@
 // Override to support rearranging the table view.
 - (void)tableView:(UITableView *)tableView moveRowAtIndexPath:(NSIndexPath *)fromIndexPath toIndexPath:(NSIndexPath *)toIndexPath
 {
+    de_DetailViewController * vc = (de_DetailViewController*)[self.navigationController.viewControllers objectAtIndex:[self.navigationController.viewControllers count]-2];
+    
     NSString *item = [collections objectAtIndex:fromIndexPath.row];
 	[collections removeObject:item];
 	[collections insertObject:item atIndex:toIndexPath.row];
     [[NSUserDefaults standardUserDefaults]setObject:collections forKey:@"BKCategory"];
     [[NSUserDefaults standardUserDefaults] synchronize];
-
+    
+    self.selectedIndexPath = [NSIndexPath indexPathForRow:[collections indexOfObject:vc.dogEar.category] inSection:0];
+    [self.tableView reloadData];
 }
 
 // Override to support conditional rearranging of the table view.
 - (BOOL)tableView:(UITableView *)tableView canMoveRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    // Return NO if you do not want the item to be re-orderable.
-    return YES;
+    if (indexPath.row == [collections count]) return NO;
+    else return YES;
 }
 
 - (void) tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
