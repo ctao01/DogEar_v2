@@ -462,7 +462,7 @@
                 } else
                     
                 {
-                    UIAlertView * alertView = [[UIAlertView alloc]initWithTitle:@"Facebook" message:@"Your DogEar has been successfully posted to Facebook!." delegate:nil cancelButtonTitle:@"Okay" otherButtonTitles:nil];
+                    UIAlertView * alertView = [[UIAlertView alloc]initWithTitle:@"Facebook" message:@"Your DogEar has been successfully posted to Facebook!" delegate:nil cancelButtonTitle:@"Okay" otherButtonTitles:nil];
                     [alertView show];
 
                 }
