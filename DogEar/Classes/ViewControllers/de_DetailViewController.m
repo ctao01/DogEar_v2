@@ -340,16 +340,20 @@
 
 - (void) addDogEar
 {
+    NSLog(@"%@",headerView.titleField.text);
+    if ([headerView.titleField.text length]>0)
+        [self.dogEar setTitle:headerView.titleField.text];
     
     if (self.dogEar.category == nil || self.dogEar.title == nil)
     {
-        if ([headerView.titleField.text length]>0)
-            [self.dogEar setTitle:headerView.titleField.text];
         UIAlertView * alertView = [[UIAlertView alloc]initWithTitle:@"Warning" message:@"Please enter a Title and Category for your DogEar" delegate:self cancelButtonTitle:@"Okay" otherButtonTitles: nil];
         [alertView show];
     }
     else
     {
+        
+
+        
         [activityIndicator startAnimating];
         if (self.existingDogEar != nil)
             [self handleImageWithDogEarObject:self.existingDogEar];

@@ -94,7 +94,6 @@
         [[NSUserDefaults standardUserDefaults] setBool:YES forKey:@"HasLaunchedOnce"];
     }
     categories = [[NSArray alloc]initWithArray:[[NSUserDefaults standardUserDefaults]objectForKey:@"BKCategory"]];
-    categories = [categories sortedArrayUsingSelector:@selector(localizedCaseInsensitiveCompare:)];
     [self.tableView reloadData];
 }
 
@@ -116,6 +115,8 @@
 - (void) setUpDefaultCategories
 {
     NSArray * array = [NSArray arrayWithObjects:@"Books",@"Coupons",@"Events",@"Newspapers",@"Magazines", nil];
+    array = [array sortedArrayUsingSelector:@selector(localizedCaseInsensitiveCompare:)];
+
     [[NSUserDefaults standardUserDefaults] setObject:array forKey:@"BKCategory"];
     
     NSMutableDictionary * dict = [[NSMutableDictionary alloc]init];
