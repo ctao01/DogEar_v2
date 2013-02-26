@@ -28,12 +28,20 @@
     [super viewDidLoad];
     UIImageView * bgImage = [[UIImageView alloc]initWithImage:[UIImage imageNamed:@"dogear-bg-content-master"]];
     self.tableView.backgroundView = bgImage;
+    
 }
 
 - (void)didReceiveMemoryWarning
 {
     [super didReceiveMemoryWarning];
     // Dispose of any resources that can be recreated.
+}
+
+#pragma mark - 
+
+- (void) backToPhotoViewController
+{
+    [self dismissModalViewControllerAnimated:YES];
 }
 
 #pragma mark -

@@ -672,10 +672,16 @@
         if ([alertView.title isEqualToString:@"Twitter"] || [alertView.title isEqualToString:@"Facebook"])
         {
 //            [self.tabBarController setSelectedIndex:2];
-            de_MainNavigationController * nc = [self.tabBarController.viewControllers objectAtIndex:2];
-            UITableViewController * vc = (UITableViewController*)[nc.viewControllers objectAtIndex:0];
-            [vc tableView:vc.tableView didSelectRowAtIndexPath:[NSIndexPath indexPathForRow:2 inSection:0]];
-            [self.navigationController pushViewController:vc animated:YES];
+//            de_MainNavigationController * nc = [self.tabBarController.viewControllers objectAtIndex:2];
+//            UITableViewController * vc = (UITableViewController*)[nc.viewControllers objectAtIndex:0];
+//            [vc tableView:vc.tableView didSelectRowAtIndexPath:[NSIndexPath indexPathForRow:2 inSection:0]];
+            de_SettingViewController * vc = [[de_SettingViewController alloc]initWithStyle:UITableViewStyleGrouped];
+            de_MainNavigationController * nc = [[de_MainNavigationController alloc]initWithRootViewController:vc];
+            [self presentViewController:nc animated:YES completion:^{
+                UIBarButtonItem * button = [[UIBarButtonItem alloc]initWithTitle:self.existingDogEar.title style:UIBarButtonItemStyleDone target:vc action:@selector(backToPhotoViewController)];
+                vc.navigationItem.title = @"Settings";
+                vc.navigationItem.leftBarButtonItem = button;
+            }];
         }
 //            [self.tabBarController setSelectedIndex:2];
         else if ([alertView.title isEqualToString:@"DogEar"])
