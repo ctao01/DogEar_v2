@@ -237,6 +237,7 @@
         self.selectedIndexPath = indexPath;
         [vc.dogEar setCategory:cell.textLabel.text];
     }
+    [self.navigationController popViewControllerAnimated:YES];
 }
 
 

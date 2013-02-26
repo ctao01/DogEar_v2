@@ -108,6 +108,8 @@
         self.selectedIndexPath = indexPath;
         [vc.dogEar setFlagged:[NSNumber numberWithInteger:indexPath.row]];
     }
+    [self.navigationController popViewControllerAnimated:YES];
+
 }
 
 @end
