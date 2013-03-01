@@ -19,7 +19,9 @@
 #import <QuartzCore/QuartzCore.h>
 
 @interface de_MainTabBarController ()
-
+{
+    UIImagePickerController * imagePickerController;
+}
 @end
 
 @implementation de_MainTabBarController
@@ -99,11 +101,11 @@
 }
 
 #pragma mark - UINavigationController Delegate
-
-- (void)navigationController:(UINavigationController *)navigationController willShowViewController:(UIViewController *)viewController animated:(BOOL)animated
-{
-    [self addSomeElements:viewController];
-}
+//
+//- (void)navigationController:(UINavigationController *)navigationController willShowViewController:(UIViewController *)viewController animated:(BOOL)animated
+//{
+//    [self addSomeElements:viewController];
+//}
 
 
 #pragma mark -
@@ -111,17 +113,36 @@
 - (void) activateCamera
 {
     [self setSelectedIndex:1];
-    UIImagePickerController * imagePickerController = [[UIImagePickerController alloc]init];
+
+    imagePickerController = [[UIImagePickerController alloc]init];
     imagePickerController.delegate = self;
     imagePickerController.allowsEditing = NO;    
-    
     imagePickerController.sourceType =  UIImagePickerControllerSourceTypeCamera;
-    imagePickerController.modalTransitionStyle = UIModalTransitionStyleCoverVertical;
+    imagePickerController.showsCameraControls = NO;
+    
+    UIToolbar * toolBar=[[UIToolbar alloc] initWithFrame:CGRectMake(0, self.view.frame.size.height -55, 320, 55)];
+    toolBar.barStyle =  UIBarStyleBlackOpaque;
+    NSArray *items=[NSArray arrayWithObjects:
+                    [[UIBarButtonItem alloc] initWithImage:[UIImage imageNamed:@"dogear-icon-load"] style:UIBarButtonItemStylePlain target:self action:@selector(loadImageFromLibrary)],
+                    [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemFlexibleSpace  target:nil action:nil],
+                    [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemCamera  target:self action:@selector(shootPicture)],
+                    [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemFlexibleSpace  target:nil action:nil],
+                    [[UIBarButtonItem alloc] initWithImage:[UIImage imageNamed:@"dogear-icon-cancel"] style:UIBarButtonItemStylePlain target:self action:@selector(dismissImagePicker)],
+                    nil];
+    [toolBar setItems:items];
+    
     [self presentViewController:imagePickerController animated:YES completion:^{
+        [imagePickerController.view addSubview:toolBar];
+
     }];
 //    de_MainNavigationController * nc = (de_MainNavigationController*)[self.viewControllers objectAtIndex:1];
 //    de_PhotoViewController * vc = [[de_PhotoViewController alloc]initWithImage:[UIImage imageNamed:@"sample"] andExistingDogEar:nil];
 //    [nc pushViewController:vc animated:YES];
+}
+
+-(void) shootPicture {
+    
+    [imagePickerController takePicture];
 }
 
 -(void)makeTabBarHidden:(BOOL)hide
@@ -179,7 +200,9 @@
 - (void)imagePickerController:(UIImagePickerController *)picker didFinishPickingMediaWithInfo:(NSDictionary *)info
 {
     UIImage * originImage = [info objectForKey:@"UIImagePickerControllerOriginalImage"];
-    [self dismissViewControllerAnimated:YES completion:^{}];
+    [self dismissViewControllerAnimated:YES completion:^{
+
+    }];
     
     de_MainNavigationController * nc = (de_MainNavigationController*)[self.viewControllers objectAtIndex:1];
     de_PhotoViewController * vc = [[de_PhotoViewController alloc]initWithImage:originImage andExistingDogEar:nil];
@@ -191,10 +214,11 @@
     
     [picker dismissViewControllerAnimated:YES completion:^{
         self.selectedIndex = 0;
+        [self makeTabBarHidden:NO];
     }];
     
 }
-
+/*
 #pragma mark - Custom UIImagePicker 
 -(UIView *)findView:(UIView *)aView withName:(NSString *)name
 {
@@ -214,8 +238,9 @@
     return nil;
 }
 
-- (void)addSomeElements:(UIViewController *)viewController{
-    
+- (void)addSomeElements:(UIViewController *)viewController
+{
+    NSLog(@"addSomeElements");
     
     UIView *PLCameraView=[self findView:viewController.view withName:@"PLCameraView"];
 
@@ -224,6 +249,9 @@
     NSLog(@"%@",bottomBarImageForSave.subviews);
     
     UIButton *cameraButton=[bottomBarImageForSave.subviews objectAtIndex:0];
+//    [cameraButton addTarget:self action:@selector(imagePickerController:didFinishPickingMediaWithInfo:) forControlEvents:UIControlEventTouchUpInside];
+    
+    
     UIButton *cacnelBtn =[bottomBarImageForSave.subviews objectAtIndex:1];
 //    [loadButton setTitle:@"Load" forState:UIControlStateNormal];  //右下角按钮
     UIButton * loadButton = [UIButton buttonWithType:UIButtonTypeCustom];
@@ -234,7 +262,6 @@
     [cacnelBtn removeFromSuperview];
     [bottomBarImageForSave addSubview:loadButton];
     
-//    UIBarButtonItem * button = [[UIBarButtonItem alloc]initWithBarButtonSystemItem:UIBarButtonSystemItemCancel target:self action:@selector(dismissPicker)];
     UIButton * button = [UIButton buttonWithType:UIButtonTypeCustom];
 //    [button setTitle:@"Cancel" forState:UIControlStateNormal];
     [button setImage:[UIImage imageNamed:@"dogear-icon-cancel"] forState:UIControlStateNormal];
@@ -244,12 +271,12 @@
 
     [bottomBarImageForSave addSubview:button];
 }
-
+*/
 - (void) loadImageFromLibrary
 {
     [self dismissModalViewControllerAnimated:NO];
     
-    UIImagePickerController * imagePickerController = [[UIImagePickerController alloc]init];
+    imagePickerController = [[UIImagePickerController alloc]init];
     imagePickerController.delegate = self;
     imagePickerController.allowsEditing = NO;
     
