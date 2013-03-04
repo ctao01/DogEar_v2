@@ -112,8 +112,11 @@
 
 - (void) activateCamera
 {
+    UINavigationController * nc = [self.viewControllers objectAtIndex:1];
+    [nc popToRootViewControllerAnimated:NO];
     [self setSelectedIndex:1];
 
+    
     imagePickerController = [[UIImagePickerController alloc]init];
     imagePickerController.delegate = self;
     imagePickerController.allowsEditing = NO;    
@@ -193,6 +196,8 @@
     de_MainNavigationController * nc = (de_MainNavigationController*)[self.viewControllers objectAtIndex:1];
     de_PhotoViewController * vc = [[de_PhotoViewController alloc]initWithImage:originImage andExistingDogEar:nil];
     [nc pushViewController:vc animated:YES];
+    [self setSelectedIndex:1];
+
     if ([self respondsToSelector:@selector(dismissModalViewControllerAnimated:)])
         [self dismissModalViewControllerAnimated:YES];
     else [self dismissViewControllerAnimated:YES completion:nil];
