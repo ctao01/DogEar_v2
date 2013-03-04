@@ -183,18 +183,6 @@
     return YES;
 }
 
-- (void) tabBarController:(UITabBarController *)tabBarController didSelectViewController:(UIViewController *)viewController {
-	
-    if ([viewController isKindOfClass:[UINavigationController class]]) {
-        [(UINavigationController*) viewController popToRootViewControllerAnimated:NO];
-    }
-    if (self.selectedIndex != 1)
-    {
-        NSMutableArray * array = [NSMutableArray arrayWithArray:[(UINavigationController*)viewController viewControllers]];
-        [array removeAllObjects];
-    }
-}
-
 #pragma mark - UIImagePickerControllerDelegate
 
 - (void)imagePickerController:(UIImagePickerController *)picker didFinishPickingMediaWithInfo:(NSDictionary *)info

@@ -351,9 +351,6 @@
     }
     else
     {
-        
-
-        
         [activityIndicator startAnimating];
         if (self.existingDogEar != nil)
             [self handleImageWithDogEarObject:self.existingDogEar];

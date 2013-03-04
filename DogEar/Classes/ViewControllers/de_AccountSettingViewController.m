@@ -74,7 +74,11 @@
         else
             [FBSession openActiveSessionWithAllowLoginUI:YES success:^(FBSession *session, FBSessionState status, NSError *error)
         {
-                button.on = [FBSession.activeSession isOpen];
+                if (session.accessToken != nil)
+//                    button.on = [FBSession.activeSession isOpen];
+                    button.on = YES;
+                else
+                    button.on = NO;
 
                 [[NSUserDefaults standardUserDefaults]setObject:session.accessToken forKey:@"DGFacebookSession_Token"];
                 [[NSUserDefaults standardUserDefaults]synchronize];

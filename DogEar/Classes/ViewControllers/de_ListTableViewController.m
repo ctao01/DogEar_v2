@@ -101,7 +101,7 @@
 
 - (void) editCategories
 {
-    UIAlertView * newCategoryView = [[UIAlertView alloc]initWithTitle:@"Category Name" message:@"Change Category Name" delegate:self cancelButtonTitle:@"Cancel" otherButtonTitles:@"Done", nil];
+    UIAlertView * newCategoryView = [[UIAlertView alloc]initWithTitle:self.navigationItem.title message:@"Change category name to:" delegate:self cancelButtonTitle:@"Cancel" otherButtonTitles:@"Done", nil];
     newCategoryView.alertViewStyle = UIAlertViewStylePlainTextInput;
     [newCategoryView show];
     

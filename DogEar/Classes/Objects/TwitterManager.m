@@ -124,23 +124,26 @@ static TwitterManager * sharedManager = nil;
     {
        tweetSLComposerSheet = [SLComposeViewController composeViewControllerForServiceType:SLServiceTypeTwitter];
         SLComposeViewControllerCompletionHandler block = ^(SLComposeViewControllerResult result) {
-            [tweetSLComposerSheet dismissViewControllerAnimated:YES completion:nil];
-            
-            NSString *output = @"";
-            switch (result) {
-                case SLComposeViewControllerResultCancelled:
-                    output = @"ACtionCancelled";
-                    break;
-                case SLComposeViewControllerResultDone:
+            [tweetSLComposerSheet dismissViewControllerAnimated:YES completion:^{
+                NSString *output = @"";
+                switch (result)
                 {
-                    output = @"Post successfully";
-                    UIAlertView * alertView = [[UIAlertView alloc]initWithTitle:@"DogEar" message:@"Post Successfully" delegate:self cancelButtonTitle:@"Okay" otherButtonTitles:nil];
-                    [alertView show];
+                    case SLComposeViewControllerResultCancelled:
+                        output = @"ACtionCancelled";
+                        break;
+                    case SLComposeViewControllerResultDone:
+                    {
+                        output = @"Post successfully";
+                        UIAlertView * alertView = [[UIAlertView alloc]initWithTitle:@"DogEar" message:@"Post Successfully" delegate:self cancelButtonTitle:@"Okay" otherButtonTitles:nil];
+                        [alertView show];
+                    }
+                        break;
+                    default:
+                        break;
                 }
-                    break;
-                default:
-                    break;
-            }
+            }];
+            
+            
         };
         tweetSLComposerSheet.completionHandler = block;
         [tweetSLComposerSheet addImage:image];
@@ -160,8 +163,14 @@ static TwitterManager * sharedManager = nil;
         tweetTWComposerSheet = [[TWTweetComposeViewController alloc] init];
         [tweetTWComposerSheet addImage:image];
         [tweetTWComposerSheet setInitialText:@"DogEar"];
-        UIAlertView * alertView = [[UIAlertView alloc]initWithTitle:@"Twitter" message:@"Your DogEar was posted successfully." delegate:nil cancelButtonTitle:@"Okay" otherButtonTitles:nil];
-        [alertView show];
+        [tweetTWComposerSheet setCompletionHandler:^(TWTweetComposeViewControllerResult result)
+        {
+            if (result == TWTweetComposeViewControllerResultDone)
+            {
+                UIAlertView * alertView = [[UIAlertView alloc]initWithTitle:@"Twitter" message:@"Your DogEar was posted successfully." delegate:nil cancelButtonTitle:@"Okay" otherButtonTitles:nil];
+                [alertView show];
+            }
+        }];
     }
     else
     {

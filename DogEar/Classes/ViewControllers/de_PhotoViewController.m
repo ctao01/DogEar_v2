@@ -573,7 +573,7 @@
             }
             else
             {
-                UIAlertView * alertView = [[UIAlertView alloc]initWithTitle:@"Facebook" message:@"We’re sorry. DogEar cannot connect to your Facebook account. please check your settings and try again." delegate:self cancelButtonTitle:@"Okay" otherButtonTitles:@"Settings", nil];
+                UIAlertView * alertView = [[UIAlertView alloc]initWithTitle:@"Facebook" message:@"We’re sorry. DogEar cannot connect to your Facebook account. Please check your settings and try again." delegate:self cancelButtonTitle:@"Okay" otherButtonTitles:@"Settings", nil];
                 [alertView show];
 //                NSLog(@"not connect to facebook");
 //                
