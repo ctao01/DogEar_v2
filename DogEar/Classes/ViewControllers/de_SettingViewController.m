@@ -127,6 +127,7 @@
             [reminderSwitch addTarget:self action:@selector(switchTurnOnOff:) forControlEvents:UIControlEventValueChanged];
             reminderSwitch.on = ([[NSUserDefaults standardUserDefaults]boolForKey:@"DogEar_PostNotification"]==YES) ? YES:NO;
             cell.accessoryView = reminderSwitch;
+            cell.selectionStyle = UITableViewCellAccessoryNone;
         }
             break;
         case 2:

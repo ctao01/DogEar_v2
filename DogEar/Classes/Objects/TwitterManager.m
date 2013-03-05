@@ -129,12 +129,16 @@ static TwitterManager * sharedManager = nil;
                 switch (result)
                 {
                     case SLComposeViewControllerResultCancelled:
+                    {
                         output = @"ACtionCancelled";
+                        UIAlertView * alertView = [[UIAlertView alloc]initWithTitle:@"Twitter" message:@"Your post has been canceled." delegate:self cancelButtonTitle:@"Okay" otherButtonTitles:nil];
+                        [alertView show];
+                    }
                         break;
                     case SLComposeViewControllerResultDone:
                     {
                         output = @"Post successfully";
-                        UIAlertView * alertView = [[UIAlertView alloc]initWithTitle:@"DogEar" message:@"Post Successfully" delegate:self cancelButtonTitle:@"Okay" otherButtonTitles:nil];
+                        UIAlertView * alertView = [[UIAlertView alloc]initWithTitle:@"Twitter" message:@"Your DogEar has been successfully posted to Twitter!" delegate:self cancelButtonTitle:@"Okay" otherButtonTitles:nil];
                         [alertView show];
                     }
                         break;
@@ -168,6 +172,12 @@ static TwitterManager * sharedManager = nil;
             if (result == TWTweetComposeViewControllerResultDone)
             {
                 UIAlertView * alertView = [[UIAlertView alloc]initWithTitle:@"Twitter" message:@"Your DogEar was posted successfully." delegate:nil cancelButtonTitle:@"Okay" otherButtonTitles:nil];
+                [alertView show];
+            }
+            
+            if (result == TWTweetComposeViewControllerResultCancelled)
+            {
+                UIAlertView * alertView = [[UIAlertView alloc]initWithTitle:@"Twitter" message:@"Your post has been canceled." delegate:self cancelButtonTitle:@"Okay" otherButtonTitles:nil];
                 [alertView show];
             }
         }];
