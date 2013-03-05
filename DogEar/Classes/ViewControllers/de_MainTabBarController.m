@@ -101,11 +101,11 @@
 }
 
 #pragma mark - UINavigationController Delegate
-//
-//- (void)navigationController:(UINavigationController *)navigationController willShowViewController:(UIViewController *)viewController animated:(BOOL)animated
-//{
-//    [self addSomeElements:viewController];
-//}
+
+- (void)navigationController:(UINavigationController *)navigationController willShowViewController:(UIViewController *)viewController animated:(BOOL)animated
+{
+    [self addSomeElements:viewController];
+}
 
 
 #pragma mark -
@@ -121,21 +121,21 @@
     imagePickerController.delegate = self;
     imagePickerController.allowsEditing = NO;    
     imagePickerController.sourceType =  UIImagePickerControllerSourceTypeCamera;
-    imagePickerController.showsCameraControls = NO;
+    imagePickerController.showsCameraControls = YES;
     
-    UIToolbar * toolBar=[[UIToolbar alloc] initWithFrame:CGRectMake(0, self.view.frame.size.height -55, 320, 55)];
-    toolBar.barStyle =  UIBarStyleBlackOpaque;
-    NSArray *items=[NSArray arrayWithObjects:
-                    [[UIBarButtonItem alloc] initWithImage:[UIImage imageNamed:@"dogear-icon-load"] style:UIBarButtonItemStylePlain target:self action:@selector(loadImageFromLibrary)],
-                    [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemFlexibleSpace  target:nil action:nil],
-                    [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemCamera  target:self action:@selector(shootPicture)],
-                    [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemFlexibleSpace  target:nil action:nil],
-                    [[UIBarButtonItem alloc] initWithImage:[UIImage imageNamed:@"dogear-icon-cancel"] style:UIBarButtonItemStylePlain target:self action:@selector(dismissImagePicker)],
-                    nil];
-    [toolBar setItems:items];
+//    UIToolbar * toolBar=[[UIToolbar alloc] initWithFrame:CGRectMake(0, self.view.frame.size.height -55, 320, 55)];
+//    toolBar.barStyle =  UIBarStyleBlackOpaque;
+//    NSArray *items=[NSArray arrayWithObjects:
+//                    [[UIBarButtonItem alloc] initWithImage:[UIImage imageNamed:@"dogear-icon-load"] style:UIBarButtonItemStylePlain target:self action:@selector(loadImageFromLibrary)],
+//                    [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemFlexibleSpace  target:nil action:nil],
+//                    [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemCamera  target:self action:@selector(shootPicture)],
+//                    [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemFlexibleSpace  target:nil action:nil],
+//                    [[UIBarButtonItem alloc] initWithImage:[UIImage imageNamed:@"dogear-icon-cancel"] style:UIBarButtonItemStylePlain target:self action:@selector(dismissImagePicker)],
+//                    nil];
+//    [toolBar setItems:items];
     
     [self presentViewController:imagePickerController animated:YES completion:^{
-        [imagePickerController.view addSubview:toolBar];
+//        [imagePickerController.view addSubview:toolBar];
 
     }];
 //    de_MainNavigationController * nc = (de_MainNavigationController*)[self.viewControllers objectAtIndex:1];
@@ -214,7 +214,7 @@
     }];
     
 }
-/*
+
 #pragma mark - Custom UIImagePicker 
 -(UIView *)findView:(UIView *)aView withName:(NSString *)name
 {
@@ -267,7 +267,7 @@
 
     [bottomBarImageForSave addSubview:button];
 }
-*/
+
 - (void) loadImageFromLibrary
 {
     [self dismissModalViewControllerAnimated:NO];
