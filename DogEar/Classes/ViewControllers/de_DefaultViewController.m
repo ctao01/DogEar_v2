@@ -109,8 +109,9 @@
     backgroundImage.frame = self.view.bounds;
     [self.view addSubview:backgroundImage];
     
-    activityIndicator = [[UIActivityIndicatorView alloc] initWithFrame:CGRectMake(0, 0, 44, 44)];
-    activityIndicator.activityIndicatorViewStyle = UIActivityIndicatorViewStyleWhite;
+    activityIndicator = [[UIActivityIndicatorView alloc] initWithFrame:CGRectMake(0, 0, 120, 120)];
+    activityIndicator.activityIndicatorViewStyle = UIActivityIndicatorViewStyleWhiteLarge;
+    [activityIndicator setColor:[UIColor blackColor]];
     activityIndicator.center = CGPointMake(self.view.center.x, self.view.center.y + 120.0f);
     [self.view addSubview:activityIndicator];
     [activityIndicator startAnimating];
