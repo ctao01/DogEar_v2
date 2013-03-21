@@ -8,6 +8,13 @@
 	<string>${PRODUCT_NAME}</string>
 	<key>CFBundleExecutable</key>
 	<string>${EXECUTABLE_NAME}</string>
+	<key>CFBundleIconFiles</key>
+	<array>
+		<string>DE-icon@2x.png</string>
+		<string>DE-icon.png</string>
+		<string>icon.png</string>
+		<string>icon@2x.png</string>
+	</array>
 	<key>CFBundleIcons</key>
 	<dict>
 		<key>CFBundlePrimaryIcon</key>
@@ -16,6 +23,8 @@
 			<array>
 				<string>DE-icon@2x.png</string>
 				<string>DE-icon.png</string>
+				<string>icon.png</string>
+				<string>icon@2x.png</string>
 			</array>
 			<key>UIPrerenderedIcon</key>
 			<true/>

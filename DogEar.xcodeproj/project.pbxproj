@@ -18,8 +18,6 @@
 		3D30028E169B990B00C72E02 /* dogear-icon-rotate.png in Resources */ = {isa = PBXBuildFile; fileRef = 3D300288169B990B00C72E02 /* dogear-icon-rotate.png */; };
 		3D30028F169B990B00C72E02 /* dogear-icon-rotate@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 3D300289169B990B00C72E02 /* dogear-icon-rotate@2x.png */; };
 		3D3002AF169DF01400C72E02 /* FacebookManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 3D3002AE169DF01400C72E02 /* FacebookManager.m */; };
-		3D39286B16C1A20E00A705DF /* DE-icon.png in Resources */ = {isa = PBXBuildFile; fileRef = 3D39286916C1A20E00A705DF /* DE-icon.png */; };
-		3D39286C16C1A20E00A705DF /* DE-icon@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 3D39286A16C1A20E00A705DF /* DE-icon@2x.png */; };
 		3D3EC7801677C33E0074945F /* cropPoint.png in Resources */ = {isa = PBXBuildFile; fileRef = 3D3EC77F1677C33E0074945F /* cropPoint.png */; };
 		3D605FBD16BC668600E05647 /* de_AboutViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 3D605FBC16BC668600E05647 /* de_AboutViewController.m */; };
 		3D605FC116BC683E00E05647 /* de_AboutHeaderView.m in Sources */ = {isa = PBXBuildFile; fileRef = 3D605FC016BC683E00E05647 /* de_AboutHeaderView.m */; };
@@ -96,8 +94,6 @@
 		7E4CA5C0167A698F003F0013 /* AdSupport.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 7E4CA5BF167A698F003F0013 /* AdSupport.framework */; settings = {ATTRIBUTES = (Weak, ); }; };
 		7E4D27CF1669A64000FDC78D /* de_FlaggedListViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 7E4D27CE1669A64000FDC78D /* de_FlaggedListViewController.m */; };
 		7E4D39BB1676EC2700739546 /* de_HeaderView.m in Sources */ = {isa = PBXBuildFile; fileRef = 7E4D39BA1676EC2700739546 /* de_HeaderView.m */; };
-		7E84F50116713BCB004A13D2 /* icon@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 7E84F50016713BCB004A13D2 /* icon@2x.png */; };
-		7E84F50316713BD6004A13D2 /* icon.png in Resources */ = {isa = PBXBuildFile; fileRef = 7E84F50216713BD6004A13D2 /* icon.png */; };
 		7E98E222166EA7D900FAFA60 /* UIImage+DGStyle.m in Sources */ = {isa = PBXBuildFile; fileRef = 7E98E221166EA7D900FAFA60 /* UIImage+DGStyle.m */; };
 		7EC5DB59166FF0B7001949AE /* CoreImage.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 7EC5DB58166FF0B7001949AE /* CoreImage.framework */; };
 		7EC5DB63166FFD5F001949AE /* NYXImagesHelper.m in Sources */ = {isa = PBXBuildFile; fileRef = 7EC5DB61166FFD5F001949AE /* NYXImagesHelper.m */; };
@@ -117,6 +113,8 @@
 		7ECEB4C91667AC2400FC007D /* de_RepeatingLNViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 7ECEB4C81667AC2300FC007D /* de_RepeatingLNViewController.m */; };
 		7ECEB4CD1667B7D300FC007D /* de_FlagViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 7ECEB4CC1667B7D100FC007D /* de_FlagViewController.m */; };
 		7ECEB4F51668105100FC007D /* QuartzCore.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 7ECEB4F41668104F00FC007D /* QuartzCore.framework */; };
+		7ED2EC2F16FB88F700B6EA1D /* icon.png in Resources */ = {isa = PBXBuildFile; fileRef = 7ED2EC2E16FB88F700B6EA1D /* icon.png */; };
+		7ED2EC3116FB88FB00B6EA1D /* icon@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 7ED2EC3016FB88FB00B6EA1D /* icon@2x.png */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -135,8 +133,6 @@
 		3D300289169B990B00C72E02 /* dogear-icon-rotate@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "dogear-icon-rotate@2x.png"; sourceTree = "<group>"; };
 		3D3002AD169DF01400C72E02 /* FacebookManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = FacebookManager.h; path = Classes/Objects/FacebookManager.h; sourceTree = "<group>"; };
 		3D3002AE169DF01400C72E02 /* FacebookManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = FacebookManager.m; path = Classes/Objects/FacebookManager.m; sourceTree = "<group>"; };
-		3D39286916C1A20E00A705DF /* DE-icon.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "DE-icon.png"; sourceTree = "<group>"; };
-		3D39286A16C1A20E00A705DF /* DE-icon@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "DE-icon@2x.png"; sourceTree = "<group>"; };
 		3D3EC77F1677C33E0074945F /* cropPoint.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = cropPoint.png; sourceTree = "<group>"; };
 		3D605FBB16BC668600E05647 /* de_AboutViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = de_AboutViewController.h; path = Classes/ViewControllers/de_AboutViewController.h; sourceTree = "<group>"; };
 		3D605FBC16BC668600E05647 /* de_AboutViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = de_AboutViewController.m; path = Classes/ViewControllers/de_AboutViewController.m; sourceTree = "<group>"; };
@@ -240,8 +236,6 @@
 		7E4D27CE1669A64000FDC78D /* de_FlaggedListViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = de_FlaggedListViewController.m; path = Classes/ViewControllers/de_FlaggedListViewController.m; sourceTree = "<group>"; };
 		7E4D39B91676EC2600739546 /* de_HeaderView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = de_HeaderView.h; path = Classes/Views/de_HeaderView.h; sourceTree = "<group>"; };
 		7E4D39BA1676EC2700739546 /* de_HeaderView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = de_HeaderView.m; path = Classes/Views/de_HeaderView.m; sourceTree = "<group>"; };
-		7E84F50016713BCB004A13D2 /* icon@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "icon@2x.png"; sourceTree = "<group>"; };
-		7E84F50216713BD6004A13D2 /* icon.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = icon.png; sourceTree = "<group>"; };
 		7E98E220166EA7D900FAFA60 /* UIImage+DGStyle.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = "UIImage+DGStyle.h"; path = "Categories/UIImage+DGStyle.h"; sourceTree = "<group>"; };
 		7E98E221166EA7D900FAFA60 /* UIImage+DGStyle.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = "UIImage+DGStyle.m"; path = "Categories/UIImage+DGStyle.m"; sourceTree = "<group>"; };
 		7EC5DB58166FF0B7001949AE /* CoreImage.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreImage.framework; path = System/Library/Frameworks/CoreImage.framework; sourceTree = SDKROOT; };
@@ -279,6 +273,8 @@
 		7ECEB4CB1667B7D000FC007D /* de_FlagViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = de_FlagViewController.h; path = Classes/ViewControllers/de_FlagViewController.h; sourceTree = "<group>"; };
 		7ECEB4CC1667B7D100FC007D /* de_FlagViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = de_FlagViewController.m; path = Classes/ViewControllers/de_FlagViewController.m; sourceTree = "<group>"; };
 		7ECEB4F41668104F00FC007D /* QuartzCore.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = QuartzCore.framework; path = System/Library/Frameworks/QuartzCore.framework; sourceTree = SDKROOT; };
+		7ED2EC2E16FB88F700B6EA1D /* icon.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = icon.png; sourceTree = "<group>"; };
+		7ED2EC3016FB88FB00B6EA1D /* icon@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "icon@2x.png"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -356,11 +352,9 @@
 		7E42528A16645DF400741A41 = {
 			isa = PBXGroup;
 			children = (
+				7ED2EC3016FB88FB00B6EA1D /* icon@2x.png */,
+				7ED2EC2E16FB88F700B6EA1D /* icon.png */,
 				7E4CA5BF167A698F003F0013 /* AdSupport.framework */,
-				7E84F50216713BD6004A13D2 /* icon.png */,
-				7E84F50016713BCB004A13D2 /* icon@2x.png */,
-				3D39286916C1A20E00A705DF /* DE-icon.png */,
-				3D39286A16C1A20E00A705DF /* DE-icon@2x.png */,
 				7E42529F16645DF400741A41 /* DogEar */,
 				7E42529816645DF400741A41 /* Frameworks */,
 				7E42529616645DF400741A41 /* Products */,
@@ -732,8 +726,6 @@
 				7E4252DF16645F5800741A41 /* dogear-icon-trashcan@2x.png in Resources */,
 				7ECD4452166E8B0200B3A160 /* dogear-default.png in Resources */,
 				7ECD4453166E8B0200B3A160 /* dogear-default@2x.png in Resources */,
-				7E84F50116713BCB004A13D2 /* icon@2x.png in Resources */,
-				7E84F50316713BD6004A13D2 /* icon.png in Resources */,
 				3D3EC7801677C33E0074945F /* cropPoint.png in Resources */,
 				7E4CA5BE167A6922003F0013 /* FacebookSDKResources.bundle in Resources */,
 				3D28E02F167AEB3F0086B331 /* sample.png in Resources */,
@@ -762,8 +754,8 @@
 				3D605FE616BCB0E800E05647 /* dogear-bg-content-master.png in Resources */,
 				3D605FE716BCB0E800E05647 /* dogear-bg-content-master-568h@2x.png in Resources */,
 				3D605FE816BCB0E800E05647 /* dogear-bg-content-master@2x.png in Resources */,
-				3D39286B16C1A20E00A705DF /* DE-icon.png in Resources */,
-				3D39286C16C1A20E00A705DF /* DE-icon@2x.png in Resources */,
+				7ED2EC2F16FB88F700B6EA1D /* icon.png in Resources */,
+				7ED2EC3116FB88FB00B6EA1D /* icon@2x.png in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
