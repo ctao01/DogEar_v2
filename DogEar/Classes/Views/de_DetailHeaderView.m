@@ -189,7 +189,7 @@
         if (textField.tag == 1001)
             [vc.dogEar setTitle:textField.text];
 
-        else if (textField.tag = 1002)
+        else if (textField.tag == 1002)
             [vc.dogEar setNote:textField.text];
     }
 }
